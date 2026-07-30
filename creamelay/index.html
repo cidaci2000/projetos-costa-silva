@@ -1,0 +1,1732 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Creamelay - Sorvetes sem Açúcar</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            color: #2c3e50;
+            background-color: #ffffff;
+            line-height: 1.6;
+        }
+
+        :root {
+            --primary-red: #C0392B;
+            --primary-pink: #E91E8C;
+            --primary-cyan: #00BCD4;
+            --dark-text: #1a1a1a;
+            --light-gray: #f5f5f5;
+            --border-color: #e0e0e0;
+        }
+
+        /* NAVBAR */
+        nav {
+            background-color: var(--primary-red);
+            color: white;
+            padding: 1rem 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .navbar-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+
+        .logo img {
+            height: 50px;
+            width: 50px;
+            object-fit: contain;
+        }
+
+        .logo-title {
+            font-family: 'Pacifico', cursive;
+            font-size: 1.8rem;
+            font-weight: 400;
+            line-height: 1;
+        }
+
+        .logo-subtitle {
+            font-size: 0.65rem;
+            letter-spacing: 0.15em;
+            opacity: 0.9;
+            margin-top: 0.25rem;
+        }
+
+        .nav-buttons {
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .cart-btn {
+            background-color: var(--primary-cyan);
+            color: white;
+            border: none;
+            padding: 0.6rem 1.2rem;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 0.95rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: background-color 0.3s ease;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .cart-btn:hover {
+            background-color: #0097a7;
+        }
+
+        .cart-count {
+            background-color: white;
+            color: var(--primary-red);
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 0.8rem;
+        }
+
+        /* MODAL LOGIN */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 500;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            animation: fadeIn 0.3s ease;
+        }
+
+        .modal.active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .modal-content {
+            background-color: white;
+            padding: 2rem;
+            border-radius: 16px;
+            max-width: 500px;
+            width: 90%;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            animation: slideUp 0.3s ease;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        @keyframes slideUp {
+            from {
+                transform: translateY(50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .modal-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary-pink);
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #999;
+        }
+
+        .tabs {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            border-bottom: 2px solid var(--border-color);
+        }
+
+        .tab-btn {
+            flex: 1;
+            padding: 0.8rem;
+            background: none;
+            border: none;
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: #999;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border-bottom: 3px solid transparent;
+            margin-bottom: -2px;
+        }
+
+        .tab-btn.active {
+            color: var(--primary-pink);
+            border-bottom-color: var(--primary-pink);
+        }
+
+        .form-content {
+            display: none;
+        }
+
+        .form-content.active {
+            display: block;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        label {
+            display: block;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--dark-text);
+            margin-bottom: 0.4rem;
+        }
+
+        input {
+            width: 100%;
+            padding: 0.7rem;
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            font-size: 0.95rem;
+            font-family: 'Poppins', sans-serif;
+            transition: all 0.3s ease;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: var(--primary-pink);
+            box-shadow: 0 0 0 3px rgba(233, 30, 140, 0.1);
+        }
+
+        .btn {
+            width: 100%;
+            padding: 0.9rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Poppins', sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary-pink) 0%, var(--primary-red) 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(233, 30, 140, 0.3);
+        }
+
+        .message {
+            padding: 0.8rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+            display: none;
+        }
+
+        .message.show {
+            display: block;
+        }
+
+        .message.success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .message.error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        /* HERO SECTION */
+        .hero {
+            background: linear-gradient(135deg, #fce4ec 0%, #ffffff 50%, #e0f7fa 100%);
+            padding: 4rem 2rem;
+            text-align: center;
+            min-height: 500px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .hero-content {
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .hero-title {
+            font-family: 'Pacifico', cursive;
+            font-size: 3.5rem;
+            color: var(--primary-pink);
+            margin-bottom: 0.5rem;
+            font-weight: 400;
+        }
+
+        .hero-tagline {
+            font-size: 1rem;
+            color: var(--primary-cyan);
+            letter-spacing: 0.1em;
+            margin-bottom: 1.5rem;
+            font-weight: 600;
+        }
+
+        .hero-description {
+            font-size: 1.1rem;
+            color: #555;
+            margin-bottom: 2rem;
+            line-height: 1.8;
+        }
+
+        .hero-description strong {
+            color: var(--primary-red);
+            font-weight: 600;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn-secondary {
+            background-color: transparent;
+            color: var(--primary-cyan);
+            border: 2px solid var(--primary-cyan);
+        }
+
+        .btn-secondary:hover {
+            background-color: var(--primary-cyan);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        /* DIFERENCIAIS */
+        .highlights {
+            background-color: white;
+            border-bottom: 1px solid var(--border-color);
+            padding: 2rem;
+        }
+
+        .highlights-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 2rem;
+            text-align: center;
+        }
+
+        .highlight-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .highlight-emoji {
+            font-size: 2.5rem;
+        }
+
+        .highlight-text {
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 0.15em;
+            color: #666;
+            text-transform: uppercase;
+        }
+
+        /* CARDÁPIO SECTION */
+        .cardapio {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 4rem 2rem;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .section-title {
+            font-family: 'Pacifico', cursive;
+            font-size: 2.8rem;
+            color: var(--primary-pink);
+            margin-bottom: 0.5rem;
+            font-weight: 400;
+        }
+
+        .section-subtitle {
+            font-size: 0.95rem;
+            color: #666;
+            margin-bottom: 1.5rem;
+        }
+
+        .section-divider {
+            width: 60px;
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary-pink) 0%, var(--primary-cyan) 100%);
+            margin: 0 auto;
+            border-radius: 2px;
+        }
+
+        /* FILTROS */
+        .filters {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            padding: 0.6rem 1.2rem;
+            border: 2px solid var(--border-color);
+            background-color: white;
+            color: #333;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .filter-btn:hover,
+        .filter-btn.active {
+            background-color: var(--primary-pink);
+            color: white;
+            border-color: var(--primary-pink);
+        }
+
+        /* GRID DE PRODUTOS */
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .product-card {
+            background-color: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s ease;
+            border: 1px solid var(--border-color);
+        }
+
+        .product-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.12);
+        }
+
+        .product-image {
+            height: 180px;
+            background-size: cover;
+            background-position: center;
+            background-color: #fce4ec;
+        }
+
+        .product-body {
+            padding: 1.5rem;
+        }
+
+        .product-category {
+            font-size: 0.7rem;
+            font-weight: 700;
+            letter-spacing: 0.1em;
+            color: var(--primary-cyan);
+            text-transform: uppercase;
+            margin-bottom: 0.5rem;
+        }
+
+        .product-name {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--dark-text);
+            margin-bottom: 0.5rem;
+        }
+
+        .product-description {
+            font-size: 0.85rem;
+            color: #777;
+            margin-bottom: 1rem;
+            line-height: 1.5;
+        }
+
+        .product-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .product-price {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--primary-pink);
+        }
+
+        .add-btn {
+            background-color: var(--primary-cyan);
+            color: white;
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            font-weight: bold;
+        }
+
+        .add-btn:hover {
+            background-color: #0097a7;
+            transform: scale(1.1);
+        }
+
+        /* SABORES */
+        .flavors-section {
+            margin-top: 3rem;
+            text-align: center;
+        }
+
+        .flavors-title {
+            font-size: 1.5rem;
+            color: var(--primary-pink);
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+
+        .flavors-subtitle {
+            font-size: 0.9rem;
+            color: #666;
+            margin-bottom: 1.5rem;
+        }
+
+        .flavors-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 1rem;
+        }
+
+        .flavor-card {
+            background-color: #fce4ec;
+            border: 2px dashed var(--primary-pink);
+            border-radius: 12px;
+            padding: 1.5rem 1rem;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .flavor-card:hover {
+            background-color: #f8bbd0;
+            transform: scale(1.05);
+        }
+
+        .flavor-emoji {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .flavor-name {
+            font-weight: 600;
+            color: var(--dark-text);
+            margin-bottom: 0.25rem;
+        }
+
+        .flavor-tag {
+            font-size: 0.7rem;
+            color: #999;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        /* TEMPO DE PREPARO */
+        .prep-time {
+            background-color: #fce4ec;
+            border: 2px dashed var(--primary-pink);
+            border-radius: 12px;
+            padding: 2rem;
+            max-width: 400px;
+            margin: 3rem auto 0;
+            text-align: center;
+        }
+
+        .prep-emoji {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .prep-time-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary-pink);
+            margin-bottom: 0.5rem;
+        }
+
+        .prep-time-text {
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        /* FOOTER */
+        footer {
+            background-color: #1a1a1a;
+            color: white;
+            padding: 3rem 2rem;
+            margin-top: 4rem;
+        }
+
+        .footer-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .footer-section h4 {
+            font-size: 0.8rem;
+            font-weight: 700;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            margin-bottom: 1rem;
+            color: var(--primary-pink);
+        }
+
+        .footer-section p {
+            font-size: 0.9rem;
+            color: #ccc;
+            line-height: 1.8;
+        }
+
+        .footer-divider {
+            border-top: 1px solid #333;
+            padding-top: 2rem;
+            text-align: center;
+            font-size: 0.85rem;
+            color: #999;
+        }
+
+        /* CARRINHO SIDEBAR */
+        .cart-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: none;
+            z-index: 200;
+        }
+
+        .cart-overlay.active {
+            display: block;
+        }
+
+        .cart-sidebar {
+            position: fixed;
+            right: -400px;
+            top: 0;
+            width: 400px;
+            height: 100vh;
+            background-color: white;
+            box-shadow: -4px 0 12px rgba(0, 0, 0, 0.1);
+            z-index: 300;
+            transition: right 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .cart-sidebar.active {
+            right: 0;
+        }
+
+        @media (max-width: 480px) {
+            .cart-sidebar {
+                width: 100%;
+                right: -100%;
+            }
+        }
+
+        .cart-header {
+            background-color: var(--primary-red);
+            color: white;
+            padding: 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .cart-close {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        .cart-items {
+            flex: 1;
+            overflow-y: auto;
+            padding: 1.5rem;
+        }
+
+        .cart-item {
+            display: flex;
+            gap: 1rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border-color);
+            margin-bottom: 1rem;
+        }
+
+        .cart-item-info {
+            flex: 1;
+        }
+
+        .cart-item-name {
+            font-weight: 600;
+            font-size: 0.95rem;
+            color: var(--dark-text);
+            margin-bottom: 0.25rem;
+        }
+
+        .cart-item-price {
+            color: var(--primary-pink);
+            font-weight: 700;
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .cart-item-controls {
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+        }
+
+        .qty-btn {
+            width: 24px;
+            height: 24px;
+            border: 1px solid var(--primary-cyan);
+            background-color: white;
+            color: var(--primary-cyan);
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 0.8rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+        }
+
+        .qty-btn:hover {
+            background-color: var(--primary-cyan);
+            color: white;
+        }
+
+        .qty-display {
+            font-weight: 600;
+            min-width: 20px;
+            text-align: center;
+        }
+
+        .remove-btn {
+            background: none;
+            border: none;
+            color: #999;
+            cursor: pointer;
+            font-size: 1.2rem;
+            margin-left: auto;
+        }
+
+        .remove-btn:hover {
+            color: var(--primary-red);
+        }
+
+        .cart-empty {
+            text-align: center;
+            padding: 2rem 1rem;
+            color: #999;
+        }
+
+        .cart-empty-emoji {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .cart-footer {
+            border-top: 2px solid var(--border-color);
+            padding: 1.5rem;
+            background-color: var(--light-gray);
+        }
+
+        .delivery-section {
+            background: white;
+            padding: 0.8rem;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+        }
+
+        .delivery-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+        }
+
+        .delivery-row:last-child {
+            border-top: 1px solid var(--border-color);
+            padding-top: 0.5rem;
+            margin-bottom: 0;
+        }
+
+        .payment-section {
+            background: white;
+            padding: 0.8rem;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+        }
+
+        .payment-label {
+            display: block;
+            margin-bottom: 0.8rem;
+            font-weight: 600;
+            font-size: 0.85rem;
+        }
+
+        .payment-options {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 0.8rem;
+            flex-wrap: wrap;
+        }
+
+        .payment-option {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            cursor: pointer;
+        }
+
+        .payment-option input {
+            cursor: pointer;
+        }
+
+        .copy-link-btn {
+            width: 100%;
+            padding: 0.6rem;
+            background-color: var(--primary-cyan);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .copy-link-btn:hover {
+            background-color: #0097a7;
+        }
+
+        .cart-total {
+            display: flex;
+            justify-content: space-between;
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: var(--dark-text);
+        }
+
+        .cart-total-value {
+            color: var(--primary-pink);
+        }
+
+        .checkout-btn {
+            width: 100%;
+            padding: 1rem;
+            background-color: var(--primary-pink);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .checkout-btn:hover {
+            background-color: #d81b80;
+        }
+
+        .clear-cart-btn {
+            width: 100%;
+            padding: 0.6rem;
+            background-color: white;
+            color: #666;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 0.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .clear-cart-btn:hover {
+            background-color: #f5f5f5;
+        }
+
+        /* TOAST NOTIFICATION */
+        .toast {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background-color: var(--primary-pink);
+            color: white;
+            padding: 1rem 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            z-index: 400;
+            animation: slideUp 0.3s ease;
+            max-width: 300px;
+        }
+
+        @media (max-width: 768px) {
+            .hero-title {
+                font-size: 2.5rem;
+            }
+
+            .products-grid {
+                grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+                gap: 1rem;
+            }
+
+            .navbar-container {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .nav-buttons {
+                justify-content: center;
+            }
+
+            .modal-content {
+                max-width: 95%;
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- NAVBAR -->
+    <nav>
+        <div class="navbar-container">
+            <div class="logo">
+                <img src="https://d2xsxph8kpxj0f.cloudfront.net/310519663706305270/FyAEvUj8CgCYZdhpmV6D7r/creamelay-logo-Zz37YCgowdLgHgxZR4wqfK.webp" alt="Logo Creamelay">
+                <div>
+                    <div class="logo-title">creamelay</div>
+                    <div class="logo-subtitle">o sabor que abraça</div>
+                </div>
+            </div>
+            <div class="nav-buttons" id="navButtons">
+                <!-- Será preenchido via JavaScript -->
+            </div>
+        </div>
+    </nav>
+
+    <!-- HERO SECTION -->
+    <section class="hero" id="inicio">
+        <div class="hero-content">
+            <h1 class="hero-title">creamelay</h1>
+            <p class="hero-tagline">Feito para derreter corações</p>
+            <p class="hero-description">
+                Sorvetes artesanais <strong>sem açúcar</strong>, feitos com ingredientes selecionados e muito amor.
+                Escolha seu sabor favorito e peça agora!
+            </p>
+            <div class="hero-buttons">
+                <button class="btn btn-primary" onclick="scrollToCardapio()">🍦 Ver Cardápio</button>
+                <button class="btn btn-secondary" onclick="openLoginModal()">📝 Entrar / Cadastrar</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- DIFERENCIAIS -->
+    <div class="highlights">
+        <div class="highlights-container">
+            <div class="highlight-item">
+                <div class="highlight-emoji">🌿</div>
+                <div class="highlight-text">Qualidade</div>
+            </div>
+            <div class="highlight-item">
+                <div class="highlight-emoji">🍦</div>
+                <div class="highlight-text">Cremoso</div>
+            </div>
+            <div class="highlight-item">
+                <div class="highlight-emoji">❤️</div>
+                <div class="highlight-text">Com Amor</div>
+            </div>
+            <div class="highlight-item">
+                <div class="highlight-emoji">✨</div>
+                <div class="highlight-text">Sabores</div>
+            </div>
+            <div class="highlight-item">
+                <div class="highlight-emoji">🚫🍬</div>
+                <div class="highlight-text">Sem Açúcar</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- CARDÁPIO -->
+    <section class="cardapio" id="cardapio">
+        <div class="section-header">
+            <h2 class="section-title">Cardápio</h2>
+            <p class="section-subtitle">Sorvetes artesanais sem açúcar — escolha seu favorito!</p>
+            <div class="section-divider"></div>
+        </div>
+
+        <!-- FILTROS -->
+        <div class="filters">
+            <button class="filter-btn active" onclick="filterProducts('todos', event)">Todos</button>
+            <button class="filter-btn" onclick="filterProducts('copos', event)">🥤 Copos</button>
+            <button class="filter-btn" onclick="filterProducts('casquinhas', event)">🍧 Casquinhas</button>
+            <button class="filter-btn" onclick="filterProducts('milkshakes', event)">🥤 Milk Shakes</button>
+        </div>
+
+        <!-- GRID DE PRODUTOS -->
+        <div class="products-grid" id="productsGrid" style="scroll-margin-top: 100px;"></div>
+
+        <!-- SABORES -->
+        <div class="flavors-section">
+            <h3 class="flavors-title">Sabores Disponíveis</h3>
+            <p class="flavors-subtitle">Todos os nossos sabores são sem açúcar adicionado</p>
+            <div class="flavors-grid" id="flavorsGrid"></div>
+        </div>
+
+        <!-- TEMPO DE PREPARO -->
+        <div class="prep-time">
+            <div class="prep-emoji">⏱️</div>
+            <div class="prep-time-value">10 a 20 minutos</div>
+            <div class="prep-time-text">Tempo estimado de preparo após confirmação do pedido</div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="footer-container">
+            <div class="footer-grid">
+                <div class="footer-section">
+                    <h4>creamelay</h4>
+                    <p>Sorvetes irresistíveis feitos com ingredientes de qualidade e muito amor. ❤️</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Navegação</h4>
+                    <p><a onclick="scrollToInicio()" style="cursor: pointer;">Início</a></p>
+                    <p><a onclick="scrollToCardapio()" style="cursor: pointer;">Cardápio</a></p>
+                    <p><a onclick="openLoginModal()" style="cursor: pointer;">Meus Pedidos</a></p>
+                    <p><a onclick="openLoginModal()" style="cursor: pointer;">Clientes</a></p>
+                </div>
+                <div class="footer-section">
+                    <h4>Atendimento</h4>
+                    <p>📞 (11) 99999-9999<br>✉️ contato@creamelay.com.br<br>🕐 Seg a Dom: 12h às 22h</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Siga-nos</h4>
+                    <p>📸 @creamelay<br>🎵 @creamelay<br>👍 /creamelay</p>
+                </div>
+            </div>
+            <div class="footer-divider">
+                <p>© 2024 Creamelay. Todos os direitos reservados. Feito com amor para você 🍦</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- MODAL LOGIN/CADASTRO -->
+    <div class="modal" id="loginModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">Bem-vindo!</h2>
+                <button class="modal-close" onclick="closeLoginModal()">✕</button>
+            </div>
+
+            <div id="message" class="message"></div>
+
+            <div class="tabs">
+                <button class="tab-btn active" onclick="switchTab('login', event)">Entrar</button>
+                <button class="tab-btn" onclick="switchTab('register', event)">Cadastrar</button>
+            </div>
+
+            <!-- LOGIN -->
+            <form class="form-content active" id="loginForm" onsubmit="handleLogin(event)">
+                <div class="form-group">
+                    <label for="loginEmail">E-mail</label>
+                    <input type="email" id="loginEmail" placeholder="seu@email.com" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="loginPassword">Senha</label>
+                    <input type="password" id="loginPassword" placeholder="••••••••" required>
+                </div>
+
+                <button type="submit" class="btn btn-primary">Entrar</button>
+            </form>
+
+            <!-- CADASTRO -->
+            <form class="form-content" id="registerForm" onsubmit="handleRegister(event)">
+                <div class="form-group">
+                    <label for="firstName">Nome</label>
+                    <input type="text" id="firstName" placeholder="Seu nome" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="registerEmail">E-mail</label>
+                    <input type="email" id="registerEmail" placeholder="seu@email.com" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="cpf">CPF</label>
+                    <input type="text" id="cpf" placeholder="000.000.000-00" maxlength="14" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="phone">Telefone</label>
+                    <input type="tel" id="phone" placeholder="(11) 99999-9999" maxlength="15" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="registerPassword">Senha</label>
+                    <input type="password" id="registerPassword" placeholder="••••••••" required>
+                </div>
+
+                <button type="submit" class="btn btn-primary">Criar Conta</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- CARRINHO SIDEBAR -->
+    <div class="cart-overlay" id="cartOverlay" onclick="toggleCart()"></div>
+    <div class="cart-sidebar" id="cartSidebar">
+        <div class="cart-header">
+            <h3>🛒 Meu Carrinho</h3>
+            <button class="cart-close" onclick="toggleCart()">✕</button>
+        </div>
+        <div class="cart-items" id="cartItems">
+            <div class="cart-empty">
+                <div class="cart-empty-emoji">🛒</div>
+                <p>Seu carrinho está vazio.</p>
+                <p style="font-size: 0.85rem; margin-top: 0.5rem;">Adicione deliciosos sorvetes!</p>
+            </div>
+        </div>
+        <div class="cart-footer">
+            <!-- TAXA DE ENTREGA -->
+            <div class="delivery-section">
+                <div class="delivery-row">
+                    <span>Subtotal:</span>
+                    <span id="cartSubtotal">R$ 0,00</span>
+                </div>
+                <div class="delivery-row">
+                    <span>Taxa de Entrega:</span>
+                    <span id="deliveryFee">R$ 5,00</span>
+                </div>
+            </div>
+
+            <!-- OPÇÕES DE PAGAMENTO -->
+            <div class="payment-section">
+                <label class="payment-label">Forma de Pagamento:</label>
+                <div class="payment-options">
+                    <label class="payment-option">
+                        <input type="radio" name="paymentMethod" value="cash" checked>
+                        <span>💵 Dinheiro</span>
+                    </label>
+                    <label class="payment-option">
+                        <input type="radio" name="paymentMethod" value="pix">
+                        <span>📱 PIX</span>
+                    </label>
+                </div>
+                <button type="button" class="copy-link-btn" onclick="copyPaymentLink()">📋 Copiar Link</button>
+            </div>
+
+            <!-- TOTAL -->
+            <div class="cart-total">
+                <span>Total:</span>
+                <span class="cart-total-value" id="cartTotal">R$ 0,00</span>
+            </div>
+            <button class="checkout-btn" onclick="checkout()">✅ Finalizar Pedido</button>
+            <button class="clear-cart-btn" onclick="clearCart()">Limpar Carrinho</button>
+        </div>
+    </div>
+
+    <!-- JAVASCRIPT -->
+    <script>
+    // ===== CONFIGURAÇÃO DA API =====
+    const AUTH_API_URL = 'api_auth.php';
+
+    // ===== PRODUTOS =====
+    const products = [
+        { id: 1, name: "Copo P – 130ml", category: "copos", price: 9.90, image: "https://d2xsxph8kpxj0f.cloudfront.net/310519663706305270/FyAEvUj8CgCYZdhpmV6D7r/sorvete-copo-pequeno-JzrKAi4Lu3ZiWzbp8XqHRi.webp", description: "1 bola de sorvete à sua escolha" },
+        { id: 2, name: "Copo M – 220ml", category: "copos", price: 15.90, image: "https://d2xsxph8kpxj0f.cloudfront.net/310519663706305270/FyAEvUj8CgCYZdhpmV6D7r/sorvete-copo-medio-gMR26oqQM7s8LX25cFPwDT.webp", description: "2 bolas de sorvete" },
+        { id: 3, name: "Copo G – 330ml", category: "copos", price: 20.90, image: "https://d2xsxph8kpxj0f.cloudfront.net/310519663706305270/FyAEvUj8CgCYZdhpmV6D7r/sorvete-copo-grande-BVMCoGnkjraCuVmGRktLXE.webp", description: "3 bolas de sorvete" },
+        { id: 4, name: "Casquinha Tradicional", category: "casquinhas", price: 8.90, image: "https://d2xsxph8kpxj0f.cloudfront.net/310519663706305270/FyAEvUj8CgCYZdhpmV6D7r/sorvete-casquinha-tradicional-Xgx5TS4JWQGUtzKHt4Lc5N.webp", description: "Casquinha crocante com 1 bola" },
+        { id: 5, name: "Casquinha Especial", category: "casquinhas", price: 12.90, image: "https://d2xsxph8kpxj0f.cloudfront.net/310519663706305270/FyAEvUj8CgCYZdhpmV6D7r/sorvete-casquinha-especial-5fRxyeZhpeuVpV999VdEVZ.webp", description: "Premium com chocolate e granulado" },
+        { id: 6, name: "Milk Shake Morango", category: "milkshakes", price: 18.90, image: "https://d2xsxph8kpxj0f.cloudfront.net/310519663706305270/FyAEvUj8CgCYZdhpmV6D7r/milkshake-morango-FYjwBGVZJ8Sr2EcSQ9YdBm.webp", description: "Cremoso com chantilly" },
+        { id: 7, name: "Milk Shake Chocolate", category: "milkshakes", price: 18.90, image: "https://d2xsxph8kpxj0f.cloudfront.net/310519663706305270/FyAEvUj8CgCYZdhpmV6D7r/milkshake-chocolate-KNLJUDi9YYgANCbsMZKXia.webp", description: "Intenso com cobertura especial" },
+        { id: 8, name: "Milk Shake Baunilha", category: "milkshakes", price: 18.90, image: "https://d2xsxph8kpxj0f.cloudfront.net/310519663706305270/FyAEvUj8CgCYZdhpmV6D7r/milkshake-baunilha-HViUDeDrhs46vxXuEqjwkw.webp", description: "Clássico com granulado colorido" },
+    ];
+
+    const flavors = [
+        { emoji: "🍓", name: "Morango", tag: "sem açúcar" },
+        { emoji: "🍫", name: "Chocolate", tag: "sem açúcar" },
+        { emoji: "🍪", name: "Flocos", tag: "sem açúcar" },
+        { emoji: "🥛", name: "Leite Ninho", tag: "sem açúcar" },
+        { emoji: "🍮", name: "Doce de Leite", tag: "sem açúcar" },
+    ];
+
+    let currentFilter = "todos";
+    let cart = [];
+    let currentUser = null;
+    const DELIVERY_FEE = 5.00;
+
+    // ===== FUNÇÕES DO MODAL =====
+    function openLoginModal() {
+        document.getElementById("loginModal").classList.add("active");
+        document.getElementById("message").className = "message";
+        document.getElementById("message").textContent = "";
+    }
+
+    function closeLoginModal() {
+        document.getElementById("loginModal").classList.remove("active");
+    }
+
+    function switchTab(tab, event) {
+        document.querySelectorAll(".form-content").forEach(f => f.classList.remove("active"));
+        document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
+        
+        document.getElementById(tab + "Form").classList.add("active");
+        event.target.classList.add("active");
+        document.getElementById("message").className = "message";
+        document.getElementById("message").textContent = "";
+    }
+
+    function showMessage(text, type) {
+        const msg = document.getElementById("message");
+        msg.textContent = text;
+        msg.className = `message show ${type}`;
+        setTimeout(() => msg.classList.remove("show"), 4000);
+    }
+
+    // ===== LOGIN (via API) =====
+    function handleLogin(event) {
+        event.preventDefault();
+        const email = document.getElementById("loginEmail").value;
+        const password = document.getElementById("loginPassword").value;
+
+        if (!email || !password) {
+            showMessage("Preencha todos os campos", "error");
+            return;
+        }
+
+        loginUser(email, password);
+    }
+
+    async function loginUser(email, password) {
+        try {
+            const response = await fetch(AUTH_API_URL, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ 
+                    action: 'login', 
+                    email: email, 
+                    password: password 
+                })
+            });
+
+            const result = await response.json();
+            console.log('📦 Resposta do login:', result);
+
+            if (result.success) {
+                localStorage.setItem('user', JSON.stringify(result.user));
+                currentUser = result.user;
+                
+                console.log('👑 Role do usuário:', result.user.role);
+                
+                // VERIFICAR SE É ADMIN
+                if (result.user.role === 'admin') {
+                    showMessage('✅ Login Admin realizado! Redirecionando...', 'success');
+                    setTimeout(() => {
+                        window.location.href = 'admin.html';
+                    }, 1000);
+                } else {
+                    showMessage('✅ Login realizado com sucesso!', 'success');
+                    setTimeout(() => {
+                        closeLoginModal();
+                        window.location.reload();
+                    }, 1500);
+                }
+            } else {
+                showMessage('❌ ' + result.message, 'error');
+            }
+        } catch (error) {
+            console.error('Erro no login:', error);
+            showMessage('❌ Erro ao conectar com o servidor', 'error');
+        }
+    }
+
+    // ===== CADASTRO (via API) =====
+    function handleRegister(event) {
+        event.preventDefault();
+        const name = document.getElementById("firstName").value;
+        const email = document.getElementById("registerEmail").value;
+        const cpf = document.getElementById("cpf").value;
+        const phone = document.getElementById("phone").value;
+        const password = document.getElementById("registerPassword").value;
+
+        if (!name || !email || !cpf || !phone || !password) {
+            showMessage("Preencha todos os campos", "error");
+            return;
+        }
+
+        if (password.length < 6) {
+            showMessage("A senha deve ter no mínimo 6 caracteres", "error");
+            return;
+        }
+
+        registerUser(name, email, cpf, phone, password);
+    }
+
+    async function registerUser(name, email, cpf, phone, password) {
+        try {
+            const response = await fetch(AUTH_API_URL, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ 
+                    action: 'signup', 
+                    name: name,
+                    email: email,
+                    cpf: cpf,
+                    phone: phone,
+                    password: password 
+                })
+            });
+
+            const result = await response.json();
+            console.log('📦 Resposta do cadastro:', result);
+
+            if (result.success) {
+                localStorage.setItem('user', JSON.stringify(result.user));
+                currentUser = result.user;
+                
+                showMessage('✅ Cadastro realizado com sucesso!', 'success');
+                setTimeout(() => {
+                    closeLoginModal();
+                    window.location.reload();
+                }, 1500);
+            } else {
+                showMessage('❌ ' + result.message, 'error');
+            }
+        } catch (error) {
+            console.error('Erro no cadastro:', error);
+            showMessage('❌ Erro ao conectar com o servidor', 'error');
+        }
+    }
+
+    // ===== VERIFICAR SESSÃO =====
+    function checkUserSession() {
+        const userData = localStorage.getItem('user');
+        const navButtons = document.getElementById('navButtons');
+        
+        if (userData) {
+            try {
+                const user = JSON.parse(userData);
+                currentUser = user;
+                
+                console.log('👤 Usuário logado:', user);
+                console.log('👑 Role:', user.role);
+                
+                navButtons.innerHTML = '';
+                
+                // Container do usuário
+                const userContainer = document.createElement('div');
+                userContainer.style.cssText = `
+                    display: flex;
+                    align-items: center;
+                    gap: 0.8rem;
+                    color: white;
+                    background: rgba(255,255,255,0.15);
+                    padding: 0.3rem 1rem;
+                    border-radius: 25px;
+                    font-size: 0.85rem;
+                `;
+                
+                const nameSpan = document.createElement('span');
+                nameSpan.textContent = `👤 ${user.name || 'Usuário'}`;
+                nameSpan.style.fontWeight = '500';
+                
+                if (user.role === 'admin') {
+                    const badge = document.createElement('span');
+                    badge.style.cssText = `
+                        background: #f59e0b;
+                        color: #1a1a1a;
+                        padding: 0.15rem 0.6rem;
+                        border-radius: 12px;
+                        font-size: 0.65rem;
+                        font-weight: 700;
+                    `;
+                    badge.textContent = '👑 Admin';
+                    userContainer.appendChild(badge);
+                }
+                
+                // Botão Sair
+                const logoutBtn = document.createElement('button');
+                logoutBtn.style.cssText = `
+                    background: rgba(239, 68, 68, 0.3);
+                    border: 1px solid rgba(239, 68, 68, 0.5);
+                    color: white;
+                    padding: 0.25rem 0.8rem;
+                    border-radius: 15px;
+                    cursor: pointer;
+                    font-size: 0.75rem;
+                    transition: all 0.3s ease;
+                `;
+                logoutBtn.textContent = '🚪 Sair';
+                logoutBtn.onclick = function() {
+                    if (confirm(`Deseja sair, ${user.name}?`)) {
+                        localStorage.removeItem('user');
+                        currentUser = null;
+                        window.location.reload();
+                    }
+                };
+                
+                userContainer.appendChild(nameSpan);
+                userContainer.appendChild(logoutBtn);
+                navButtons.appendChild(userContainer);
+                
+                // Botão Admin (se for admin)
+                if (user.role === 'admin') {
+                    const adminBtn = document.createElement('button');
+                    adminBtn.className = 'cart-btn';
+                    adminBtn.style.cssText = 'background: #f59e0b; border-color: #f59e0b; color: #1a1a1a;';
+                    adminBtn.innerHTML = '📊 Admin';
+                    adminBtn.onclick = function() {
+                        window.location.href = 'admin.html';
+                    };
+                    navButtons.appendChild(adminBtn);
+                }
+                
+                // ===== BOTÃO CARRINHO - SÓ APARECE SE ESTIVER LOGADO =====
+                const cartBtn = document.createElement('button');
+                cartBtn.className = 'cart-btn';
+                cartBtn.innerHTML = `🛒 Carrinho <span class="cart-count" id="cartCountNav">0</span>`;
+                cartBtn.onclick = toggleCart;
+                navButtons.appendChild(cartBtn);
+                
+                return user;
+            } catch(e) {
+                console.error('Erro ao parsear user:', e);
+                localStorage.removeItem('user');
+                currentUser = null;
+            }
+        }
+        
+        // ===== USUÁRIO NÃO LOGADO - SEM CARRINHO =====
+        navButtons.innerHTML = `
+            <button class="cart-btn" onclick="openLoginModal()" style="background-color: var(--primary-pink);">👤 Entrar / Cadastrar</button>
+        `;
+        return null;
+    }
+
+    // ===== CARRINHO =====
+    function loadCart() {
+        const saved = localStorage.getItem("creamelay_cart");
+        if (saved) cart = JSON.parse(saved);
+        updateCartUI();
+    }
+
+    function saveCart() {
+        localStorage.setItem("creamelay_cart", JSON.stringify(cart));
+    }
+
+    function addToCart(productId) {
+        // Verifica se o usuário está logado
+        if (!currentUser) {
+            showToast("⚠️ Faça login para adicionar ao carrinho!");
+            setTimeout(() => window.location.href = 'login.html', 1000);
+            return;
+        }
+
+        const product = products.find(p => p.id === productId);
+        const existing = cart.find(item => item.id === productId);
+
+        if (existing) {
+            existing.quantity += 1;
+        } else {
+            cart.push({ ...product, quantity: 1 });
+        }
+
+        saveCart();
+        updateCartUI();
+        showToast(`✅ ${product.name} adicionado!`);
+    }
+
+    function removeFromCart(productId) {
+        cart = cart.filter(item => item.id !== productId);
+        saveCart();
+        updateCartUI();
+    }
+
+    function updateQuantity(productId, quantity) {
+        const item = cart.find(item => item.id === productId);
+        if (item) {
+            if (quantity <= 0) removeFromCart(productId);
+            else {
+                item.quantity = quantity;
+                saveCart();
+                updateCartUI();
+            }
+        }
+    }
+
+    function updateCartUI() {
+        const container = document.getElementById("cartItems");
+        const countEl = document.getElementById("cartCount") || document.getElementById("cartCountNav");
+        const totalEl = document.getElementById("cartTotal");
+        const subtotalEl = document.getElementById("cartSubtotal");
+
+        let subtotal = 0, count = 0;
+        cart.forEach(item => {
+            subtotal += item.price * item.quantity;
+            count += item.quantity;
+        });
+        const total = subtotal + DELIVERY_FEE;
+
+        if (countEl) {
+            countEl.style.display = count > 0 ? "flex" : "none";
+            countEl.textContent = count;
+        }
+        if (subtotalEl) subtotalEl.textContent = `R$ ${subtotal.toFixed(2)}`;
+        if (totalEl) totalEl.textContent = `R$ ${total.toFixed(2)}`;
+
+        if (cart.length === 0) {
+            container.innerHTML = '<div class="cart-empty"><div class="cart-empty-emoji">🛒</div><p>Seu carrinho está vazio.</p></div>';
+        } else {
+            container.innerHTML = cart.map(item => `
+                <div class="cart-item">
+                    <div class="cart-item-info">
+                        <div class="cart-item-name">${item.name}</div>
+                        <div class="cart-item-price">R$ ${(item.price * item.quantity).toFixed(2)}</div>
+                        <div class="cart-item-controls">
+                            <button class="qty-btn" onclick="updateQuantity(${item.id}, ${item.quantity - 1})">−</button>
+                            <span class="qty-display">${item.quantity}</span>
+                            <button class="qty-btn" onclick="updateQuantity(${item.id}, ${item.quantity + 1})">+</button>
+                            <button class="remove-btn" onclick="removeFromCart(${item.id})">✕</button>
+                        </div>
+                    </div>
+                </div>
+            `).join("");
+        }
+    }
+
+    function toggleCart() {
+        // Só abre o carrinho se estiver logado
+        if (!currentUser) {
+            showToast("⚠️ Faça login para ver seu carrinho!");
+            setTimeout(() => window.location.href = 'login.html', 1000);
+            return;
+        }
+        document.getElementById("cartOverlay").classList.toggle("active");
+        document.getElementById("cartSidebar").classList.toggle("active");
+    }
+
+    function clearCart() {
+        if (confirm("Limpar carrinho?")) {
+            cart = [];
+            saveCart();
+            updateCartUI();
+            showToast("🗑️ Carrinho limpo!");
+        }
+    }
+
+    function copyPaymentLink() {
+        const paymentMethod = document.querySelector('input[name="paymentMethod"]:checked').value;
+        const subtotal = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
+        const total = subtotal + DELIVERY_FEE;
+        const link = `Pedido Creamelay - Método: ${paymentMethod === 'pix' ? 'PIX' : 'Dinheiro'} - Total: R$ ${total.toFixed(2)}`;
+        
+        navigator.clipboard.writeText(link).then(() => {
+            showToast("📋 Link copiado!");
+        });
+    }
+
+    function checkout() {
+        if (cart.length === 0) {
+            showToast("⚠️ Adicione itens!");
+            return;
+        }
+
+        if (!currentUser) {
+            showToast("⚠️ Faça login para finalizar o pedido!");
+            setTimeout(() => window.location.href = 'login.html', 1000);
+            return;
+        }
+
+        const paymentMethod = document.querySelector('input[name="paymentMethod"]:checked').value;
+        const subtotal = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
+        const total = subtotal + DELIVERY_FEE;
+        const orderNumber = Math.floor(Math.random() * 100000);
+
+        alert(`✅ Pedido #${orderNumber}\nCliente: ${currentUser.name}\nSubtotal: R$ ${subtotal.toFixed(2)}\nTaxa de Entrega: R$ ${DELIVERY_FEE.toFixed(2)}\nTotal: R$ ${total.toFixed(2)}\nPagamento: ${paymentMethod === 'pix' ? 'PIX' : 'Dinheiro'}\nTempo: 10 a 20 min`);
+
+        let orders = JSON.parse(localStorage.getItem("creamelay_orders")) || [];
+        orders.push({ orderNumber, items: cart, subtotal, deliveryFee: DELIVERY_FEE, total, paymentMethod, user: currentUser.name, date: new Date().toLocaleString() });
+        localStorage.setItem("creamelay_orders", JSON.stringify(orders));
+
+        cart = [];
+        saveCart();
+        updateCartUI();
+        toggleCart();
+        showToast("🎉 Pedido realizado com sucesso!");
+    }
+
+    function showToast(message) {
+        const toast = document.createElement("div");
+        toast.className = "toast";
+        toast.textContent = message;
+        document.body.appendChild(toast);
+        setTimeout(() => toast.remove(), 3000);
+    }
+
+    // ===== RENDERIZAR PRODUTOS =====
+    function renderProducts(filter = "todos") {
+        const grid = document.getElementById("productsGrid");
+        const filtered = filter === "todos" ? products : products.filter(p => p.category === filter);
+        grid.innerHTML = filtered.map(product => `
+            <div class="product-card">
+                <div class="product-image" style="background-image: url('${product.image}'); background-size: cover; background-position: center;"></div>
+                <div class="product-body">
+                    <div class="product-category">${product.category}</div>
+                    <h3 class="product-name">${product.name}</h3>
+                    <p class="product-description">${product.description}</p>
+                    <div class="product-footer">
+                        <span class="product-price">R$ ${product.price.toFixed(2)}</span>
+                        <button class="add-btn" onclick="addToCart(${product.id})">+</button>
+                    </div>
+                </div>
+            </div>
+        `).join("");
+    }
+
+    function renderFlavors() {
+        const grid = document.getElementById("flavorsGrid");
+        grid.innerHTML = flavors.map(flavor => `
+            <div class="flavor-card">
+                <div class="flavor-emoji">${flavor.emoji}</div>
+                <div class="flavor-name">${flavor.name}</div>
+                <div class="flavor-tag">${flavor.tag}</div>
+            </div>
+        `).join("");
+    }
+
+    function filterProducts(category, event) {
+        currentFilter = category;
+        renderProducts(category);
+        document.querySelectorAll(".filter-btn").forEach(b => b.classList.remove("active"));
+        event.target.classList.add("active");
+    }
+
+    function scrollToCardapio() {
+        const grid = document.getElementById('productsGrid');
+        if (grid) grid.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+
+    function scrollToInicio() {
+        const hero = document.getElementById('inicio');
+        if (hero) hero.scrollIntoView({ behavior: "smooth" });
+    }
+
+    // ===== INICIALIZAR =====
+    document.addEventListener("DOMContentLoaded", function() {
+        console.log('🚀 Inicializando Creamelay...');
+        checkUserSession();
+        renderProducts();
+        renderFlavors();
+        loadCart();
+        console.log('✅ Inicialização concluída!');
+    });
+
+    // Fechar modal ao clicar fora
+    window.addEventListener('click', function(event) {
+        const modal = document.getElementById('loginModal');
+        if (event.target === modal) {
+            closeLoginModal();
+        }
+    });
+</script>
+</body>
+</html>

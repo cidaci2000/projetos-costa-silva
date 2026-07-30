@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Creamelay</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #fce4ec 0%, #ffffff 50%, #e0f7fa 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+        }
+
+        .login-container {
+            background: white;
+            border-radius: 20px;
+            padding: 2.5rem;
+            max-width: 420px;
+            width: 100%;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        .login-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .login-header h1 {
+            font-family: 'Pacifico', cursive;
+            font-size: 2.5rem;
+            color: #E91E8C;
+            font-weight: 400;
+        }
+
+        .login-header p {
+            color: #666;
+            margin-top: 0.5rem;
+            font-size: 0.95rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.2rem;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 0.4rem;
+            font-size: 0.9rem;
+            color: #1a1a1a;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-family: 'Poppins', sans-serif;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #E91E8C;
+            box-shadow: 0 0 0 3px rgba(233, 30, 140, 0.1);
+        }
+
+        .btn {
+            width: 100%;
+            padding: 0.9rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Poppins', sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #E91E8C 0%, #C0392B 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(233, 30, 140, 0.3);
+        }
+
+        .btn-primary:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+        }
+
+        .alert {
+            padding: 0.75rem 1rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            display: none;
+        }
+
+        .alert-danger {
+            background: #fee2e2;
+            color: #991b1b;
+            border: 1px solid #fecaca;
+            display: block;
+        }
+
+        .alert-success {
+            background: #dcfce7;
+            color: #166534;
+            border: 1px solid #bbf7d0;
+            display: block;
+        }
+
+        .register-link {
+            text-align: center;
+            margin-top: 1.5rem;
+            color: #666;
+        }
+
+        .register-link a {
+            color: #E91E8C;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .register-link a:hover {
+            text-decoration: underline;
+        }
+
+        .back-link {
+            display: block;
+            text-align: center;
+            margin-top: 1rem;
+            color: #999;
+            text-decoration: none;
+            font-size: 0.9rem;
+        }
+
+        .back-link:hover {
+            color: #E91E8C;
+        }
+
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255,255,255,0.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .btn-text {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <div class="login-header">
+            <h1>creamelay</h1>
+            <p>Faça login para acessar sua conta</p>
+        </div>
+
+        <div id="alertMessage" class="alert"></div>
+
+        <form id="loginForm">
+            <div class="form-group">
+                <label>📧 E-mail</label>
+                <input type="email" id="loginEmail" placeholder="seu@email.com" required autofocus>
+            </div>
+            <div class="form-group">
+                <label>🔒 Senha</label>
+                <input type="password" id="loginPassword" placeholder="Digite sua senha" required>
+            </div>
+            <button type="submit" class="btn btn-primary" id="loginBtn">
+                <span class="btn-text">🚀 Entrar</span>
+            </button>
+        </form>
+
+        <div class="register-link">
+            Não tem uma conta? <a href="#" onclick="window.location.href='index.html#cardapio'">Cadastre-se</a>
+        </div>
+        <a href="index.html" class="back-link">← Voltar para a Loja</a>
+    </div>
+
+    <script>
+        const API_URL = 'api_auth.php';
+
+        document.getElementById('loginForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const email = document.getElementById('loginEmail').value.trim();
+            const password = document.getElementById('loginPassword').value;
+            const btn = document.getElementById('loginBtn');
+            const alertDiv = document.getElementById('alertMessage');
+            
+            alertDiv.className = 'alert';
+            alertDiv.style.display = 'none';
+            
+            if (!email || !password) {
+                showAlert('Por favor, preencha todos os campos.', 'danger');
+                return;
+            }
+
+            btn.disabled = true;
+            btn.innerHTML = '<span class="btn-text"><span class="loading"></span> Entrando...</span>';
+
+            try {
+                const response = await fetch(API_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ action: 'login', email, password })
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    localStorage.setItem('user', JSON.stringify(result.user));
+                    
+                    if (result.user.role === 'admin') {
+                        showAlert('✅ Login Admin realizado! Redirecionando...', 'success');
+                        setTimeout(() => {
+                            window.location.href = 'admin.html';
+                        }, 1000);
+                    } else {
+                        showAlert('✅ Login realizado com sucesso!', 'success');
+                        setTimeout(() => {
+                            window.location.href = 'index.html';
+                        }, 1000);
+                    }
+                } else {
+                    showAlert('❌ ' + (result.message || 'Falha no login.'), 'danger');
+                    btn.disabled = false;
+                    btn.innerHTML = '<span class="btn-text">🚀 Entrar</span>';
+                }
+            } catch (error) {
+                console.error('Erro no login:', error);
+                showAlert('❌ Erro ao conectar com o servidor.', 'danger');
+                btn.disabled = false;
+                btn.innerHTML = '<span class="btn-text">🚀 Entrar</span>';
+            }
+        });
+
+        function showAlert(message, type) {
+            const alertDiv = document.getElementById('alertMessage');
+            alertDiv.textContent = message;
+            alertDiv.className = 'alert alert-' + type;
+            alertDiv.style.display = 'block';
+        }
+
+        // Verificar se já está logado
+        document.addEventListener('DOMContentLoaded', function() {
+            const user = localStorage.getItem('user');
+            if (user) {
+                try {
+                    const userData = JSON.parse(user);
+                    if (userData.role === 'admin') {
+                        window.location.href = 'admin.html';
+                    } else {
+                        window.location.href = 'index.html';
+                    }
+                } catch(e) {
+                    localStorage.removeItem('user');
+                }
+            }
+        });
+    </script>
+</body>
+</html>

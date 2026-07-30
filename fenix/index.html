@@ -1,0 +1,1107 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>FÊNIX • Imobiliária</title>
+    <!-- Font Awesome 6 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    <!-- Google Fonts Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet" />
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', -apple-system, sans-serif;
+        }
+
+        body {
+            background: #f2f6fa;
+            color: #1e2b37;
+            padding: 1.5rem;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        :root {
+            --primary: #1D5775;
+            --primary-dark: #15445c;
+            --primary-light: #3a7b9c;
+            --primary-bg: #e5eef7;
+            --gold: #c9a84c;
+            --gold-light: #f2e6c9;
+            --gold-dark: #b08d3a;
+            --gray-light: #f0f4f9;
+            --gray-border: #dce6ef;
+            --text-dark: #1e2b37;
+            --text-muted: #5e7483;
+            --shadow: 0 20px 40px -12px rgba(29, 87, 117, 0.18);
+            --radius: 2rem;
+            --danger: #ef4444;
+            --success: #22c55e;
+            --warning: #f59e0b;
+        }
+
+        .app {
+            max-width: 1440px;
+            width: 100%;
+            background: white;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            padding: 2rem 2rem 2.5rem;
+            transition: all 0.2s;
+        }
+
+        /* CABEÇALHO */
+        .header {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2.2rem;
+            gap: 1rem;
+        }
+
+        .logo-area {
+            display: flex;
+            align-items: center;
+            gap: 0.7rem;
+        }
+
+        .logo-icon {
+            background: var(--primary);
+            width: 50px;
+            height: 50px;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--gold);
+            font-size: 1.8rem;
+            box-shadow: 0 8px 16px -6px rgba(29, 87, 117, 0.3);
+            position: relative;
+        }
+        .logo-icon i {
+            transform: rotate(-4deg);
+        }
+        .logo-text {
+            font-weight: 700;
+            font-size: 2rem;
+            letter-spacing: -0.5px;
+            color: var(--primary);
+        }
+        .logo-text span {
+            font-weight: 300;
+            color: var(--gold);
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .cart-btn {
+            background: var(--gray-light);
+            border: 1px solid var(--gray-border);
+            border-radius: 60px;
+            padding: 0.5rem 1.2rem 0.5rem 1rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 600;
+            color: var(--text-dark);
+            cursor: pointer;
+            transition: 0.2s;
+            font-size: 0.95rem;
+        }
+        .cart-btn:hover {
+            background: white;
+            border-color: var(--gold);
+            box-shadow: 0 4px 12px rgba(201, 168, 76, 0.2);
+        }
+        .cart-badge {
+            background: var(--gold);
+            color: #1e2b37;
+            border-radius: 40px;
+            padding: 0.15rem 0.7rem;
+            font-size: 0.8rem;
+            font-weight: 700;
+        }
+
+        /* USUÁRIO LOGADO */
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            background: var(--gray-light);
+            padding: 0.3rem 1rem;
+            border-radius: 60px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: var(--text-dark);
+            border: 1px solid var(--gray-border);
+        }
+        .user-info .user-name {
+            font-weight: 600;
+            color: var(--primary);
+        }
+        .user-info .admin-badge {
+            background: var(--gold);
+            color: #1e2b37;
+            padding: 0.15rem 0.6rem;
+            border-radius: 12px;
+            font-size: 0.65rem;
+            font-weight: 700;
+        }
+        .btn-logout {
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid rgba(239, 68, 68, 0.2);
+            color: var(--danger);
+            padding: 0.25rem 0.8rem;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.75rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        .btn-logout:hover {
+            background: rgba(239, 68, 68, 0.2);
+        }
+
+        .auth-buttons {
+            display: flex;
+            gap: 0.6rem;
+        }
+        .btn-outline {
+            background: transparent;
+            border: 1.5px solid var(--primary);
+            color: var(--primary);
+            padding: 0.5rem 1.2rem;
+            border-radius: 60px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .btn-outline:hover {
+            background: var(--primary);
+            color: white;
+        }
+        .btn-primary-solid {
+            background: var(--gold);
+            border: none;
+            color: #1e2b37;
+            padding: 0.5rem 1.4rem;
+            border-radius: 60px;
+            font-weight: 700;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .btn-primary-solid:hover {
+            background: var(--gold-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(201, 168, 76, 0.3);
+        }
+
+        /* NAVEGAÇÃO */
+        .nav-tabs {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.3rem 1.2rem;
+            margin-bottom: 2rem;
+            border-bottom: 2px solid var(--gray-light);
+            padding-bottom: 0.6rem;
+        }
+        .nav-tab {
+            padding: 0.4rem 0.2rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            transition: 0.15s;
+            font-size: 0.95rem;
+        }
+        .nav-tab i {
+            margin-right: 6px;
+        }
+        .nav-tab.active {
+            color: var(--primary);
+            border-bottom-color: var(--gold);
+        }
+        .nav-tab:hover {
+            color: var(--primary);
+        }
+
+        /* GRID */
+        .property-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
+            gap: 2rem;
+            margin-top: 0.3rem;
+        }
+
+        .property-card {
+            background: white;
+            border-radius: 1.8rem;
+            overflow: hidden;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.02);
+            border: 1px solid var(--gray-border);
+            transition: all 0.25s ease;
+            display: flex;
+            flex-direction: column;
+        }
+        .property-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 18px 36px -12px rgba(29, 87, 117, 0.2);
+            border-color: var(--gold);
+        }
+
+        .card-img {
+            height: 180px;
+            background: #d9e3ec;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary);
+            font-size: 2.6rem;
+            background-size: cover;
+            background-position: center;
+            background-color: #d0dee9;
+        }
+        .badge-status {
+            position: absolute;
+            top: 0.8rem;
+            left: 0.8rem;
+            background: var(--primary);
+            color: white;
+            padding: 0.25rem 1rem;
+            border-radius: 40px;
+            font-size: 0.65rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.4px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.06);
+        }
+        .badge-status.aluguel {
+            background: var(--gold);
+            color: #1e2b37;
+        }
+        .badge-status.terreno {
+            background: #2a7a5a;
+            color: white;
+        }
+
+        .card-body {
+            padding: 1.2rem 1.2rem 1.4rem;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        .card-price {
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: var(--primary);
+            letter-spacing: -0.3px;
+        }
+        .card-title {
+            font-weight: 600;
+            font-size: 1rem;
+            color: var(--text-dark);
+            margin: 0.2rem 0 0.2rem;
+        }
+        .card-location {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            margin-bottom: 0.5rem;
+        }
+        .card-features {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.3rem 1.2rem;
+            font-size: 0.8rem;
+            color: var(--text-dark);
+            margin: 0.3rem 0 0.8rem;
+        }
+        .card-features i {
+            color: var(--gold);
+            width: 18px;
+        }
+        .card-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: auto;
+            border-top: 1px solid #ecf2f7;
+            padding-top: 0.9rem;
+        }
+        .btn-detail {
+            background: transparent;
+            border: none;
+            color: var(--primary);
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 0.85rem;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .btn-detail:hover {
+            color: var(--gold-dark);
+            gap: 8px;
+        }
+        .btn-cart-add {
+            background: var(--gray-light);
+            border: none;
+            border-radius: 40px;
+            padding: 0.3rem 1rem;
+            font-weight: 600;
+            font-size: 0.8rem;
+            color: var(--primary);
+            cursor: pointer;
+            transition: 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .btn-cart-add:hover {
+            background: var(--gold);
+            color: #1e2b37;
+        }
+
+        /* MODAL AUTH */
+        .modal-overlay {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.3);
+            backdrop-filter: blur(4px);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            padding: 1rem;
+        }
+        .modal-overlay.active {
+            display: flex;
+        }
+        .modal-box {
+            background: white;
+            max-width: 460px;
+            width: 100%;
+            border-radius: 2.4rem;
+            padding: 2.2rem 2rem;
+            box-shadow: 0 40px 80px rgba(0,0,0,0.2);
+            animation: slideUp 0.25s ease;
+            position: relative;
+            border-top: 5px solid var(--gold);
+        }
+        @keyframes slideUp {
+            0% { opacity: 0; transform: scale(0.96) translateY(16px); }
+            100% { opacity: 1; transform: scale(1) translateY(0); }
+        }
+        .modal-close {
+            position: absolute;
+            top: 1rem;
+            right: 1.4rem;
+            font-size: 1.6rem;
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            cursor: pointer;
+        }
+        .modal-close:hover {
+            color: var(--primary);
+            transform: rotate(90deg);
+        }
+        .modal-title {
+            font-size: 1.7rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 0.2rem;
+        }
+        .modal-title i {
+            color: var(--gold);
+            margin-right: 6px;
+        }
+        .modal-sub {
+            color: var(--text-muted);
+            margin-bottom: 1.6rem;
+            font-size: 0.95rem;
+        }
+        .form-group {
+            margin-bottom: 1.2rem;
+        }
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: var(--text-dark);
+            margin-bottom: 0.2rem;
+        }
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            border: 1.5px solid var(--gray-border);
+            border-radius: 60px;
+            font-size: 0.95rem;
+            background: var(--gray-light);
+            transition: 0.2s;
+        }
+        .form-group input:focus {
+            border-color: var(--gold);
+            background: white;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(201, 168, 76, 0.2);
+        }
+        .btn-block {
+            width: 100%;
+            padding: 0.8rem;
+            border-radius: 60px;
+            font-weight: 700;
+            border: none;
+            background: var(--gold);
+            color: #1e2b37;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .btn-block:hover {
+            background: var(--gold-dark);
+            box-shadow: 0 4px 12px rgba(201, 168, 76, 0.3);
+        }
+        .toggle-auth {
+            text-align: center;
+            margin-top: 1rem;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+        .toggle-auth span {
+            color: var(--primary);
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        /* CARRINHO SIDEBAR */
+        .cart-sidebar {
+            position: fixed;
+            top: 0;
+            right: -420px;
+            width: 400px;
+            max-width: 90vw;
+            height: 100vh;
+            background: white;
+            box-shadow: -10px 0 30px rgba(0,0,0,0.05);
+            z-index: 1200;
+            transition: right 0.3s cubic-bezier(0.2, 0.9, 0.3, 1);
+            padding: 2rem 1.5rem;
+            display: flex;
+            flex-direction: column;
+            border-left: 2px solid var(--gold);
+        }
+        .cart-sidebar.open {
+            right: 0;
+        }
+        .cart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid var(--gold-light);
+            padding-bottom: 1rem;
+        }
+        .cart-header h3 {
+            color: var(--primary);
+            font-weight: 700;
+            font-size: 1.4rem;
+        }
+        .cart-header h3 i {
+            color: var(--gold);
+        }
+        .cart-close {
+            background: none;
+            border: none;
+            font-size: 1.8rem;
+            color: var(--text-muted);
+            cursor: pointer;
+        }
+        .cart-close:hover {
+            color: var(--primary);
+        }
+        .cart-items {
+            flex: 1;
+            overflow-y: auto;
+            margin: 1.2rem 0;
+            padding-right: 0.2rem;
+        }
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.8rem 0;
+            border-bottom: 1px solid #ecf2f7;
+            font-size: 0.95rem;
+        }
+        .cart-item .item-title {
+            font-weight: 500;
+        }
+        .cart-item .item-price {
+            color: var(--primary);
+            font-weight: 600;
+        }
+        .cart-item .remove-item {
+            color: #b0c4d4;
+            cursor: pointer;
+            margin-left: 10px;
+            transition: 0.2s;
+        }
+        .cart-item .remove-item:hover {
+            color: #d45a5a;
+        }
+        .cart-total {
+            font-weight: 700;
+            font-size: 1.2rem;
+            border-top: 2px solid var(--gold-light);
+            padding-top: 1rem;
+            display: flex;
+            justify-content: space-between;
+            color: var(--text-dark);
+        }
+        .cart-total span:last-child {
+            color: var(--primary);
+        }
+        .cart-empty {
+            color: var(--text-muted);
+            text-align: center;
+            padding: 2rem 0;
+        }
+
+        /* DETAIL PANEL */
+        .detail-panel {
+            margin-top: 2.5rem;
+            background: var(--gray-light);
+            border-radius: 2rem;
+            padding: 1.8rem 2rem;
+            border: 1px solid var(--gold-light);
+            display: none;
+            animation: slideUp 0.25s ease;
+        }
+        .detail-panel.active {
+            display: block;
+        }
+
+        /* TOAST */
+        .toast-msg {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--primary);
+            color: white;
+            padding: 0.7rem 2rem;
+            border-radius: 60px;
+            box-shadow: 0 12px 30px rgba(0,0,0,0.15);
+            font-weight: 500;
+            opacity: 0;
+            transition: opacity 0.25s ease;
+            pointer-events: none;
+            z-index: 1500;
+        }
+        .toast-msg.show {
+            opacity: 1;
+        }
+
+        /* RESPONSIVO */
+        @media (max-width: 700px) {
+            .app { padding: 1.2rem; }
+            .header { flex-direction: column; align-items: stretch; }
+            .header-actions { width: 100%; flex-wrap: wrap; }
+            .auth-buttons { width: 100%; justify-content: flex-start; }
+            .cart-btn { margin-left: auto; }
+            .property-grid { grid-template-columns: 1fr; }
+            .modal-box { padding: 1.8rem 1.2rem; }
+        }
+        @media (max-width: 480px) {
+            body { padding: 0.6rem; }
+            .app { border-radius: 1.8rem; padding: 1rem; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="app">
+    <!-- HEADER -->
+    <header class="header">
+        <div class="logo-area">
+            <div class="logo-icon"><i class="fas fa-fire"></i></div>
+            <div class="logo-text">FÊNIX<span>.</span></div>
+        </div>
+        <div class="header-actions" id="headerActions">
+            <!-- Será preenchido via JavaScript -->
+        </div>
+    </header>
+
+    <!-- NAVEGAÇÃO -->
+    <div class="nav-tabs">
+        <span class="nav-tab active" data-tab="todos"><i class="fas fa-th-list"></i> Todos</span>
+        <span class="nav-tab" data-tab="venda"><i class="fas fa-tag"></i> Venda</span>
+        <span class="nav-tab" data-tab="aluguel"><i class="fas fa-home"></i> Aluguel</span>
+        <span class="nav-tab" data-tab="terreno"><i class="fas fa-vector-square"></i> Terrenos</span>
+        <span class="nav-tab" data-tab="destaque"><i class="fas fa-star"></i> Destaques</span>
+    </div>
+
+    <!-- GRID -->
+    <div class="property-grid" id="propertyGrid"></div>
+
+    <!-- DETAIL PANEL -->
+    <div class="detail-panel" id="detailPanel">
+        <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap;">
+            <h3 style="color:var(--primary);"><i class="fas fa-home" style="color:var(--gold); margin-right:10px;"></i> Detalhes do imóvel</h3>
+            <button id="closeDetail" style="background:none; border:none; font-size:1.6rem; color:var(--text-muted); cursor:pointer;">&times;</button>
+        </div>
+        <div id="detailContent" style="display:flex; flex-wrap:wrap; gap:1.5rem; margin-top:0.8rem;">
+            <div><p><strong>Preço:</strong> <span id="detailPrice">R$ 680.000</span></p>
+                <p><strong>Local:</strong> <span id="detailLocation">Jardim Paulista</span></p></div>
+            <div><p><strong>Quartos:</strong> <span id="detailRooms">3</span></p>
+                <p><strong>Banheiros:</strong> <span id="detailBaths">2</span></p></div>
+            <div><p><strong>Área:</strong> <span id="detailArea">120m²</span></p>
+                <p><strong>Status:</strong> <span id="detailStatus" style="background:var(--primary); color:white; padding:0.2rem 1.2rem; border-radius:40px; font-size:0.8rem;">Venda</span></p></div>
+        </div>
+    </div>
+</div>
+
+<!-- MODAL AUTH -->
+<div class="modal-overlay" id="authModal">
+    <div class="modal-box">
+        <button class="modal-close" id="authClose"><i class="fas fa-times"></i></button>
+        <div id="authFormContainer">
+            <div class="modal-title" id="authTitle"><i class="fas fa-fire"></i> Login</div>
+            <div class="modal-sub" id="authSub">Acesse sua conta FÊNIX</div>
+            <form id="authForm">
+                <div class="form-group">
+                    <label>Email</label>
+                    <input type="email" id="authEmail" placeholder="seu@email.com" required />
+                </div>
+                <div class="form-group">
+                    <label>Senha</label>
+                    <input type="password" id="authPassword" placeholder="••••••••" required />
+                </div>
+                
+                <button type="submit" class="btn-block" id="authSubmitBtn">Entrar</button>
+            </form>
+            <div class="toggle-auth">
+                <span id="authToggleText">Não tem conta? <span id="authToggleLink">Cadastre-se</span></span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- CARRINHO SIDEBAR -->
+<div class="cart-sidebar" id="cartSidebar">
+    <div class="cart-header">
+        <h3><i class="fas fa-shopping-bag"></i> Simulação</h3>
+        <button class="cart-close" id="cartClose"><i class="fas fa-times"></i></button>
+    </div>
+    <div class="cart-items" id="cartItems">
+        <div class="cart-empty">Sua simulação está vazia.</div>
+    </div>
+    <div class="cart-total">
+        <span>Total</span>
+        <span id="cartTotalPrice">R$ 0</span>
+    </div>
+    <button class="btn-block" style="margin-top:1rem;" id="checkoutBtn">Finalizar simulação</button>
+</div>
+
+<!-- TOAST -->
+<div class="toast-msg" id="toast"></div>
+
+<script>
+    // ===== CONFIGURAÇÃO DA API =====
+    const AUTH_API_URL = 'api_auth.php';
+    const IMOVEIS_API_URL = 'api_imoveis.php';
+
+    // ===== IMÓVEIS (fallback se API não responder) =====
+    const fallbackImoveis = [
+        { id: 1, title: "Cobertura duplex com vista", price: "R$ 1.250.000", location: "Vila Mariana, SP", rooms: 4, baths: 3, area: "210m²", status: "venda", featured: true, img: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=400&h=300&fit=crop" },
+        { id: 2, title: "Apartamento moderno 3 quartos", price: "R$ 680.000", location: "Jardim Paulista, SP", rooms: 3, baths: 2, area: "120m²", status: "venda", featured: false, img: "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=400&h=300&fit=crop" },
+        { id: 3, title: "Casa com piscina e lazer", price: "R$ 2.200.000", location: "Alphaville, SP", rooms: 5, baths: 4, area: "350m²", status: "venda", featured: true, img: "https://images.unsplash.com/photo-1613490493576-7fde63acd811?w=400&h=300&fit=crop" },
+        { id: 4, title: "Flat mobiliado 2 quartos", price: "R$ 3.800/mês", location: "Itaim Bibi, SP", rooms: 2, baths: 1, area: "68m²", status: "aluguel", featured: false, img: "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=400&h=300&fit=crop" },
+        { id: 5, title: "Loft alto padrão", price: "R$ 4.200/mês", location: "Pinheiros, SP", rooms: 1, baths: 1, area: "55m²", status: "aluguel", featured: false, img: "https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=400&h=300&fit=crop" },
+        { id: 6, title: "Terreno comercial 500m²", price: "R$ 890.000", location: "Brooklin, SP", rooms: 0, baths: 0, area: "500m²", status: "terreno", featured: false, img: "https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=400&h=300&fit=crop" },
+        { id: 7, title: "Terreno residencial 800m²", price: "R$ 1.200.000", location: "Alphaville, SP", rooms: 0, baths: 0, area: "800m²", status: "terreno", featured: false, img: "https://images.unsplash.com/photo-1605276374104-dee2a0ed3cd6?w=400&h=300&fit=crop" },
+        { id: 8, title: "Cobertura triplex luxo", price: "R$ 3.900.000", location: "Morumbi, SP", rooms: 6, baths: 5, area: "480m²", status: "venda", featured: true, img: "https://images.unsplash.com/photo-1600607687644-c7171b42498f?w=400&h=300&fit=crop" },
+        { id: 9, title: "Kitnet reformada", price: "R$ 1.900/mês", location: "República, SP", rooms: 1, baths: 1, area: "32m²", status: "aluguel", featured: false, img: "https://images.unsplash.com/photo-1560185127-6ed189bf02f4?w=400&h=300&fit=crop" },
+        { id: 10, title: "Terreno com lago 1200m²", price: "R$ 2.450.000", location: "Atibaia, SP", rooms: 0, baths: 0, area: "1200m²", status: "terreno", featured: true, img: "https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=400&h=300&fit=crop" }
+    ];
+
+    let imoveis = [];
+    let cart = [];
+    let activeFilter = 'todos';
+    let currentUser = null;
+
+    // DOM refs
+    const grid = document.getElementById('propertyGrid');
+    const detailPanel = document.getElementById('detailPanel');
+    const closeDetail = document.getElementById('closeDetail');
+    const toast = document.getElementById('toast');
+    const cartSidebar = document.getElementById('cartSidebar');
+    const cartItems = document.getElementById('cartItems');
+    const cartTotalPrice = document.getElementById('cartTotalPrice');
+    const cartCount = document.getElementById('cartCount');
+    const cartToggle = document.getElementById('cartToggle');
+    const cartClose = document.getElementById('cartClose');
+    const headerActions = document.getElementById('headerActions');
+
+    const authModal = document.getElementById('authModal');
+    const authClose = document.getElementById('authClose');
+    const authTitle = document.getElementById('authTitle');
+    const authSub = document.getElementById('authSub');
+    const authSubmitBtn = document.getElementById('authSubmitBtn');
+    const authToggleLink = document.getElementById('authToggleLink');
+    const authToggleText = document.getElementById('authToggleText');
+    const authForm = document.getElementById('authForm');
+    const roleGroup = document.getElementById('roleGroup');
+    const authRole = document.getElementById('authRole');
+
+    const detailPrice = document.getElementById('detailPrice');
+    const detailLocation = document.getElementById('detailLocation');
+    const detailRooms = document.getElementById('detailRooms');
+    const detailBaths = document.getElementById('detailBaths');
+    const detailArea = document.getElementById('detailArea');
+    const detailStatus = document.getElementById('detailStatus');
+
+    let toastTimeout;
+
+    // ===== FUNÇÕES =====
+
+    // Carregar imóveis da API
+    async function carregarImoveis() {
+        try {
+            const response = await fetch(IMOVEIS_API_URL);
+            if (response.ok) {
+                const data = await response.json();
+                if (Array.isArray(data) && data.length > 0) {
+                    imoveis = data;
+                    renderProperties(activeFilter);
+                    return;
+                }
+            }
+            // Fallback
+            imoveis = fallbackImoveis;
+            renderProperties(activeFilter);
+        } catch (error) {
+            console.warn('Usando fallback de imóveis:', error);
+            imoveis = fallbackImoveis;
+            renderProperties(activeFilter);
+        }
+    }
+
+    function renderProperties(filter = 'todos') {
+        grid.innerHTML = '';
+        let filtered = imoveis;
+        if (filter !== 'todos') {
+            if (filter === 'venda') filtered = filtered.filter(p => p.status === 'venda');
+            else if (filter === 'aluguel') filtered = filtered.filter(p => p.status === 'aluguel');
+            else if (filter === 'terreno') filtered = filtered.filter(p => p.status === 'terreno');
+            else if (filter === 'destaque') filtered = filtered.filter(p => p.featured);
+        }
+        if (filtered.length === 0) {
+            grid.innerHTML = `<div style="grid-column:1/-1; text-align:center; padding:3rem; color:var(--text-muted);"><i class="fas fa-search" style="font-size:2rem; display:block; margin-bottom:0.8rem;"></i> Nenhum imóvel ou terreno encontrado.</div>`;
+            return;
+        }
+        filtered.forEach(prop => {
+            const card = document.createElement('div');
+            card.className = 'property-card';
+            let statusLabel = prop.status === 'venda' ? 'Venda' : prop.status === 'aluguel' ? 'Aluguel' : 'Terreno';
+            let statusClass = prop.status === 'venda' ? 'venda' : prop.status === 'aluguel' ? 'aluguel' : 'terreno';
+            const displayRooms = prop.status === 'terreno' ? '—' : prop.rooms;
+            const displayBaths = prop.status === 'terreno' ? '—' : prop.baths;
+            card.innerHTML = `
+                <div class="card-img" style="background-image: url('${prop.img || 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=400&h=300&fit=crop'}'); background-size: cover; background-position: center;">
+                    <span class="badge-status ${statusClass}">${statusLabel}</span>
+                </div>
+                <div class="card-body">
+                    <div class="card-price">${prop.price}</div>
+                    <div class="card-title">${prop.title}</div>
+                    <div class="card-location"><i class="fas fa-map-pin"></i> ${prop.location}</div>
+                    <div class="card-features">
+                        <span><i class="fas fa-bed"></i> ${displayRooms} ${prop.status === 'terreno' ? '' : 'quartos'}</span>
+                        <span><i class="fas fa-bath"></i> ${displayBaths} ${prop.status === 'terreno' ? '' : 'banheiros'}</span>
+                        <span><i class="fas fa-vector-square"></i> ${prop.area}</span>
+                    </div>
+                    <div class="card-footer">
+                        <button class="btn-detail" data-id="${prop.id}"><i class="fas fa-chevron-right"></i> Detalhes</button>
+                        <button class="btn-cart-add" data-id="${prop.id}"><i class="fas fa-plus"></i> Simular</button>
+                    </div>
+                </div>
+            `;
+            grid.appendChild(card);
+        });
+    }
+
+    function showDetail(propId) {
+        const prop = imoveis.find(p => p.id === propId);
+        if (!prop) return;
+        detailPrice.innerText = prop.price;
+        detailLocation.innerText = prop.location;
+        detailRooms.innerText = prop.status === 'terreno' ? '—' : prop.rooms;
+        detailBaths.innerText = prop.status === 'terreno' ? '—' : prop.baths;
+        detailArea.innerText = prop.area;
+        const statusText = prop.status === 'venda' ? 'Venda' : prop.status === 'aluguel' ? 'Aluguel' : 'Terreno';
+        detailStatus.innerText = statusText;
+        detailStatus.style.background = prop.status === 'terreno' ? '#2a7a5a' : prop.status === 'venda' ? 'var(--primary)' : 'var(--gold)';
+        detailStatus.style.color = prop.status === 'terreno' ? 'white' : '#1e2b37';
+        detailPanel.classList.add('active');
+        detailPanel.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+
+    // ===== CARRINHO =====
+    function updateCartUI() {
+        if (cartCount) cartCount.innerText = cart.length;
+        if (cart.length === 0) {
+            cartItems.innerHTML = '<div class="cart-empty">Sua simulação está vazia.</div>';
+            cartTotalPrice.innerText = 'R$ 0';
+            return;
+        }
+        let html = '';
+        let total = 0;
+        cart.forEach((item, index) => {
+            const priceNum = parseFloat(item.price.replace(/[^0-9,.]/g, '').replace(',', '.'));
+            if (!isNaN(priceNum)) total += priceNum;
+            html += `
+                <div class="cart-item">
+                    <span class="item-title">${item.title}</span>
+                    <span>
+                        <span class="item-price">${item.price}</span>
+                        <span class="remove-item" data-index="${index}"><i class="fas fa-trash-alt"></i></span>
+                    </span>
+                </div>
+            `;
+        });
+        cartItems.innerHTML = html;
+        cartTotalPrice.innerText = `R$ ${total.toFixed(2).replace('.', ',')}`;
+        document.querySelectorAll('.remove-item').forEach(el => {
+            el.addEventListener('click', function() {
+                const idx = parseInt(this.dataset.index);
+                cart.splice(idx, 1);
+                updateCartUI();
+                showToast('🗑️ Item removido');
+            });
+        });
+    }
+
+    function addToCart(propId) {
+        if (!currentUser) {
+            showToast('⚠️ Faça login para simular!');
+            setTimeout(() => openAuth('login'), 1000);
+            return;
+        }
+        const prop = imoveis.find(p => p.id === propId);
+        if (!prop) return;
+        if (cart.some(item => item.id === prop.id)) {
+            showToast('⚠️ Imóvel já está na simulação');
+            return;
+        }
+        cart.push({ id: prop.id, title: prop.title, price: prop.price });
+        updateCartUI();
+        showToast('🛒 Adicionado à simulação!');
+    }
+
+    function showToast(msg) {
+        toast.innerText = msg;
+        toast.classList.add('show');
+        clearTimeout(toastTimeout);
+        toastTimeout = setTimeout(() => toast.classList.remove('show'), 2500);
+    }
+
+    // ===== AUTENTICAÇÃO =====
+    function openAuth(mode = 'login') {
+        authModal.classList.add('active');
+        if (mode === 'login') {
+            authTitle.innerHTML = '<i class="fas fa-fire"></i> Login';
+            authSub.innerText = 'Acesse sua conta FÊNIX';
+            authSubmitBtn.innerText = 'Entrar';
+            roleGroup.style.display = 'none';
+            authToggleText.innerHTML = 'Não tem conta? <span id="authToggleLink">Cadastre-se</span>';
+            document.getElementById('authToggleLink')?.addEventListener('click', () => openAuth('register'));
+        } else {
+            authTitle.innerHTML = '<i class="fas fa-fire"></i> Cadastro';
+            authSub.innerText = 'Crie sua conta FÊNIX';
+            authSubmitBtn.innerText = 'Cadastrar';
+            roleGroup.style.display = 'block';
+            authToggleText.innerHTML = 'Já tem conta? <span id="authToggleLink">Faça login</span>';
+            document.getElementById('authToggleLink')?.addEventListener('click', () => openAuth('login'));
+        }
+    }
+
+    function closeAuth() { authModal.classList.remove('active'); }
+
+    // ===== LOGIN/REGISTER VIA API =====
+    authForm.addEventListener('submit', async function(e) {
+        e.preventDefault();
+        const email = document.getElementById('authEmail').value;
+        const password = document.getElementById('authPassword').value;
+        const role = document.getElementById('authRole')?.value || 'usuario';
+        const isLogin = authSubmitBtn.innerText === 'Entrar';
+
+        if (!email || !password) { showToast('Preencha todos os campos'); return; }
+
+        try {
+            const response = await fetch(AUTH_API_URL, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    action: isLogin ? 'login' : 'signup',
+                    email: email,
+                    password: password,
+                    name: email.split('@')[0],
+                    phone: '(11) 99999-9999',
+                    role: role
+                })
+            });
+
+            const result = await response.json();
+            console.log('📦 Resposta:', result);
+
+            if (result.success) {
+                localStorage.setItem('user', JSON.stringify(result.user));
+                currentUser = result.user;
+                
+                if (result.user.role === 'admin' || result.user.role === 'corretor') {
+                    showToast(`✅ ${result.user.role === 'admin' ? 'Admin' : 'Corretor'} logado! Redirecionando...`);
+                    setTimeout(() => {
+                        window.location.href = 'admin.html';
+                    }, 1000);
+                } else {
+                    showToast('✅ Login realizado com sucesso!');
+                    setTimeout(() => {
+                        closeAuth();
+                        window.location.reload();
+                    }, 1000);
+                }
+            } else {
+                showToast('❌ ' + result.message);
+            }
+        } catch (error) {
+            console.error('Erro na autenticação:', error);
+            showToast('❌ Erro ao conectar com o servidor');
+        }
+    });
+
+    // ===== VERIFICAR SESSÃO =====
+    function checkUserSession() {
+        const userData = localStorage.getItem('user');
+        
+        if (userData) {
+            try {
+                const user = JSON.parse(userData);
+                currentUser = user;
+                
+                headerActions.innerHTML = `
+                    <div class="user-info">
+                        <span>👤 <span class="user-name">${user.name || user.email}</span></span>
+                        ${user.role === 'admin' ? '<span class="admin-badge">👑 Admin</span>' : ''}
+                        ${user.role === 'corretor' ? '<span class="admin-badge" style="background:#3a7b9c; color:white;">🏢 Corretor</span>' : ''}
+                        <button class="btn-logout" onclick="logout()">🚪 Sair</button>
+                    </div>
+                    ${user.role === 'admin' || user.role === 'corretor' ? 
+                        `<button class="btn-primary-solid" onclick="window.location.href='admin.html'">📊 Painel</button>` : ''}
+                    <div class="cart-btn" id="cartToggle">
+                        <i class="fas fa-shopping-bag"></i> Simular
+                        <span class="cart-badge" id="cartCount">0</span>
+                    </div>
+                `;
+                
+                // Reatribuir eventos do carrinho
+                document.getElementById('cartToggle')?.addEventListener('click', () => {
+                    cartSidebar.classList.toggle('open');
+                });
+                
+                return user;
+            } catch(e) {
+                localStorage.removeItem('user');
+                currentUser = null;
+            }
+        }
+        
+        // Usuário não logado
+        headerActions.innerHTML = `
+            <button class="btn-outline" onclick="openAuth('login')"><i class="fas fa-sign-in-alt"></i> Login</button>
+            <button class="btn-primary-solid" onclick="openAuth('register')"><i class="fas fa-user-plus"></i> Cadastrar</button>
+        `;
+        return null;
+    }
+
+    // ===== LOGOUT =====
+    function logout() {
+        if (confirm('Deseja sair da sua conta?')) {
+            localStorage.removeItem('user');
+            currentUser = null;
+            window.location.reload();
+        }
+    }
+
+    // ===== EVENTOS =====
+    document.addEventListener('click', function(e) {
+        const target = e.target.closest('button');
+        if (!target) return;
+        if (target.classList.contains('btn-detail')) {
+            const id = parseInt(target.dataset.id);
+            showDetail(id);
+        }
+        if (target.classList.contains('btn-cart-add')) {
+            const id = parseInt(target.dataset.id);
+            addToCart(id);
+        }
+    });
+
+    closeDetail.addEventListener('click', () => detailPanel.classList.remove('active'));
+
+    document.querySelectorAll('.nav-tab').forEach(tab => {
+        tab.addEventListener('click', function() {
+            document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+            this.classList.add('active');
+            activeFilter = this.dataset.tab;
+            renderProperties(activeFilter);
+        });
+    });
+
+    cartClose.addEventListener('click', () => cartSidebar.classList.remove('open'));
+
+    document.getElementById('checkoutBtn').addEventListener('click', function() {
+        if (cart.length === 0) { showToast('Simulação vazia'); return; }
+        if (!currentUser) { showToast('⚠️ Faça login para finalizar!'); return; }
+        showToast('✅ Simulação finalizada! (apenas demonstração)');
+        cart = [];
+        updateCartUI();
+        cartSidebar.classList.remove('open');
+    });
+
+    authClose.addEventListener('click', closeAuth);
+    authModal.addEventListener('click', (e) => { if (e.target === authModal) closeAuth(); });
+
+    // ===== INICIALIZAR =====
+    document.addEventListener('DOMContentLoaded', function() {
+        checkUserSession();
+        carregarImoveis();
+        updateCartUI();
+    });
+
+    // fallback para imagens quebradas
+    document.addEventListener('error', function(e) {
+        if (e.target.tagName === 'IMG') {
+            e.target.src = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="400" height="300" viewBox="0 0 400 300"%3E%3Crect width="400" height="300" fill="%23d0dee9"/%3E%3Ctext x="200" y="150" font-family="Arial" font-size="24" fill="%231D5775" text-anchor="middle" dy=".3em"%3E🏠 FÊNIX%3C/text%3E%3C/svg%3E';
+        }
+    }, true);
+
+</script>
+</body>
+</html>

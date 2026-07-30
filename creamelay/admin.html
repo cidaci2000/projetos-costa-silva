@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin - Creamelay</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: #f5f5f5;
+            color: #1a1a1a;
+        }
+        :root {
+            --primary-red: #C0392B;
+            --primary-pink: #E91E8C;
+            --primary-cyan: #00BCD4;
+            --light-bg: #fce4ec;
+            --border-color: #e0e0e0;
+            --shadow: 0 4px 12px rgba(0,0,0,0.1);
+            --shadow-lg: 0 10px 40px rgba(0,0,0,0.15);
+            --danger: #ef4444;
+            --success: #22c55e;
+            --warning: #f59e0b;
+        }
+        .admin-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
+        }
+        .admin-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 2rem;
+            background: white;
+            border-radius: 15px;
+            box-shadow: var(--shadow);
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+        .admin-header h1 {
+            font-family: 'Pacifico', cursive;
+            font-size: 2rem;
+            color: var(--primary-pink);
+        }
+        .admin-header h1 small {
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.8rem;
+            color: #666;
+        }
+        .admin-nav {
+            display: flex;
+            gap: 0.8rem;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+        .admin-nav button {
+            padding: 0.6rem 1.2rem;
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            background: white;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            color: #333;
+            font-family: 'Poppins', sans-serif;
+        }
+        .admin-nav button:hover,
+        .admin-nav button.active {
+            background: var(--primary-pink);
+            color: white;
+            border-color: var(--primary-pink);
+        }
+        .admin-nav .btn-danger {
+            border-color: var(--danger);
+            color: var(--danger);
+        }
+        .admin-nav .btn-danger:hover {
+            background: var(--danger);
+            color: white;
+        }
+        .admin-nav .btn-logout {
+            border-color: #999;
+            color: #999;
+        }
+        .admin-nav .btn-logout:hover {
+            background: #999;
+            color: white;
+        }
+        .admin-content {
+            background: white;
+            border-radius: 15px;
+            padding: 2rem;
+            box-shadow: var(--shadow);
+            min-height: 400px;
+        }
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        .stat-card {
+            background: var(--light-bg);
+            padding: 1.5rem;
+            border-radius: 12px;
+            text-align: center;
+        }
+        .stat-card h3 {
+            font-size: 2rem;
+            color: var(--primary-pink);
+        }
+        .stat-card p {
+            color: #666;
+            font-size: 0.85rem;
+        }
+        .table-container {
+            overflow-x: auto;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        table th {
+            background: var(--light-bg);
+            padding: 0.8rem 1rem;
+            text-align: left;
+            font-weight: 600;
+            font-size: 0.85rem;
+        }
+        table td {
+            padding: 0.8rem 1rem;
+            border-bottom: 1px solid var(--border-color);
+            font-size: 0.9rem;
+        }
+        table tr:hover {
+            background: #fafafa;
+        }
+        .btn-edit {
+            background: var(--warning);
+            color: white;
+            border: none;
+            padding: 0.4rem 0.8rem;
+            border-radius: 6px;
+            cursor: pointer;
+            margin-right: 0.5rem;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+            font-size: 0.8rem;
+        }
+        .btn-delete {
+            background: var(--danger);
+            color: white;
+            border: none;
+            padding: 0.4rem 0.8rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+            font-size: 0.8rem;
+        }
+        .btn-add {
+            background: var(--success);
+            color: white;
+            border: none;
+            padding: 0.7rem 1.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            font-family: 'Poppins', sans-serif;
+        }
+        .btn-add:hover {
+            opacity: 0.9;
+            transform: scale(1.02);
+        }
+        .hidden {
+            display: none !important;
+        }
+        .badge {
+            display: inline-block;
+            padding: 0.2rem 0.7rem;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            font-weight: 600;
+        }
+        .badge-success { background: #dcfce7; color: #166534; }
+        .product-image-thumb {
+            width: 50px;
+            height: 50px;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+        /* Modal */
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+        .modal.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        .modal-content {
+            background: white;
+            border-radius: 20px;
+            padding: 2rem;
+            max-width: 500px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+        .form-group {
+            margin-bottom: 1rem;
+        }
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+            font-size: 0.9rem;
+        }
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 0.7rem;
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            font-size: 0.95rem;
+            font-family: 'Poppins', sans-serif;
+        }
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--primary-pink);
+        }
+        .form-actions {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        .form-actions button {
+            flex: 1;
+            padding: 0.7rem;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            font-family: 'Poppins', sans-serif;
+        }
+        .btn-save {
+            background: var(--primary-pink);
+            color: white;
+        }
+        .btn-cancel {
+            background: var(--border-color);
+            color: #333;
+        }
+        @media (max-width: 768px) {
+            .admin-header {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .admin-nav {
+                justify-content: center;
+            }
+            .admin-nav button {
+                font-size: 0.8rem;
+                padding: 0.4rem 0.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="admin-container">
+        <div class="admin-header">
+            <h1>creamelay <small>Painel Admin</small></h1>
+            <div class="admin-nav">
+                <button class="active" data-section="dashboard">📊 Dashboard</button>
+                <button data-section="produtos">📦 Produtos</button>
+                <button data-section="usuarios">👥 Usuários</button>
+                <button onclick="window.location.href='index.html'" class="btn-danger">🏠 Loja</button>
+                <button onclick="logout()" class="btn-logout">🚪 Sair</button>
+            </div>
+        </div>
+
+        <div class="admin-content" id="adminContent">
+            <div id="section-dashboard">
+                <div class="stats-grid" id="statsGrid">
+                    <div class="stat-card">
+                        <h3 id="totalProdutos">0</h3>
+                        <p>Total de Produtos</p>
+                    </div>
+                    <div class="stat-card">
+                        <h3 id="totalUsuarios">0</h3>
+                        <p>Total de Usuários</p>
+                    </div>
+                    <div class="stat-card">
+                        <h3 id="totalPedidos">0</h3>
+                        <p>Pedidos Realizados</p>
+                    </div>
+                </div>
+                <div style="text-align:center; padding:2rem; background:var(--light-bg); border-radius:12px;">
+                    <p style="color:#666;">Bem-vindo ao painel administrativo da Creamelay! 🍦</p>
+                    <p style="font-size:0.9rem; color:#999;">Gerencie seus produtos e visualize usuários cadastrados.</p>
+                </div>
+            </div>
+
+            <div id="section-produtos" class="hidden">
+                <button class="btn-add" onclick="openProductModal()">➕ Novo Produto</button>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Imagem</th>
+                                <th>Nome</th>
+                                <th>Categoria</th>
+                                <th>Preço</th>
+                                <th>Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody id="productsTableBody">
+                            <tr><td colspan="6" style="text-align:center;">Carregando produtos...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div id="section-usuarios" class="hidden">
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Nome</th>
+                                <th>Email</th>
+                                <th>Telefone</th>
+                                <th>Data de Cadastro</th>
+                            </tr>
+                        </thead>
+                        <tbody id="usersTableBody">
+                            <tr><td colspan="5" style="text-align:center;">Carregando usuários...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Produto -->
+    <div class="modal" id="productModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="productModalTitle" style="color: var(--primary-pink);">Novo Produto</h2>
+                <button class="modal-close" onclick="closeProductModal()">✕</button>
+            </div>
+            <form id="productForm">
+                <input type="hidden" id="productId" value="">
+                <div class="form-group">
+                    <label>Nome</label>
+                    <input type="text" id="productName" required>
+                </div>
+                <div class="form-group">
+                    <label>Categoria</label>
+                    <select id="productCategory" required>
+                        <option value="copos">🥤 Copos</option>
+                        <option value="casquinhas">🍧 Casquinhas</option>
+                        <option value="milkshakes">🥤 Milk Shakes</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Preço (R$)</label>
+                    <input type="number" id="productPrice" step="0.01" required>
+                </div>
+                <div class="form-group">
+                    <label>Descrição</label>
+                    <textarea id="productDescription" rows="2"></textarea>
+                </div>
+                <div class="form-group">
+                    <label>URL da Imagem</label>
+                    <input type="text" id="productImage" placeholder="https://...">
+                </div>
+                <div class="form-actions">
+                    <button type="submit" class="btn-save">💾 Salvar</button>
+                    <button type="button" class="btn-cancel" onclick="closeProductModal()">Cancelar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // ===== VERIFICAR ACESSO ADMIN =====
+        function checkAdminAccess() {
+            const userData = localStorage.getItem('user');
+            if (!userData) {
+                window.location.href = 'login.html';
+                return false;
+            }
+            try {
+                const user = JSON.parse(userData);
+                if (user.role !== 'admin') {
+                    alert('Acesso negado. Você não tem permissão de administrador.');
+                    window.location.href = 'index.html';
+                    return false;
+                }
+                const headerTitle = document.querySelector('.admin-header h1');
+                if (headerTitle) {
+                    headerTitle.innerHTML = `creamelay <small>Admin (${user.name})</small>`;
+                }
+                return true;
+            } catch(e) {
+                window.location.href = 'login.html';
+                return false;
+            }
+        }
+
+        function logout() {
+            if (confirm('Deseja sair do painel admin?')) {
+                localStorage.removeItem('user');
+                window.location.href = 'login.html';
+            }
+        }
+
+        // ===== CONFIGURAÇÃO =====
+        const API_URL = 'api_produtos.php';
+        const ADMIN_API = 'api_admin.php';
+        const USERS_API = 'api_usuarios.php';
+
+        let currentSection = 'dashboard';
+
+        // ===== NAVEGAÇÃO =====
+        document.querySelectorAll('.admin-nav button[data-section]').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const section = this.dataset.section;
+                showSection(section);
+            });
+        });
+
+        function showSection(section) {
+            currentSection = section;
+            document.querySelectorAll('.admin-nav button[data-section]').forEach(b => {
+                b.classList.toggle('active', b.dataset.section === section);
+            });
+            document.querySelectorAll('[id^="section-"]').forEach(el => {
+                el.classList.add('hidden');
+            });
+            document.getElementById(`section-${section}`).classList.remove('hidden');
+            if (section === 'dashboard') loadDashboard();
+            else if (section === 'produtos') loadProducts();
+            else if (section === 'usuarios') loadUsers();
+        }
+
+        // ===== DASHBOARD =====
+        async function loadDashboard() {
+            try {
+                const [products, users] = await Promise.all([
+                    fetch(API_URL).then(r => r.json()),
+                    fetch(USERS_API).then(r => r.json())
+                ]);
+                document.getElementById('totalProdutos').textContent = products.length || 0;
+                document.getElementById('totalUsuarios').textContent = users.length || 0;
+                const orders = JSON.parse(localStorage.getItem('creamelay_orders')) || [];
+                document.getElementById('totalPedidos').textContent = orders.length || 0;
+            } catch (error) {
+                console.error('Erro ao carregar dashboard:', error);
+            }
+        }
+
+        // ===== PRODUTOS =====
+        async function loadProducts() {
+            try {
+                const response = await fetch(API_URL);
+                const products = await response.json();
+                const tbody = document.getElementById('productsTableBody');
+                if (!products || products.length === 0) {
+                    tbody.innerHTML = `<tr><td colspan="6" style="text-align:center;">Nenhum produto cadastrado</td></tr>`;
+                    return;
+                }
+                tbody.innerHTML = products.map(p => `
+                    <tr>
+                        <td>${p.id}</td>
+                        <td><img src="${p.image || 'https://via.placeholder.com/50x50'}" class="product-image-thumb" onerror="this.src='https://via.placeholder.com/50x50'"></td>
+                        <td><strong>${p.name}</strong></td>
+                        <td>${p.category}</td>
+                        <td>R$ ${parseFloat(p.price).toFixed(2).replace('.', ',')}</td>
+                        <td>
+                            <button class="btn-edit" onclick="editProduct(${p.id})">✏️ Editar</button>
+                            <button class="btn-delete" onclick="deleteProduct(${p.id})">🗑️ Excluir</button>
+                        </td>
+                    </tr>
+                `).join('');
+            } catch (error) {
+                console.error('Erro ao carregar produtos:', error);
+            }
+        }
+
+        // ===== MODAL PRODUTO =====
+        function openProductModal(product = null) {
+            const modal = document.getElementById('productModal');
+            document.getElementById('productId').value = '';
+            document.getElementById('productModalTitle').textContent = 'Novo Produto';
+            document.getElementById('productForm').reset();
+
+            if (product) {
+                document.getElementById('productId').value = product.id;
+                document.getElementById('productName').value = product.name;
+                document.getElementById('productCategory').value = product.category;
+                document.getElementById('productPrice').value = product.price;
+                document.getElementById('productDescription').value = product.description || '';
+                document.getElementById('productImage').value = product.image || '';
+                document.getElementById('productModalTitle').textContent = 'Editar Produto';
+            }
+            modal.classList.add('active');
+        }
+
+        function closeProductModal() {
+            document.getElementById('productModal').classList.remove('active');
+        }
+
+        document.getElementById('productForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const id = document.getElementById('productId').value;
+            const product = {
+                name: document.getElementById('productName').value,
+                category: document.getElementById('productCategory').value,
+                price: parseFloat(document.getElementById('productPrice').value),
+                description: document.getElementById('productDescription').value,
+                image: document.getElementById('productImage').value
+            };
+
+            try {
+                const response = await fetch(ADMIN_API, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        action: id ? 'update' : 'create',
+                        id: id || undefined,
+                        ...product
+                    })
+                });
+                const result = await response.json();
+                if (result.success) {
+                    alert(result.message);
+                    closeProductModal();
+                    loadProducts();
+                    loadDashboard();
+                } else {
+                    alert('Erro: ' + result.message);
+                }
+            } catch (error) {
+                alert('Erro ao salvar produto: ' + error.message);
+            }
+        });
+
+        async function editProduct(id) {
+            try {
+                const response = await fetch(API_URL);
+                const products = await response.json();
+                const product = products.find(p => p.id === id);
+                if (product) openProductModal(product);
+            } catch (error) {
+                alert('Erro ao carregar produto para edição');
+            }
+        }
+
+        async function deleteProduct(id) {
+            if (!confirm('Tem certeza que deseja excluir este produto?')) return;
+            try {
+                const response = await fetch(ADMIN_API, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ action: 'delete', id })
+                });
+                const result = await response.json();
+                if (result.success) {
+                    alert(result.message);
+                    loadProducts();
+                    loadDashboard();
+                } else {
+                    alert('Erro: ' + result.message);
+                }
+            } catch (error) {
+                alert('Erro ao excluir produto: ' + error.message);
+            }
+        }
+
+        // ===== USUÁRIOS =====
+        async function loadUsers() {
+            try {
+                const response = await fetch(USERS_API);
+                const users = await response.json();
+                const tbody = document.getElementById('usersTableBody');
+                if (!users || users.length === 0) {
+                    tbody.innerHTML = `<tr><td colspan="5" style="text-align:center;">Nenhum usuário cadastrado</td></tr>`;
+                    return;
+                }
+                tbody.innerHTML = users.map(u => `
+                    <tr>
+                        <td>${u.id}</td>
+                        <td><strong>${u.name}</strong></td>
+                        <td>${u.email}</td>
+                        <td>${u.phone || '—'}</td>
+                        <td>${u.created_at ? new Date(u.created_at).toLocaleDateString('pt-BR') : '—'}</td>
+                    </tr>
+                `).join('');
+            } catch (error) {
+                console.error('Erro ao carregar usuários:', error);
+            }
+        }
+
+        // ===== INICIALIZAR =====
+        document.addEventListener('DOMContentLoaded', function() {
+            if (!checkAdminAccess()) return;
+            loadDashboard();
+        });
+
+        window.addEventListener('click', function(e) {
+            const modal = document.getElementById('productModal');
+            if (e.target === modal) closeProductModal();
+        });
+    </script>
+</body>
+</html>
