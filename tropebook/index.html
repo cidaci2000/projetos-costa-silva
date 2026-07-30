@@ -1,0 +1,2107 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TropeBook — Histórias, Emoções & Tropes</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --pink-primary: #E86FAC;
+  --pink-light: #F4A8CE;
+  --pink-pale: #FDEEF6;
+  --pink-soft: #F9D5E9;
+  --pink-bg: #FDF0F8;
+  --pink-deep: #C94E8A;
+  --pink-accent: #D4499A;
+  --purple-hint: #C876B8;
+  --text-dark: #2D1B2E;
+  --text-mid: #5A3A5A;
+  --text-soft: #9A6A9A;
+  --text-light: #C4A0C4;
+  --white: #FFFFFF;
+  --card-border: rgba(232,111,172,0.18);
+  --shadow-sm: 0 2px 12px rgba(200,80,150,0.10);
+  --shadow-md: 0 6px 30px rgba(200,80,150,0.15);
+  --shadow-lg: 0 16px 48px rgba(200,80,150,0.18);
+  --radius-sm: 10px;
+  --radius-md: 16px;
+  --radius-lg: 24px;
+  --radius-xl: 32px;
+  --font-display: 'Playfair Display', Georgia, serif;
+  --font-body: 'Inter', system-ui, sans-serif;
+  --transition: all 0.28s cubic-bezier(.4,0,.2,1);
+}
+
+*,*::before,*::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: var(--font-body);
+  background: var(--pink-bg);
+  color: var(--text-dark);
+  line-height: 1.6;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ===================== NAVBAR ===================== */
+.navbar {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 1000;
+  background: rgba(253,240,248,0.92);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-bottom: 1px solid var(--card-border);
+  padding: 0 24px;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  transition: var(--transition);
+}
+
+.navbar.scrolled {
+  box-shadow: var(--shadow-sm);
+}
+
+.nav-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.logo-mark {
+  display: flex;
+  flex-direction: column;
+  line-height: 1;
+}
+
+.logo-trope {
+  font-family: var(--font-display);
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--pink-accent);
+  letter-spacing: -0.5px;
+}
+
+.logo-book {
+  font-family: var(--font-display);
+  font-size: 18px;
+  font-weight: 400;
+  color: var(--text-mid);
+  letter-spacing: -0.5px;
+}
+
+.logo-tagline {
+  font-size: 9px;
+  color: var(--text-soft);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  line-height: 1.3;
+  border-left: 2px solid var(--pink-light);
+  padding-left: 10px;
+  display: none;
+}
+
+@media(min-width: 600px) { .logo-tagline { display: block; } }
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  list-style: none;
+}
+
+.nav-links a {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-mid);
+  text-decoration: none;
+  padding: 7px 13px;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.nav-links a:hover, .nav-links a.active {
+  color: var(--pink-accent);
+  background: var(--pink-soft);
+}
+
+.nav-links a.active {
+  font-weight: 600;
+}
+
+.nav-cta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.btn-login {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-mid);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 7px 13px;
+  border-radius: 20px;
+  transition: var(--transition);
+}
+
+.btn-login:hover { color: var(--pink-accent); background: var(--pink-soft); }
+
+.btn-primary {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--white);
+  background: linear-gradient(135deg, var(--pink-accent) 0%, var(--pink-primary) 100%);
+  border: none;
+  cursor: pointer;
+  padding: 9px 20px;
+  border-radius: 20px;
+  transition: var(--transition);
+  box-shadow: 0 3px 12px rgba(212,73,154,0.3);
+  letter-spacing: 0.01em;
+}
+
+.btn-primary:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(212,73,154,0.4);
+}
+
+.btn-primary:active { transform: translateY(0); }
+
+.btn-secondary {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--pink-accent);
+  background: var(--white);
+  border: 1.5px solid var(--pink-light);
+  cursor: pointer;
+  padding: 9px 20px;
+  border-radius: 20px;
+  transition: var(--transition);
+}
+
+.btn-secondary:hover {
+  background: var(--pink-soft);
+  border-color: var(--pink-accent);
+}
+
+/* Hamburger */
+.nav-hamburger {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  cursor: pointer;
+  padding: 6px;
+  background: none;
+  border: none;
+}
+
+.nav-hamburger span {
+  display: block;
+  width: 24px;
+  height: 2px;
+  background: var(--pink-accent);
+  border-radius: 2px;
+  transition: var(--transition);
+}
+
+.mobile-menu {
+  display: none;
+  position: fixed;
+  top: 64px; left: 0; right: 0;
+  background: var(--white);
+  border-bottom: 1px solid var(--card-border);
+  padding: 16px 24px 24px;
+  z-index: 999;
+  flex-direction: column;
+  gap: 4px;
+  box-shadow: var(--shadow-md);
+}
+
+.mobile-menu.open { display: flex; }
+
+.mobile-menu a {
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--text-mid);
+  text-decoration: none;
+  padding: 12px 16px;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.mobile-menu a:hover, .mobile-menu a.active {
+  color: var(--pink-accent);
+  background: var(--pink-soft);
+}
+
+.mobile-menu-divider {
+  height: 1px;
+  background: var(--card-border);
+  margin: 8px 0;
+}
+
+@media(max-width: 768px) {
+  .nav-links, .nav-cta { display: none; }
+  .nav-hamburger { display: flex; }
+}
+
+/* ===================== PAGES ===================== */
+.page {
+  display: none;
+  min-height: 100vh;
+  padding-top: 64px;
+}
+
+.page.active { display: block; }
+
+/* ===================== HOME PAGE ===================== */
+.hero {
+  background: linear-gradient(160deg, var(--pink-pale) 0%, var(--pink-soft) 50%, var(--pink-bg) 100%);
+  padding: 64px 24px 48px;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 48px;
+  align-items: center;
+}
+
+@media(max-width: 768px) {
+  .hero-inner { grid-template-columns: 1fr; gap: 32px; }
+}
+
+.hero-text h1 {
+  font-family: var(--font-display);
+  font-size: clamp(36px, 6vw, 60px);
+  font-weight: 700;
+  color: var(--text-dark);
+  line-height: 1.15;
+  margin-bottom: 18px;
+}
+
+.hero-text h1 .highlight {
+  color: var(--pink-accent);
+  font-style: italic;
+}
+
+.hero-text p {
+  font-size: 16px;
+  color: var(--text-mid);
+  margin-bottom: 28px;
+  max-width: 380px;
+  line-height: 1.7;
+}
+
+.hero-btn {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--white);
+  background: linear-gradient(135deg, var(--pink-accent) 0%, var(--pink-primary) 100%);
+  border: none;
+  cursor: pointer;
+  padding: 14px 30px;
+  border-radius: 28px;
+  transition: var(--transition);
+  box-shadow: 0 6px 20px rgba(212,73,154,0.35);
+  letter-spacing: 0.01em;
+}
+
+.hero-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 30px rgba(212,73,154,0.45);
+}
+
+.hero-features {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.feat-card {
+  background: var(--white);
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius-md);
+  padding: 18px;
+  transition: var(--transition);
+  box-shadow: var(--shadow-sm);
+}
+
+.feat-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.feat-icon {
+  font-size: 22px;
+  margin-bottom: 8px;
+}
+
+.feat-card h4 {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--pink-accent);
+  margin-bottom: 5px;
+}
+
+.feat-card p {
+  font-size: 12px;
+  color: var(--text-soft);
+  line-height: 1.5;
+}
+
+/* Home sections */
+.home-section {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 48px 24px;
+}
+
+.section-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: 28px;
+}
+
+.section-title {
+  font-family: var(--font-display);
+  font-size: clamp(20px, 3.5vw, 26px);
+  font-weight: 700;
+  color: var(--text-dark);
+}
+
+.section-title .accent { color: var(--pink-accent); }
+
+.see-all {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--pink-accent);
+  cursor: pointer;
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  transition: var(--transition);
+}
+
+.see-all:hover { border-bottom-color: var(--pink-accent); }
+
+/* Tropes scroll */
+.tropes-scroll {
+  display: flex;
+  gap: 16px;
+  overflow-x: auto;
+  padding-bottom: 12px;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+}
+
+.tropes-scroll::-webkit-scrollbar { height: 4px; }
+.tropes-scroll::-webkit-scrollbar-track { background: var(--pink-soft); border-radius: 2px; }
+.tropes-scroll::-webkit-scrollbar-thumb { background: var(--pink-light); border-radius: 2px; }
+
+.trope-card {
+  flex: 0 0 200px;
+  scroll-snap-align: start;
+  background: var(--white);
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  cursor: pointer;
+  transition: var(--transition);
+  box-shadow: var(--shadow-sm);
+}
+
+.trope-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-lg);
+  border-color: var(--pink-light);
+}
+
+.trope-card-img {
+  width: 100%;
+  height: 130px;
+  object-fit: cover;
+  display: block;
+  background: linear-gradient(135deg, var(--pink-soft) 0%, var(--pink-pale) 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 48px;
+}
+
+.trope-card-body {
+  padding: 14px;
+}
+
+.trope-card-body h3 {
+  font-family: var(--font-display);
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text-dark);
+  margin-bottom: 5px;
+  line-height: 1.3;
+}
+
+.trope-card-body p {
+  font-size: 12px;
+  color: var(--text-soft);
+  line-height: 1.5;
+}
+
+/* Books scroll */
+.books-scroll {
+  display: flex;
+  gap: 16px;
+  overflow-x: auto;
+  padding-bottom: 12px;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+}
+
+.books-scroll::-webkit-scrollbar { height: 4px; }
+.books-scroll::-webkit-scrollbar-track { background: var(--pink-soft); border-radius: 2px; }
+.books-scroll::-webkit-scrollbar-thumb { background: var(--pink-light); border-radius: 2px; }
+
+.book-card {
+  flex: 0 0 150px;
+  scroll-snap-align: start;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.book-card:hover { transform: translateY(-4px); }
+
+.book-cover {
+  width: 100%;
+  height: 210px;
+  border-radius: var(--radius-sm);
+  background: linear-gradient(135deg, var(--pink-deep) 0%, var(--pink-primary) 50%, var(--pink-light) 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 40px;
+  margin-bottom: 10px;
+  box-shadow: var(--shadow-md);
+  position: relative;
+  overflow: hidden;
+}
+
+.book-cover-label {
+  position: absolute;
+  bottom: 8px; left: 8px; right: 8px;
+  background: rgba(45,27,46,0.75);
+  backdrop-filter: blur(4px);
+  color: var(--white);
+  font-size: 11px;
+  font-weight: 600;
+  padding: 5px 8px;
+  border-radius: 6px;
+  text-align: center;
+}
+
+.book-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-dark);
+  margin-bottom: 3px;
+  line-height: 1.3;
+}
+
+.book-author {
+  font-size: 11px;
+  color: var(--text-soft);
+}
+
+.book-trope-tag {
+  display: inline-block;
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--pink-accent);
+  background: var(--pink-pale);
+  padding: 2px 8px;
+  border-radius: 10px;
+  margin-top: 5px;
+}
+
+/* USUÁRIO LOGADO */
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  background: var(--white);
+  padding: 0.3rem 1rem;
+  border-radius: 60px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--text-dark);
+  border: 1.5px solid var(--card-border);
+}
+
+.user-info .user-name {
+  font-weight: 700;
+  color: var(--pink-accent);
+}
+
+.user-info .admin-badge {
+  background: var(--pink-accent);
+  color: white;
+  padding: 0.15rem 0.6rem;
+  border-radius: 12px;
+  font-size: 0.65rem;
+  font-weight: 700;
+}
+
+.user-info .bibliotecario-badge {
+  background: var(--purple-hint);
+  color: white;
+  padding: 0.15rem 0.6rem;
+  border-radius: 12px;
+  font-size: 0.65rem;
+  font-weight: 700;
+}
+
+.btn-logout {
+  background: rgba(0,0,0,0.05);
+  border: 1px solid var(--card-border);
+  color: var(--text-mid);
+  padding: 0.25rem 0.8rem;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 0.75rem;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.btn-logout:hover {
+  background: rgba(0,0,0,0.1);
+}
+
+/* Divider */
+.section-divider {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--pink-light), transparent);
+  margin: 0 24px;
+}
+
+/* ===================== EXPLORE PAGE ===================== */
+.explore-hero {
+  background: linear-gradient(160deg, var(--pink-pale) 0%, var(--pink-soft) 60%, var(--pink-bg) 100%);
+  padding: 40px 24px 32px;
+  position: relative;
+  overflow: hidden;
+}
+
+.explore-hero-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 32px;
+}
+
+.explore-hero-text h1 {
+  font-family: var(--font-display);
+  font-size: clamp(28px, 5vw, 46px);
+  font-weight: 700;
+  color: var(--text-dark);
+  line-height: 1.2;
+}
+
+.explore-hero-text h1 .accent { color: var(--pink-accent); font-style: italic; }
+
+.explore-layout {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 32px 24px;
+  display: grid;
+  grid-template-columns: 240px 1fr;
+  gap: 28px;
+}
+
+@media(max-width: 768px) {
+  .explore-layout { grid-template-columns: 1fr; }
+}
+
+/* Filters sidebar */
+.filters-panel {
+  background: var(--white);
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius-lg);
+  padding: 24px;
+  height: fit-content;
+  box-shadow: var(--shadow-sm);
+  position: sticky;
+  top: 82px;
+}
+
+.filters-toggle {
+  display: none;
+  width: 100%;
+  padding: 12px 20px;
+  background: var(--white);
+  border: 1.5px solid var(--pink-light);
+  border-radius: var(--radius-md);
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-mid);
+  cursor: pointer;
+  margin-bottom: 16px;
+  text-align: left;
+  transition: var(--transition);
+}
+
+.filters-toggle:hover { background: var(--pink-soft); border-color: var(--pink-accent); color: var(--pink-accent); }
+
+@media(max-width: 768px) {
+  .filters-panel { position: static; }
+  .filters-toggle { display: flex; align-items: center; justify-content: space-between; }
+  .filters-content { display: none; }
+  .filters-content.open { display: block; }
+}
+
+.filter-search {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--pink-pale);
+  border: 1px solid var(--card-border);
+  border-radius: 20px;
+  padding: 8px 14px;
+  margin-bottom: 20px;
+}
+
+.filter-search input {
+  flex: 1;
+  background: none;
+  border: none;
+  outline: none;
+  font-size: 13px;
+  color: var(--text-dark);
+  font-family: var(--font-body);
+}
+
+.filter-search input::placeholder { color: var(--text-light); }
+
+.filter-group {
+  margin-bottom: 20px;
+}
+
+.filter-group-title {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text-soft);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: 12px;
+}
+
+.filter-option {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 5px 0;
+  cursor: pointer;
+}
+
+.filter-option input[type="checkbox"] {
+  width: 16px; height: 16px;
+  accent-color: var(--pink-accent);
+  cursor: pointer;
+}
+
+.filter-option label {
+  font-size: 13px;
+  color: var(--text-mid);
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.filter-option:hover label { color: var(--pink-accent); }
+
+.filter-select {
+  width: 100%;
+  padding: 9px 14px;
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius-sm);
+  font-size: 13px;
+  font-family: var(--font-body);
+  color: var(--text-mid);
+  background: var(--pink-pale);
+  cursor: pointer;
+  outline: none;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23C4A0C4' stroke-width='1.5' fill='none'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  padding-right: 32px;
+  transition: var(--transition);
+}
+
+.filter-select:focus { border-color: var(--pink-accent); }
+
+/* Tropes grid */
+.tropes-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 18px;
+}
+
+@media(max-width: 480px) {
+  .tropes-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+}
+
+.trope-grid-card {
+  background: var(--white);
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  cursor: pointer;
+  transition: var(--transition);
+  box-shadow: var(--shadow-sm);
+}
+
+.trope-grid-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-lg);
+  border-color: var(--pink-light);
+}
+
+.trope-grid-img {
+  width: 100%;
+  height: 120px;
+  background: linear-gradient(135deg, var(--pink-soft) 0%, var(--pink-pale) 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 44px;
+  position: relative;
+}
+
+.trope-badge {
+  position: absolute;
+  top: 8px; right: 8px;
+  background: var(--white);
+  color: var(--pink-accent);
+  font-size: 9px;
+  font-weight: 700;
+  padding: 3px 7px;
+  border-radius: 8px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.trope-grid-body {
+  padding: 14px;
+}
+
+.trope-grid-body h3 {
+  font-family: var(--font-display);
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-dark);
+  margin-bottom: 5px;
+}
+
+.trope-grid-body p {
+  font-size: 11.5px;
+  color: var(--text-soft);
+  line-height: 1.5;
+}
+
+/* ===================== LISTS PAGE ===================== */
+.lists-hero {
+  background: linear-gradient(160deg, var(--pink-pale) 0%, var(--pink-soft) 60%, var(--pink-bg) 100%);
+  padding: 40px 24px 32px;
+  position: relative;
+  overflow: hidden;
+}
+
+.lists-hero-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+}
+
+.lists-hero-text h1 {
+  font-family: var(--font-display);
+  font-size: clamp(28px, 5vw, 42px);
+  font-weight: 700;
+  color: var(--text-dark);
+  line-height: 1.2;
+}
+
+.lists-hero-text h1 .accent { color: var(--pink-accent); font-style: italic; }
+
+.lists-layout {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 32px 24px;
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  gap: 28px;
+}
+
+@media(max-width: 768px) {
+  .lists-layout { grid-template-columns: 1fr; }
+}
+
+.categories-sidebar {
+  background: var(--white);
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius-lg);
+  padding: 24px;
+  height: fit-content;
+  box-shadow: var(--shadow-sm);
+  position: sticky;
+  top: 82px;
+}
+
+@media(max-width: 768px) {
+  .categories-sidebar { position: static; }
+}
+
+.categories-sidebar h3 {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text-soft);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: 14px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.cat-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 9px 10px;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: var(--transition);
+  margin-bottom: 2px;
+}
+
+.cat-item:hover { background: var(--pink-soft); }
+
+.cat-item.active { background: var(--pink-pale); }
+
+.cat-item-left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: var(--text-mid);
+}
+
+.cat-item.active .cat-item-left { color: var(--pink-accent); font-weight: 600; }
+
+.cat-count {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-light);
+  background: var(--pink-soft);
+  padding: 2px 8px;
+  border-radius: 10px;
+}
+
+.cat-item.active .cat-count { background: var(--pink-light); color: var(--pink-deep); }
+
+.lists-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 18px;
+  margin-bottom: 32px;
+}
+
+@media(max-width: 480px) {
+  .lists-grid { grid-template-columns: 1fr; }
+}
+
+.list-card {
+  background: var(--white);
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  cursor: pointer;
+  transition: var(--transition);
+  box-shadow: var(--shadow-sm);
+}
+
+.list-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-lg);
+  border-color: var(--pink-light);
+}
+
+.list-card-banner {
+  height: 130px;
+  background: linear-gradient(135deg, var(--pink-soft) 0%, var(--pink-pale) 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 56px;
+  position: relative;
+}
+
+.list-card-category {
+  position: absolute;
+  top: 10px; left: 10px;
+  background: var(--white);
+  color: var(--pink-accent);
+  font-size: 10px;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: 10px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.list-card-body {
+  padding: 16px;
+}
+
+.list-card-body h3 {
+  font-family: var(--font-display);
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text-dark);
+  margin-bottom: 7px;
+  line-height: 1.3;
+}
+
+.list-card-body p {
+  font-size: 12.5px;
+  color: var(--text-soft);
+  line-height: 1.55;
+  margin-bottom: 12px;
+}
+
+.list-card-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 11.5px;
+  color: var(--text-light);
+}
+
+/* ===================== FAVORITES PAGE ===================== */
+.favorites-hero {
+  background: linear-gradient(160deg, var(--pink-pale) 0%, var(--pink-soft) 60%, var(--pink-bg) 100%);
+  padding: 40px 24px 32px;
+}
+
+.favorites-hero-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.favorites-hero-inner h1 {
+  font-family: var(--font-display);
+  font-size: clamp(28px, 5vw, 42px);
+  font-weight: 700;
+  color: var(--text-dark);
+  line-height: 1.2;
+}
+
+.favorites-hero-inner h1 .accent { color: var(--pink-accent); font-style: italic; }
+
+.favorites-layout {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 32px 24px;
+}
+
+.fav-tabs {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 28px;
+  background: var(--white);
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius-xl);
+  padding: 5px;
+  width: fit-content;
+}
+
+.fav-tab {
+  font-size: 13px;
+  font-weight: 600;
+  padding: 9px 20px;
+  border-radius: 22px;
+  cursor: pointer;
+  color: var(--text-soft);
+  background: none;
+  border: none;
+  transition: var(--transition);
+}
+
+.fav-tab.active {
+  color: var(--white);
+  background: linear-gradient(135deg, var(--pink-accent) 0%, var(--pink-primary) 100%);
+  box-shadow: 0 3px 10px rgba(212,73,154,0.3);
+}
+
+.fav-tab:hover:not(.active) {
+  color: var(--pink-accent);
+  background: var(--pink-soft);
+}
+
+.fav-section { display: none; }
+.fav-section.active { display: block; }
+
+.fav-books-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 20px;
+}
+
+.fav-tropes-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 16px;
+}
+
+.fav-lists-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 18px;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 64px 24px;
+}
+
+.empty-state .empty-icon {
+  font-size: 64px;
+  margin-bottom: 20px;
+  opacity: 0.5;
+}
+
+.empty-state h3 {
+  font-family: var(--font-display);
+  font-size: 22px;
+  font-weight: 600;
+  color: var(--text-dark);
+  margin-bottom: 10px;
+}
+
+.empty-state p {
+  font-size: 14px;
+  color: var(--text-soft);
+  margin-bottom: 24px;
+  max-width: 320px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* ===================== AUTH PAGES ===================== */
+.auth-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: stretch;
+}
+
+.auth-left {
+  display: none;
+  flex: 1;
+  background: linear-gradient(160deg, var(--pink-deep) 0%, var(--pink-accent) 50%, var(--purple-hint) 100%);
+  padding: 48px;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  position: relative;
+  overflow: hidden;
+}
+
+@media(min-width: 900px) { .auth-left { display: flex; } }
+
+.auth-left-logo {
+  margin-bottom: 48px;
+}
+
+.auth-left-logo .logo-trope {
+  font-family: var(--font-display);
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--white);
+}
+
+.auth-left-logo .logo-book {
+  font-family: var(--font-display);
+  font-size: 28px;
+  font-weight: 400;
+  color: rgba(255,255,255,0.8);
+}
+
+.auth-right {
+  flex: 1;
+  max-width: 520px;
+  padding: 48px 40px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background: var(--white);
+}
+
+@media(max-width: 899px) {
+  .auth-right { max-width: 100%; width: 100%; padding: 40px 24px; }
+}
+
+.auth-right h2 {
+  font-family: var(--font-display);
+  font-size: clamp(24px, 4vw, 32px);
+  font-weight: 700;
+  color: var(--text-dark);
+  margin-bottom: 6px;
+}
+
+.auth-right .auth-subtitle {
+  font-size: 14px;
+  color: var(--text-soft);
+  margin-bottom: 32px;
+}
+
+.form-group {
+  margin-bottom: 18px;
+}
+
+.form-label {
+  display: block;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-mid);
+  margin-bottom: 7px;
+}
+
+.form-input {
+  width: 100%;
+  padding: 13px 16px;
+  border: 1.5px solid var(--card-border);
+  border-radius: var(--radius-sm);
+  font-size: 14px;
+  font-family: var(--font-body);
+  color: var(--text-dark);
+  background: var(--pink-bg);
+  outline: none;
+  transition: var(--transition);
+}
+
+.form-input:focus {
+  border-color: var(--pink-accent);
+  background: var(--white);
+  box-shadow: 0 0 0 3px rgba(212,73,154,0.1);
+}
+
+.auth-submit {
+  width: 100%;
+  padding: 15px;
+  background: linear-gradient(135deg, var(--pink-accent) 0%, var(--pink-primary) 100%);
+  color: var(--white);
+  font-size: 15px;
+  font-weight: 600;
+  font-family: var(--font-body);
+  border: none;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: var(--transition);
+  box-shadow: 0 6px 20px rgba(212,73,154,0.35);
+  margin-top: 8px;
+}
+
+.auth-submit:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 28px rgba(212,73,154,0.45);
+}
+
+.auth-divider {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin: 22px 0;
+}
+
+.auth-divider span {
+  height: 1px;
+  flex: 1;
+  background: var(--card-border);
+}
+
+.auth-divider p {
+  font-size: 12px;
+  color: var(--text-light);
+  white-space: nowrap;
+}
+
+.auth-switch {
+  text-align: center;
+  font-size: 13.5px;
+  color: var(--text-soft);
+  margin-top: 20px;
+}
+
+.auth-switch a {
+  color: var(--pink-accent);
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: none;
+  transition: var(--transition);
+}
+
+.auth-switch a:hover { text-decoration: underline; }
+
+/* ===================== MODAL / TOAST ===================== */
+.toast {
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%) translateY(100px);
+  background: var(--text-dark);
+  color: var(--white);
+  font-size: 13.5px;
+  font-weight: 500;
+  padding: 12px 22px;
+  border-radius: 20px;
+  z-index: 9999;
+  transition: transform 0.4s cubic-bezier(.4,0,.2,1);
+  box-shadow: var(--shadow-lg);
+  white-space: nowrap;
+}
+
+.toast.show {
+  transform: translateX(-50%) translateY(0);
+}
+
+/* ===================== BOOK DETAIL MODAL ===================== */
+.overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(45,27,46,0.55);
+  backdrop-filter: blur(5px);
+  z-index: 2000;
+  align-items: flex-end;
+  justify-content: center;
+}
+
+.overlay.open { display: flex; }
+
+@media(min-width: 600px) {
+  .overlay { align-items: center; }
+}
+
+.modal {
+  background: var(--white);
+  border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+  padding: 28px 24px 40px;
+  width: 100%;
+  max-width: 520px;
+  max-height: 85vh;
+  overflow-y: auto;
+  position: relative;
+  animation: slideUp 0.35s cubic-bezier(.4,0,.2,1);
+}
+
+@media(min-width: 600px) {
+  .modal { border-radius: var(--radius-xl); max-height: 80vh; }
+}
+
+@keyframes slideUp {
+  from { transform: translateY(40px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+.modal-close {
+  position: absolute;
+  top: 16px; right: 16px;
+  background: var(--pink-soft);
+  border: none;
+  border-radius: 50%;
+  width: 32px; height: 32px;
+  font-size: 18px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-soft);
+  transition: var(--transition);
+}
+
+.modal-close:hover { background: var(--pink-pale); color: var(--pink-accent); }
+
+.modal-drag {
+  width: 36px; height: 4px;
+  background: var(--pink-light);
+  border-radius: 2px;
+  margin: 0 auto 20px;
+}
+
+@media(min-width: 600px) { .modal-drag { display: none; } }
+
+/* ===================== FOOTER ===================== */
+.site-footer {
+  background: var(--white);
+  border-top: 1px solid var(--card-border);
+  padding: 28px 24px;
+  text-align: center;
+  margin-top: 48px;
+}
+
+.site-footer p {
+  font-size: 12.5px;
+  color: var(--text-light);
+}
+
+.site-footer strong {
+  color: var(--pink-accent);
+  font-family: var(--font-display);
+}
+
+/* ===================== HEART BUTTON ===================== */
+.heart-btn {
+  position: absolute;
+  top: 8px; right: 8px;
+  background: var(--white);
+  border: none;
+  border-radius: 50%;
+  width: 30px; height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 14px;
+  transition: var(--transition);
+  box-shadow: var(--shadow-sm);
+  color: var(--text-light);
+}
+
+.heart-btn:hover, .heart-btn.active { color: #E8113A; }
+.heart-btn.active { background: #fff0f3; }
+
+/* ===================== SEARCH BAR ===================== */
+.global-search {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--white);
+  border: 1.5px solid var(--card-border);
+  border-radius: 28px;
+  padding: 10px 18px;
+  margin-bottom: 28px;
+  transition: var(--transition);
+  box-shadow: var(--shadow-sm);
+}
+
+.global-search:focus-within {
+  border-color: var(--pink-accent);
+  box-shadow: 0 0 0 3px rgba(212,73,154,0.1);
+}
+
+.global-search input {
+  flex: 1;
+  background: none;
+  border: none;
+  outline: none;
+  font-size: 14px;
+  color: var(--text-dark);
+  font-family: var(--font-body);
+}
+
+.global-search input::placeholder { color: var(--text-light); }
+
+/* ===================== RESPONSIVE HELPERS ===================== */
+@media(max-width: 480px) {
+  .fav-books-grid { grid-template-columns: repeat(2, 1fr); }
+  .fav-tropes-grid { grid-template-columns: 1fr; }
+  .fav-lists-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar" id="navbar">
+  <a class="nav-logo" onclick="showPage('home')">
+    <div class="logo-mark">
+      <span class="logo-trope">trope</span>
+      <span class="logo-book">book</span>
+    </div>
+    <div class="logo-tagline">histórias,<br>emoções &<br>tropes.</div>
+  </a>
+  <ul class="nav-links">
+    <li><a onclick="showPage('home')" class="active" id="nav-home">Início</a></li>
+    <li><a onclick="showPage('explore')" id="nav-explore">Explorar</a></li>
+    <li><a onclick="showPage('lists')" id="nav-lists">Listas</a></li>
+    <li><a onclick="showPage('favorites')" id="nav-favorites">Favoritos</a></li>
+  </ul>
+  <div class="nav-cta" id="navCta">
+    <!-- Preenchido via JavaScript -->
+  </div>
+  <button class="nav-hamburger" onclick="toggleMobileMenu()" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- MOBILE MENU -->
+<div class="mobile-menu" id="mobileMenu">
+  <a onclick="showPage('home'); closeMobileMenu()" id="mob-home" class="active">🏠 Início</a>
+  <a onclick="showPage('explore'); closeMobileMenu()" id="mob-explore">✨ Explorar</a>
+  <a onclick="showPage('lists'); closeMobileMenu()" id="mob-lists">📚 Listas</a>
+  <a onclick="showPage('favorites'); closeMobileMenu()" id="mob-favorites">❤️ Favoritos</a>
+  <div class="mobile-menu-divider"></div>
+  <div id="mobileMenuAuth">
+    <!-- Preenchido via JavaScript -->
+  </div>
+</div>
+
+<!-- ===================== HOME PAGE ===================== -->
+<div class="page active" id="page-home">
+  <section class="hero">
+    <div class="hero-inner">
+      <div class="hero-text fade-in">
+        <h1>sua próxima<br><span class="highlight">história favorita</span><br>está aqui</h1>
+        <p>Encontre livros incríveis através das <strong style="color:var(--pink-accent)">tropes</strong> que você ama. Conectamos leitoras com as emoções certas.</p>
+        <button class="hero-btn" onclick="showPage('explore')">explorar tropes →</button>
+      </div>
+      <div class="hero-features fade-in fade-in-2">
+        <div class="feat-card"><div class="feat-icon">🔍</div><h4>descubra por trope</h4><p>Encontre histórias com suas tropes favoritas</p></div>
+        <div class="feat-card"><div class="feat-icon">✨</div><h4>recomendações</h4><p>Sugestões personalizadas para o seu gosto</p></div>
+        <div class="feat-card"><div class="feat-icon">🔖</div><h4>salve e organize</h4><p>Crie listas e organize suas leituras</p></div>
+        <div class="feat-card"><div class="feat-icon">💬</div><h4>comentários</h4><p>Compartilhe e converse com outros leitores</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Tropes recomendadas -->
+  <section class="home-section">
+    <div class="section-header">
+      <h2 class="section-title">tropes que você vai <span class="accent">amar</span></h2>
+      <a class="see-all" onclick="showPage('explore')">ver todas →</a>
+    </div>
+    <div class="tropes-scroll" id="homeTropes"></div>
+  </section>
+
+  <div class="section-divider"></div>
+
+  <!-- Adicionados recentemente -->
+  <section class="home-section">
+    <div class="section-header">
+      <h2 class="section-title"><span class="accent">adicionados</span> recentemente</h2>
+      <a class="see-all" onclick="showPage('explore')">ver mais →</a>
+    </div>
+    <div class="books-scroll" id="homeBooks"></div>
+  </section>
+
+  <footer class="site-footer">
+    <p>feito com ♡ por <strong>tropebook</strong> · histórias, emoções & tropes</p>
+  </footer>
+</div>
+
+<!-- ===================== EXPLORE PAGE ===================== -->
+<div class="page" id="page-explore">
+  <div class="explore-hero">
+    <div class="explore-hero-inner">
+      <div class="explore-hero-text">
+        <h1>explore as <span class="accent">tropes</span><br>que movimentam histórias</h1>
+      </div>
+    </div>
+  </div>
+
+  <div class="explore-layout">
+    <aside>
+      <button class="filters-toggle" onclick="toggleFilters()">🎛 Filtros <span id="filter-arrow">▼</span></button>
+      <div class="filters-panel" id="filtersPanel">
+        <div class="filters-content open" id="filtersContent">
+          <div class="filter-search">
+            <span>🔍</span>
+            <input type="text" placeholder="Buscar por trope..." oninput="filterTropes(this.value)" id="tropeSearchInput">
+          </div>
+          <div class="filter-group">
+            <div class="filter-group-title">categorias</div>
+            <div class="filter-option"><input type="checkbox" id="cat-romance" onchange="applyFilters()"><label for="cat-romance">Romance</label></div>
+            <div class="filter-option"><input type="checkbox" id="cat-fantasia" onchange="applyFilters()"><label for="cat-fantasia">Fantasia</label></div>
+            <div class="filter-option"><input type="checkbox" id="cat-drama" onchange="applyFilters()"><label for="cat-drama">Drama</label></div>
+            <div class="filter-option"><input type="checkbox" id="cat-comedia" onchange="applyFilters()"><label for="cat-comedia">Comédia</label></div>
+          </div>
+          <div class="filter-group">
+            <div class="filter-group-title">ordenação</div>
+            <select class="filter-select" onchange="applyFilters()">
+              <option>Mais populares</option>
+              <option>A–Z</option>
+            </select>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <div>
+      <div class="tropes-grid" id="tropesGrid"></div>
+    </div>
+  </div>
+
+  <footer class="site-footer">
+    <p>feito com ♡ por <strong>tropebook</strong> · histórias, emoções & tropes</p>
+  </footer>
+</div>
+
+<!-- ===================== LISTS PAGE ===================== -->
+<div class="page" id="page-lists">
+  <div class="lists-hero">
+    <div class="lists-hero-inner">
+      <div class="lists-hero-text">
+        <h1>listas para cada<br><span class="accent">humor e momento</span></h1>
+        <p>Salve, crie e compartilhe listas com as tropes e livros que você ama.</p>
+      </div>
+      <button class="btn-primary" onclick="showToast('Faça login para criar listas! 💕')">+ criar nova lista</button>
+    </div>
+  </div>
+
+  <div class="lists-layout">
+    <aside class="categories-sidebar hide-mobile">
+      <h3>🗂 navegar por categorias</h3>
+      <div class="cat-item active" onclick="filterLists('all', this)"><div class="cat-item-left"><span class="cat-icon">📚</span> Todos</div><span class="cat-count">135</span></div>
+      <div class="cat-item" onclick="filterLists('Romance', this)"><div class="cat-item-left"><span class="cat-icon">💕</span> Romance</div><span class="cat-count">182</span></div>
+      <div class="cat-item" onclick="filterLists('Fantasia', this)"><div class="cat-item-left"><span class="cat-icon">🧚</span> Fantasia</div><span class="cat-count">156</span></div>
+      <div class="cat-item" onclick="filterLists('Drama', this)"><div class="cat-item-left"><span class="cat-icon">🎭</span> Drama</div><span class="cat-count">124</span></div>
+      <div class="cat-item" onclick="filterLists('Comédia', this)"><div class="cat-item-left"><span class="cat-icon">😂</span> Comédia</div><span class="cat-count">61</span></div>
+    </aside>
+
+    <div>
+      <div class="lists-grid" id="listsGrid"></div>
+    </div>
+  </div>
+
+  <footer class="site-footer">
+    <p>feito com ♡ por <strong>tropebook</strong> · histórias, emoções & tropes</p>
+  </footer>
+</div>
+
+<!-- ===================== FAVORITES PAGE ===================== -->
+<div class="page" id="page-favorites">
+  <div class="favorites-hero">
+    <div class="favorites-hero-inner">
+      <h1>seus <span class="accent">favoritos</span></h1>
+      <p>Livros, tropes e listas que você salvou para sempre ter à mão.</p>
+    </div>
+  </div>
+
+  <div class="favorites-layout">
+    <div class="fav-tabs">
+      <button class="fav-tab active" onclick="switchFavTab('books', this)">📚 Livros</button>
+      <button class="fav-tab" onclick="switchFavTab('tropes', this)">✨ Tropes</button>
+      <button class="fav-tab" onclick="switchFavTab('lists', this)">📋 Listas</button>
+    </div>
+
+    <div class="fav-section active" id="fav-books">
+      <div class="fav-books-grid" id="favBooksGrid"><div class="empty-state" style="grid-column:1/-1"><div class="empty-icon">💔</div><h3>Nenhum livro ainda</h3><p>Explore livros e toque no ❤️ para salvar seus favoritos aqui.</p><button class="btn-primary" onclick="showPage('explore')">explorar livros</button></div></div>
+    </div>
+
+    <div class="fav-section" id="fav-tropes">
+      <div class="fav-tropes-grid" id="favTropesGrid"><div class="empty-state" style="grid-column:1/-1"><div class="empty-icon">🌸</div><h3>Nenhuma trope salva</h3><p>Explore as tropes e salve as que mais combinam com você.</p><button class="btn-primary" onclick="showPage('explore')">explorar tropes</button></div></div>
+    </div>
+
+    <div class="fav-section" id="fav-lists">
+      <div class="fav-lists-grid" id="favListsGrid"><div class="empty-state" style="grid-column:1/-1"><div class="empty-icon">📋</div><h3>Nenhuma lista salva</h3><p>Encontre listas que combinam com seu humor e salve-as aqui.</p><button class="btn-primary" onclick="showPage('lists')">ver listas</button></div></div>
+    </div>
+  </div>
+
+  <footer class="site-footer">
+    <p>feito com ♡ por <strong>tropebook</strong> · histórias, emoções & tropes</p>
+  </footer>
+</div>
+
+<!-- ===================== LOGIN PAGE ===================== -->
+<div class="page" id="page-login" style="padding-top:0">
+  <div class="auth-page">
+    <div class="auth-left">
+      <div class="auth-left-logo">
+        <div class="logo-trope" style="color:#fff;font-family:var(--font-display);font-size:28px;font-weight:700">trope</div>
+        <div class="logo-book" style="color:rgba(255,255,255,0.8);font-family:var(--font-display);font-size:28px;font-weight:400">book</div>
+      </div>
+      <h2>sua próxima história<br>começa aqui ♡</h2>
+      <p>Entre para encontrar livros através das tropes que você ama, salvar seus favoritos e conectar-se com outros leitores.</p>
+      <div class="auth-left-tropes">
+        <span class="auth-trope-tag">⚔️ enemies to lovers</span>
+        <span class="auth-trope-tag">🕰️ slow burn</span>
+        <span class="auth-trope-tag">💍 fake dating</span>
+        <span class="auth-trope-tag">👑 royal romance</span>
+        <span class="auth-trope-tag">🌸 friends to lovers</span>
+      </div>
+    </div>
+    <div class="auth-right">
+      <div class="auth-mobile-logo" style="display:none;text-align:center;margin-bottom:32px">
+        <span style="font-family:var(--font-display);font-size:22px;font-weight:700;color:var(--pink-accent)">trope</span><span style="font-family:var(--font-display);font-size:22px;font-weight:400;color:var(--text-mid)">book</span>
+      </div>
+      <h2>Bem-vinda de volta ♡</h2>
+      <p class="auth-subtitle">Entre na sua conta para continuar lendo.</p>
+      <div class="form-group"><label class="form-label">E-mail</label><input class="form-input" type="email" placeholder="seuemail@exemplo.com" id="loginEmail"></div>
+      <div class="form-group"><label class="form-label">Senha</label><input class="form-input" type="password" placeholder="••••••••" id="loginPass"></div>
+      <button class="auth-submit" onclick="doLogin()">Entrar</button>
+      <p class="auth-switch">Ainda não tem conta? <a onclick="showPage('register')">Cadastre-se grátis →</a></p>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== REGISTER PAGE ===================== -->
+<div class="page" id="page-register" style="padding-top:0">
+  <div class="auth-page">
+    <div class="auth-left">
+      <div class="auth-left-logo">
+        <div class="logo-trope" style="color:#fff;font-family:var(--font-display);font-size:28px;font-weight:700">trope</div>
+        <div class="logo-book" style="color:rgba(255,255,255,0.8);font-family:var(--font-display);font-size:28px;font-weight:400">book</div>
+      </div>
+      <h2>encontre histórias<br>que movem corações ♡</h2>
+      <p>Junte-se a milhares de leitoras que descobrem novos livros através das tropes que amam.</p>
+      <div class="auth-left-tropes">
+        <span class="auth-trope-tag">🌹 forbidden love</span>
+        <span class="auth-trope-tag">⚔️ enemies to lovers</span>
+        <span class="auth-trope-tag">🕰️ slow burn</span>
+        <span class="auth-trope-tag">💍 fake dating</span>
+        <span class="auth-trope-tag">👑 royal romance</span>
+      </div>
+    </div>
+    <div class="auth-right">
+      <div class="auth-mobile-logo" style="display:none;text-align:center;margin-bottom:32px">
+        <span style="font-family:var(--font-display);font-size:22px;font-weight:700;color:var(--pink-accent)">trope</span><span style="font-family:var(--font-display);font-size:22px;font-weight:400;color:var(--text-mid)">book</span>
+      </div>
+      <h2>Criar conta grátis ✨</h2>
+      <p class="auth-subtitle">Comece a descobrir suas próximas histórias favoritas.</p>
+      <div class="form-group"><label class="form-label">Nome</label><input class="form-input" type="text" placeholder="Como quer ser chamada?" id="regName"></div>
+      <div class="form-group"><label class="form-label">E-mail</label><input class="form-input" type="email" placeholder="seuemail@exemplo.com" id="regEmail"></div>
+      <div class="form-group"><label class="form-label">Senha</label><input class="form-input" type="password" placeholder="Mínimo 8 caracteres" id="regPass"></div>
+      <button class="auth-submit" onclick="doRegister()">Criar minha conta →</button>
+      <p class="auth-switch">Já tem conta? <a onclick="showPage('login')">Entrar →</a></p>
+    </div>
+  </div>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<!-- Book Modal Overlay -->
+<div class="overlay" id="bookOverlay" onclick="closeModal()">
+  <div class="modal" onclick="event.stopPropagation()" id="bookModal">
+    <div class="modal-drag"></div>
+    <button class="modal-close" onclick="closeModal()">✕</button>
+    <div id="modalContent"></div>
+  </div>
+</div>
+
+<script>
+// ===================== CONFIGURAÇÃO =====
+const API_TROPES = 'api_tropes.php';
+const API_LIVROS = 'api_livros.php';
+const API_AUTH = 'api_auth.php';
+
+let currentUser = null;
+let tropesData = [];
+let livrosData = [];
+let listasData = [];
+
+// ===================== TOAST =====
+let toastTimeout;
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(toastTimeout);
+  toastTimeout = setTimeout(() => t.classList.remove('show'), 3000);
+}
+
+// ===================== NAVIGATION =====
+function showPage(page) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-links a, .mobile-menu a').forEach(a => a.classList.remove('active'));
+  document.getElementById('page-' + page).classList.add('active');
+  const navEl = document.getElementById('nav-' + page);
+  if (navEl) navEl.classList.add('active');
+  const mobEl = document.getElementById('mob-' + page);
+  if (mobEl) mobEl.classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+  if (page === 'explore') renderTropesGrid(tropesData);
+  if (page === 'lists') renderLists();
+}
+
+function toggleMobileMenu() {
+  document.getElementById('mobileMenu').classList.toggle('open');
+}
+function closeMobileMenu() {
+  document.getElementById('mobileMenu').classList.remove('open');
+}
+
+// ===================== NAVBAR SCROLL =====
+window.addEventListener('scroll', () => {
+  document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 10);
+});
+
+// ===================== HEART =====
+function toggleHeart(btn) {
+  btn.classList.toggle('active');
+  btn.textContent = btn.classList.contains('active') ? '♥' : '♡';
+  if (btn.classList.contains('active')) showToast('Adicionado aos favoritos! ♥');
+}
+
+// ===================== CARREGAR DADOS =====
+async function carregarDados() {
+  try {
+    const [tropesRes, livrosRes] = await Promise.all([
+      fetch(API_TROPES),
+      fetch(API_LIVROS)
+    ]);
+    if (tropesRes.ok) tropesData = await tropesRes.json();
+    if (livrosRes.ok) livrosData = await livrosRes.json();
+  } catch (e) {
+    console.warn('Erro ao carregar dados, usando fallback:', e);
+    tropesData = [
+      { id: 1, nome: 'slow burn', icon: '🕰️', descricao: 'Romance construído aos poucos...', categoria: 'Romance', emocao: 'Amor', livros_count: 128, cor: '#E86FAC' },
+      { id: 2, nome: 'enemies to lovers', icon: '⚔️', descricao: 'De inimigos jurados a namorados...', categoria: 'Romance', emocao: 'Amor', livros_count: 214, cor: '#C94E8A' },
+      { id: 3, nome: 'friends to lovers', icon: '🌸', descricao: 'Quando a base de uma grande amizade se transforma em uma grande paixão.', categoria: 'Romance', emocao: 'Amizade', livros_count: 176, cor: '#D4499A' },
+      { id: 4, nome: 'fake dating', icon: '💍', descricao: 'Fingem estar em um relacionamento por conveniência...', categoria: 'Comédia', emocao: 'Amor', livros_count: 98, cor: '#E86FAC' },
+      { id: 5, nome: 'royal romance', icon: '👑', descricao: 'Romance envolvendo a realeza...', categoria: 'Fantasia', emocao: 'Amor', livros_count: 143, cor: '#9B3A7D' },
+      { id: 6, nome: 'second chance', icon: '🔄', descricao: 'Reencontro de ex-namorados...', categoria: 'Drama', emocao: 'Superação', livros_count: 87, cor: '#C94E8A' },
+    ];
+    livrosData = [
+      { id: 1, titulo: 'Once & Broken Heart', autor: 'Emily Herry', trope: 'enemies to lovers', capa_emoji: '📖' },
+      { id: 2, titulo: 'A Razão do Amor', autor: 'Ali Hazelwood', trope: 'slow burn', capa_emoji: '📖' },
+      { id: 3, titulo: 'Lugar Feliz', autor: 'Emily Henry', trope: 'second chance', capa_emoji: '📖' },
+    ];
+  }
+  renderHomeTropes();
+  renderHomeBooks();
+  renderTropesGrid(tropesData);
+  renderLists();
+  checkUserSession();
+}
+
+// ===================== RENDER HOME =====
+function renderHomeTropes() {
+  const container = document.getElementById('homeTropes');
+  const topTropes = tropesData.slice(0, 6);
+  container.innerHTML = topTropes.map(t => `
+    <div class="trope-card" onclick="openTropeModal(${t.id})">
+      <div class="trope-card-img">${t.icon}</div>
+      <div class="trope-card-body">
+        <h3>${t.nome}</h3>
+        <p>${t.descricao ? t.descricao.substring(0, 60) + '...' : ''}</p>
+      </div>
+    </div>
+  `).join('');
+}
+
+function renderHomeBooks() {
+  const container = document.getElementById('homeBooks');
+  const topBooks = livrosData.slice(0, 6);
+  container.innerHTML = topBooks.map(b => `
+    <div class="book-card" onclick="openBookModal(${b.id})">
+      <div class="book-cover" style="background:linear-gradient(135deg,var(--pink-deep),var(--pink-primary))">
+        ${b.capa_emoji || '📖'}
+        <div class="book-cover-label">${b.titulo}</div>
+        <button class="heart-btn" onclick="event.stopPropagation();toggleHeart(this)">♡</button>
+      </div>
+      <div class="book-title">${b.titulo}</div>
+      <div class="book-author">${b.autor}</div>
+      <span class="book-trope-tag">${b.trope || 'Romance'}</span>
+    </div>
+  `).join('');
+}
+
+// ===================== EXPLORE =====
+function renderTropesGrid(tropes) {
+  const grid = document.getElementById('tropesGrid');
+  if (!tropes || tropes.length === 0) {
+    grid.innerHTML = '<div class="empty-state" style="grid-column:1/-1"><div class="empty-icon">🔍</div><h3>Nenhuma trope encontrada</h3><p>Tente outros filtros ou termos de busca.</p></div>';
+    return;
+  }
+  grid.innerHTML = tropes.map(t => `
+    <div class="trope-grid-card" onclick="openTropeModal(${t.id})">
+      <div class="trope-grid-img">
+        ${t.icon}
+        <span class="trope-badge">${t.categoria || 'Geral'}</span>
+      </div>
+      <div class="trope-grid-body">
+        <h3>${t.nome}</h3>
+        <p>${t.descricao || ''}</p>
+        <div style="margin-top:10px;font-size:11px;color:var(--text-light)">📚 ${t.livros_count || 0} livros · ${t.emocao || ''}</div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function filterTropes(q) {
+  const filtered = tropesData.filter(t =>
+    t.nome.toLowerCase().includes(q.toLowerCase()) ||
+    (t.descricao && t.descricao.toLowerCase().includes(q.toLowerCase()))
+  );
+  renderTropesGrid(filtered);
+}
+
+function applyFilters() {
+  renderTropesGrid(tropesData);
+}
+
+function toggleFilters() {
+  const content = document.getElementById('filtersContent');
+  const arrow = document.getElementById('filter-arrow');
+  content.classList.toggle('open');
+  arrow.textContent = content.classList.contains('open') ? '▲' : '▼';
+}
+
+// ===================== LISTS =====
+function renderLists() {
+  const grid = document.getElementById('listsGrid');
+  const listas = [
+    { icon:'👑', categoria:'Romance', titulo:'Royal Romance Trope', desc:'As melhores histórias envolvendo realeza...', curator:'@tropebook' },
+    { icon:'🌹', categoria:'Romance', titulo:'Best Enemies to Lovers 2024', desc:'A seleção definitiva das histórias onde o ódio vira paixão.', curator:'@livros_da_pri' },
+    { icon:'⌨️', categoria:'Comédia', titulo:'Fake Dating Perfeitos', desc:'Fingindo amar, mas sentindo de verdade.', curator:'@tropebook' },
+  ];
+  grid.innerHTML = listas.map(l => `
+    <div class="list-card" onclick="showToast('Abrindo lista: ${l.titulo} 📚')">
+      <div class="list-card-banner">
+        ${l.icon}
+        <span class="list-card-category">${l.categoria}</span>
+      </div>
+      <div class="list-card-body">
+        <h3>${l.titulo}</h3>
+        <p>${l.desc}</p>
+        <div class="list-card-footer">📚 15 livros · ${l.curator}</div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function filterLists(cat, el) {
+  document.querySelectorAll('.cat-item').forEach(i => i.classList.remove('active'));
+  if (el) el.classList.add('active');
+}
+
+// ===================== FAVORITES =====
+function switchFavTab(tab, btn) {
+  document.querySelectorAll('.fav-tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.fav-section').forEach(s => s.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('fav-' + tab).classList.add('active');
+}
+
+// ===================== MODALS =====
+function openTropeModal(id) {
+  const trope = tropesData.find(t => t.id === id) || { nome: 'Trope', icon: '✨', descricao: 'Descrição não disponível', categoria: 'Geral', emocao: 'Amor', livros_count: 0 };
+  document.getElementById('modalContent').innerHTML = `
+    <div style="text-align:center;margin-bottom:20px">
+      <div style="font-size:64px;margin-bottom:12px">${trope.icon}</div>
+      <h2 style="font-family:var(--font-display);font-size:24px;font-weight:700;color:var(--text-dark);margin-bottom:6px">${trope.nome}</h2>
+      <span style="font-size:11px;font-weight:700;color:var(--pink-accent);background:var(--pink-pale);padding:4px 12px;border-radius:10px;text-transform:uppercase">${trope.categoria || 'Geral'} · ${trope.emocao || 'Amor'}</span>
+    </div>
+    <p style="font-size:14px;color:var(--text-mid);line-height:1.7;text-align:center;margin-bottom:20px">${trope.descricao || 'Descrição não disponível'}</p>
+    <div style="display:flex;gap:10px">
+      <button class="btn-primary" style="flex:1;padding:13px" onclick="showToast('Trope salva nos favoritos! ✨');closeModal()">❤️ Salvar trope</button>
+      <button class="btn-secondary" style="flex:1;padding:13px" onclick="showPage('explore');closeModal()">ver livros →</button>
+    </div>
+  `;
+  document.getElementById('bookOverlay').classList.add('open');
+}
+
+function openBookModal(id) {
+  const book = livrosData.find(b => b.id === id) || { titulo: 'Livro', autor: 'Autor', trope: 'Romance', capa_emoji: '📖' };
+  document.getElementById('modalContent').innerHTML = `
+    <div style="display:flex;gap:18px;margin-bottom:20px;align-items:flex-start">
+      <div style="flex-shrink:0;width:100px;height:140px;border-radius:10px;background:linear-gradient(135deg,var(--pink-deep),var(--pink-primary));display:flex;align-items:center;justify-content:center;font-size:40px;box-shadow:var(--shadow-md)">${book.capa_emoji || '📖'}</div>
+      <div style="flex:1">
+        <h2 style="font-family:var(--font-display);font-size:20px;font-weight:700;color:var(--text-dark);margin-bottom:6px;line-height:1.2">${book.titulo}</h2>
+        <p style="font-size:14px;color:var(--text-soft);margin-bottom:10px">${book.autor}</p>
+        <span style="font-size:11px;font-weight:700;color:var(--pink-accent);background:var(--pink-pale);padding:4px 12px;border-radius:10px;text-transform:uppercase">${book.trope || 'Romance'}</span>
+      </div>
+    </div>
+    <div style="display:flex;gap:10px">
+      <button class="btn-primary" style="flex:1;padding:13px" onclick="showToast('Livro adicionado aos favoritos! ♥');closeModal()">♥ Favoritar</button>
+      <button class="btn-secondary" style="flex:1;padding:13px" onclick="showToast('Adicionado à lista! 📚');closeModal()">+ Lista</button>
+    </div>
+  `;
+  document.getElementById('bookOverlay').classList.add('open');
+}
+
+function closeModal() {
+  document.getElementById('bookOverlay').classList.remove('open');
+}
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+// ===================== AUTH =====
+function checkUserSession() {
+  const userData = localStorage.getItem('user');
+  const navCta = document.getElementById('navCta');
+  const mobileAuth = document.getElementById('mobileMenuAuth');
+
+  if (userData) {
+    try {
+      const user = JSON.parse(userData);
+      currentUser = user;
+
+      let badge = '';
+      if (user.role === 'admin') badge = '<span class="admin-badge">👑 Admin</span>';
+      else if (user.role === 'bibliotecario') badge = '<span class="bibliotecario-badge">📚 Bibliotecário</span>';
+
+      let adminBtn = '';
+      if (user.role === 'admin' || user.role === 'bibliotecario') {
+        adminBtn = `<button class="btn-secondary" onclick="window.location.href='admin.html'" style="font-size:12px;padding:6px 14px;">📊 Painel</button>`;
+      }
+
+      navCta.innerHTML = `
+        <div class="user-info">
+          <span>👤 <span class="user-name">${user.name || user.email}</span></span>
+          ${badge}
+          <button class="btn-logout" onclick="logout()">🚪 Sair</button>
+        </div>
+        ${adminBtn}
+      `;
+
+      mobileAuth.innerHTML = `
+        <div style="padding:8px 16px;font-weight:600;color:var(--text-mid)">👤 ${user.name || user.email}</div>
+        ${user.role === 'admin' || user.role === 'bibliotecario' ? `<a onclick="window.location.href='admin.html';closeMobileMenu()">📊 Painel</a>` : ''}
+        <a onclick="logout();closeMobileMenu()">🚪 Sair</a>
+      `;
+
+      return user;
+    } catch(e) {
+      localStorage.removeItem('user');
+      currentUser = null;
+    }
+  }
+
+  navCta.innerHTML = `
+    <button class="btn-login" onclick="showPage('login')">Login</button>
+    <button class="btn-primary" onclick="showPage('register')">Cadastrar</button>
+  `;
+  mobileAuth.innerHTML = `
+    <a onclick="showPage('login');closeMobileMenu()">🔑 Login</a>
+    <a onclick="showPage('register');closeMobileMenu()">🌸 Cadastrar</a>
+  `;
+  return null;
+}
+
+function logout() {
+  if (confirm('Deseja sair da sua conta?')) {
+    localStorage.removeItem('user');
+    currentUser = null;
+    window.location.reload();
+  }
+}
+
+function doLogin() {
+  const email = document.getElementById('loginEmail').value;
+  const pass = document.getElementById('loginPass').value;
+  if (!email || !pass) { showToast('Preencha todos os campos! 💕'); return; }
+  // Simulação de login
+  const user = { id: 1, name: 'Leitora', email: email, role: 'usuario' };
+  localStorage.setItem('user', JSON.stringify(user));
+  showToast('Bem-vinda de volta! 🌸');
+  setTimeout(() => { checkUserSession(); showPage('home'); }, 500);
+}
+
+// ===================== AUTH =====
+function doLogin() {
+    const email = document.getElementById('loginEmail').value;
+    const pass = document.getElementById('loginPass').value;
+    if (!email || !pass) { showToast('Preencha todos os campos! 💕'); return; }
+    
+    // Chamar API de login
+    loginUser(email, pass);
+}
+
+async function loginUser(email, password) {
+    try {
+        const response = await fetch(API_AUTH, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ action: 'login', email, password })
+        });
+        const result = await response.json();
+        console.log('📦 Resposta login:', result);
+        
+        if (result.success) {
+            localStorage.setItem('user', JSON.stringify(result.user));
+            currentUser = result.user;
+            showToast('Bem-vinda de volta! 🌸');
+            checkUserSession();
+            setTimeout(() => { showPage('home'); }, 500);
+        } else {
+            showToast('❌ ' + (result.message || 'Falha no login'));
+        }
+    } catch (error) {
+        console.error('Erro no login:', error);
+        showToast('❌ Erro ao conectar com o servidor');
+    }
+}
+
+function doRegister() {
+    const name = document.getElementById('regName').value;
+    const email = document.getElementById('regEmail').value;
+    const pass = document.getElementById('regPass').value;
+    
+    if (!name || !email || !pass) { 
+        showToast('Preencha todos os campos! 💕'); 
+        return; 
+    }
+    if (pass.length < 8) { 
+        showToast('Senha precisa ter pelo menos 8 caracteres!'); 
+        return; 
+    }
+    
+    // Chamar API de cadastro
+    registerUser(name, email, pass);
+}
+
+async function registerUser(name, email, password) {
+    try {
+        const response = await fetch(API_AUTH, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ 
+                action: 'signup', 
+                name: name,
+                email: email,
+                phone: '(11) 99999-9999',
+                password: password 
+            })
+        });
+        const result = await response.json();
+        console.log('📦 Resposta cadastro:', result);
+        
+        if (result.success) {
+            localStorage.setItem('user', JSON.stringify(result.user));
+            currentUser = result.user;
+            showToast('Conta criada com sucesso! ✨ Bem-vinda!');
+            checkUserSession();
+            setTimeout(() => { showPage('home'); }, 500);
+        } else {
+            showToast('❌ ' + (result.message || 'Falha no cadastro'));
+        }
+    } catch (error) {
+        console.error('Erro no cadastro:', error);
+        showToast('❌ Erro ao conectar com o servidor');
+    }
+}
+
+// ===================== INIT =====
+document.addEventListener('DOMContentLoaded', carregarDados);
+</script>
+</body>
+</html>
