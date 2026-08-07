@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teste de Contato</title>
+    <style>
+        body { font-family: Arial; max-width: 600px; margin: 40px auto; padding: 20px; }
+        .form-group { margin-bottom: 15px; }
+        label { display: block; font-weight: bold; margin-bottom: 5px; }
+        input, textarea, select { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 5px; }
+        button { padding: 12px 30px; background: #FFD700; border: none; border-radius: 5px; font-weight: bold; cursor: pointer; }
+        .result { margin-top: 20px; padding: 15px; border-radius: 5px; display: none; }
+        .success { background: #d4edda; color: #155724; border: 1px solid #c3e6cb; display: block; }
+        .error { background: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; display: block; }
+        .loading { opacity: 0.6; pointer-events: none; }
+        pre { background: #f5f5f5; padding: 10px; border-radius: 5px; overflow-x: auto; }
+    </style>
+</head>
+<body>
+    <h1>🧪 Teste da API de Contato</h1>
+    
+    <form id="testForm">
+        <div class="form-group">
+            <label>Nome *</label>
+            <input type="text" id="nome" value="Teste Sistema" required>
+        </div>
+        <div class="form-group">
+            <label>Email *</label>
+            <input type="email" id="email" value="teste@luxdrive.com" required>
+        </div>
+        <div class="form-group">
+            <label>Telefone</label>
+            <input type="text" id="telefone" value="(11) 99999-9999">
+        </div>
+        <div class="form-group">
+            <label>Assunto</label>
+            <select id="assunto">
+                <option value="Contato via Site">Contato via Site</option>
+                <option value="Interesse em Veículo">Interesse em Veículo</option>
+                <option value="Agendar Test Drive">Agendar Test Drive</option>
+                <option value="Proposta Personalizada">Proposta Personalizada</option>
+                <option value="Dúvidas" selected>Dúvidas</option>
+                <option value="Outros">Outros</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label>Mensagem *</label>
+            <textarea id="mensagem" rows="4" required>Esta é uma mensagem de teste do sistema LuxDrive.</textarea>
+        </div>
+        <button type="submit">📨 Enviar Mensagem</button>
+        <button type="button" onclick="testarGET()" style="margin-left:10px;background:#666;color:white;">🔍 Testar GET</button>
+    </form>
+
+    <div id="result" class="result"></div>
+
+    <hr style="margin: 30px 0;">
+
+    <h3>📋 Últimas Mensagens no Banco</h3>
+    <button onclick="carregarMensagens()">🔄 Carregar</button>
+    <div id="mensagens" style="margin-top: 20px; background: #f5f5f5; padding: 15px; border-radius: 5px; max-height: 300px; overflow-y: auto;"></div>
+
+    <hr style="margin: 30px 0;">
+
+    <h3>📝 Logs</h3>
+    <button onclick="verLogs()">📖 Ver Logs</button>
+    <div id="logs" style="margin-top: 20px; background: #1a1a1a; color: #0f0; padding: 15px; border-radius: 5px; max-height: 300px; overflow-y: auto; font-family: monospace; font-size: 12px; white-space: pre-wrap;"></div>
+
+    <script>
+        // ===== TESTAR GET =====
+        async function testarGET() {
+            const result = document.getElementById('result');
+            result.className = 'result loading';
+            result.textContent = '⏳ Testando GET...';
+            result.style.display = 'block';
+
+            try {
+                const response = await fetch('api/api_contato.php');
+                const text = await response.text();
+                
+                try {
+                    const json = JSON.parse(text);
+                    result.className = 'result success';
+                    result.innerHTML = `<strong>✅ GET funcionando!</strong><br><pre>${JSON.stringify(json, null, 2)}</pre>`;
+                } catch (e) {
+                    result.className = 'result error';
+                    result.innerHTML = `<strong>❌ Resposta não é JSON:</strong><br><pre>${text}</pre>`;
+                }
+            } catch (error) {
+                result.className = 'result error';
+                result.textContent = '❌ Erro: ' + error.message;
+            }
+        }
+
+        // ===== ENVIAR MENSAGEM =====
+        document.getElementById('testForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const btn = this.querySelector('button[type="submit"]');
+            const result = document.getElementById('result');
+            
+            const dados = {
+                nome: document.getElementById('nome').value.trim(),
+                email: document.getElementById('email').value.trim(),
+                telefone: document.getElementById('telefone').value.trim(),
+                assunto: document.getElementById('assunto').value,
+                mensagem: document.getElementById('mensagem').value.trim()
+            };
+
+            btn.disabled = true;
+            btn.textContent = '⏳ Enviando...';
+            result.className = 'result loading';
+            result.textContent = '⏳ Enviando...';
+            result.style.display = 'block';
+
+            try {
+                console.log('📤 Enviando:', dados);
+
+                const response = await fetch('api/api_contato.php', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(dados)
+                });
+
+                console.log('📥 Status:', response.status);
+                
+                const text = await response.text();
+                console.log('📥 Resposta bruta:', text);
+
+                let json;
+                try {
+                    json = JSON.parse(text);
+                } catch (e) {
+                    result.className = 'result error';
+                    result.innerHTML = `
+                        <strong>❌ Resposta inválida do servidor</strong>
+                        <br><br>
+                        <strong>Status HTTP:</strong> ${response.status}
+                        <br><br>
+                        <strong>Resposta:</strong>
+                        <pre>${text}</pre>
+                    `;
+                    btn.disabled = false;
+                    btn.textContent = '📨 Enviar Mensagem';
+                    return;
+                }
+
+                console.log('📨 Resposta parseada:', json);
+
+                if (response.ok && json.success) {
+                    result.className = 'result success';
+                    result.innerHTML = `
+                        ✅ <strong>${json.message}</strong>
+                        ${json.id ? `<br><span style="font-size:0.9rem;color:#155724;">ID: ${json.id}</span>` : ''}
+                    `;
+                    // Limpar formulário
+                    document.getElementById('nome').value = '';
+                    document.getElementById('email').value = '';
+                    document.getElementById('telefone').value = '';
+                    document.getElementById('mensagem').value = '';
+                    carregarMensagens();
+                } else {
+                    result.className = 'result error';
+                    result.innerHTML = `
+                        ❌ <strong>Erro:</strong> ${json.error || json.message || 'Erro desconhecido'}
+                        <br><br>
+                        <strong>Status:</strong> ${response.status}
+                    `;
+                }
+
+            } catch (error) {
+                console.error('❌ Erro:', error);
+                result.className = 'result error';
+                result.innerHTML = `❌ <strong>Erro:</strong> ${error.message}`;
+            }
+
+            btn.disabled = false;
+            btn.textContent = '📨 Enviar Mensagem';
+        });
+
+        // ===== CARREGAR MENSAGENS =====
+        async function carregarMensagens() {
+            const div = document.getElementById('mensagens');
+            div.innerHTML = '⏳ Carregando...';
+
+            try {
+                const response = await fetch('api/api_mensagens.php');
+                if (!response.ok) throw new Error('Erro ao carregar mensagens');
+                
+                const mensagens = await response.json();
+                
+                if (!mensagens || mensagens.length === 0) {
+                    div.innerHTML = '<p style="color:#888;">Nenhuma mensagem encontrada.</p>';
+                    return;
+                }
+
+                div.innerHTML = mensagens.slice(0, 10).map(m => `
+                    <div style="border-bottom: 1px solid #ddd; padding: 10px 0;">
+                        <strong>${m.nome}</strong> (${m.email})
+                        <span style="color: #888; font-size: 0.9em;">${m.created_at || 'Data não disponível'}</span>
+                        <br>
+                        <span style="font-size: 0.9em;">${m.mensagem.substring(0, 100)}${m.mensagem.length > 100 ? '...' : ''}</span>
+                        <br>
+                        <span style="font-size: 0.8em; color: ${m.lida ? 'green' : 'red'};">
+                            ${m.lida ? '✅ Lida' : '📖 Não lida'}
+                            ${m.respondida ? ' | ✅ Respondida' : ''}
+                        </span>
+                        <span style="font-size: 0.8em; color: #888;">ID: ${m.id}</span>
+                    </div>
+                `).join('');
+            } catch (error) {
+                div.innerHTML = `<p style="color:red;">❌ Erro: ${error.message}</p>`;
+            }
+        }
+
+        // ===== VER LOGS =====
+        async function verLogs() {
+            const div = document.getElementById('logs');
+            div.textContent = '⏳ Carregando logs...';
+
+            try {
+                const response = await fetch('api/api_contato.php?log=true');
+                const text = await response.text();
+                
+                if (text.includes('Não há logs')) {
+                    div.textContent = '📝 Não há logs disponíveis.';
+                } else {
+                    div.textContent = text;
+                }
+            } catch (error) {
+                div.textContent = '❌ Erro ao carregar logs: ' + error.message;
+            }
+        }
+
+        // ===== CARREGAR MENSAGENS AO ABRIR =====
+        carregarMensagens();
+    </script>
+</body>
+</html>

@@ -1,0 +1,1152 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin - LuxDrive</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        :root {
+            --gold: #FFD700;
+            --gold-dark: #D4A800;
+            --black: #1A1A1A;
+            --black-light: #2D2D2D;
+            --white: #FFFFFF;
+            --gray-light: #F5F5F5;
+            --gray-mid: #888888;
+            --shadow: 0 4px 20px rgba(0,0,0,0.08);
+            --shadow-lg: 0 10px 40px rgba(0,0,0,0.15);
+            --radius: 16px;
+            --radius-lg: 24px;
+            --danger: #ef4444;
+            --success: #22c55e;
+            --warning: #f59e0b;
+            --font-display: 'Playfair Display', Georgia, serif;
+            --font-body: 'Inter', system-ui, sans-serif;
+        }
+        body {
+            font-family: var(--font-body);
+            background: var(--gray-light);
+            color: var(--black);
+            padding: 1.5rem;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+        }
+        .admin-container {
+            max-width: 1400px;
+            width: 100%;
+            background: var(--white);
+            border-radius: var(--radius-lg);
+            padding: 2rem;
+            box-shadow: var(--shadow-lg);
+        }
+        .admin-header {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            gap: 1rem;
+        }
+        .admin-header .logo {
+            font-family: var(--font-display);
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--gold-dark);
+        }
+        .admin-header .logo span {
+            color: var(--black);
+            font-weight: 400;
+        }
+        .admin-nav {
+            display: flex;
+            gap: 0.8rem;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+        .admin-nav button {
+            padding: 0.6rem 1.2rem;
+            border: 1.5px solid #e0e0e0;
+            border-radius: 8px;
+            background: var(--white);
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+            color: var(--gray-mid);
+        }
+        .admin-nav button:hover,
+        .admin-nav button.active {
+            background: var(--gold);
+            color: var(--black);
+            border-color: var(--gold);
+        }
+        .admin-nav .btn-danger {
+            border-color: var(--danger);
+            color: var(--danger);
+        }
+        .admin-nav .btn-danger:hover {
+            background: var(--danger);
+            color: white;
+        }
+        .admin-nav .btn-logout {
+            border-color: #999;
+            color: #999;
+        }
+        .admin-nav .btn-logout:hover {
+            background: #999;
+            color: white;
+        }
+        .admin-content {
+            background: var(--gray-light);
+            border-radius: var(--radius);
+            padding: 2rem;
+            min-height: 400px;
+        }
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        .stat-card {
+            background: var(--white);
+            padding: 1.5rem;
+            border-radius: var(--radius);
+            text-align: center;
+            border: 1px solid #e0e0e0;
+        }
+        .stat-card h3 {
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--gold-dark);
+        }
+        .stat-card p {
+            font-size: 0.85rem;
+            color: var(--gray-mid);
+        }
+        .table-container {
+            overflow-x: auto;
+            background: var(--white);
+            border-radius: var(--radius);
+            padding: 1rem;
+            border: 1px solid #e0e0e0;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        table th {
+            background: var(--gray-light);
+            padding: 0.8rem 1rem;
+            text-align: left;
+            font-weight: 700;
+            font-size: 0.85rem;
+        }
+        table td {
+            padding: 0.8rem 1rem;
+            border-bottom: 1px solid #f0f0f0;
+            font-size: 0.9rem;
+        }
+        table tr:hover td {
+            background: #fafafa;
+        }
+        .btn-edit {
+            background: var(--warning);
+            color: white;
+            border: none;
+            padding: 0.3rem 0.8rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.8rem;
+            margin-right: 0.5rem;
+        }
+        .btn-edit:hover {
+            opacity: 0.9;
+        }
+        .btn-delete {
+            background: var(--danger);
+            color: white;
+            border: none;
+            padding: 0.3rem 0.8rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.8rem;
+        }
+        .btn-delete:hover {
+            opacity: 0.9;
+        }
+        .btn-add {
+            background: var(--success);
+            color: white;
+            border: none;
+            padding: 0.7rem 1.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+        .btn-add:hover {
+            opacity: 0.9;
+            transform: scale(1.02);
+        }
+        .hidden {
+            display: none !important;
+        }
+        .badge-status {
+            display: inline-block;
+            padding: 0.2rem 0.8rem;
+            border-radius: 4px;
+            font-size: 0.7rem;
+            font-weight: 700;
+        }
+        .badge-admin {
+            background: var(--gold);
+            color: var(--black);
+        }
+        .badge-vendedor {
+            background: #FF8C00;
+            color: white;
+        }
+        .badge-usuario {
+            background: #e0e0e0;
+            color: #666;
+        }
+        .badge-disponivel {
+            background: var(--success);
+            color: white;
+        }
+        .badge-indisponivel {
+            background: var(--danger);
+            color: white;
+        }
+        .carro-thumb {
+            width: 80px;
+            height: 60px;
+            object-fit: cover;
+            border-radius: 6px;
+        }
+
+        /* ===== MENSAGENS ===== */
+        .mensagem-status-nao-lida {
+            background: var(--danger);
+            color: white;
+            padding: 2px 10px;
+            border-radius: 12px;
+            font-size: 0.7rem;
+            font-weight: 700;
+        }
+        .mensagem-status-lida {
+            background: var(--success);
+            color: white;
+            padding: 2px 10px;
+            border-radius: 12px;
+            font-size: 0.7rem;
+            font-weight: 700;
+        }
+        .mensagem-status-respondida {
+            background: var(--gold);
+            color: var(--black);
+            padding: 2px 10px;
+            border-radius: 12px;
+            font-size: 0.7rem;
+            font-weight: 700;
+        }
+        .btn-responder {
+            background: #25D366;
+            color: white;
+            border: none;
+            padding: 0.3rem 0.8rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.8rem;
+            margin-right: 0.5rem;
+        }
+        .btn-responder:hover {
+            background: #1da851;
+        }
+        .btn-marcar-lida {
+            background: var(--success);
+            color: white;
+            border: none;
+            padding: 0.3rem 0.8rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.8rem;
+            margin-right: 0.5rem;
+        }
+        .btn-marcar-lida:hover {
+            opacity: 0.9;
+        }
+        .btn-ver-mensagem {
+            background: var(--gold);
+            color: var(--black);
+            border: none;
+            padding: 0.3rem 0.8rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.8rem;
+            margin-right: 0.5rem;
+        }
+        .btn-ver-mensagem:hover {
+            background: var(--gold-dark);
+        }
+
+        /* MODAL DE MENSAGEM */
+        .modal-mensagem-content {
+            max-width: 600px;
+        }
+        .modal-mensagem-content .mensagem-detalhe {
+            background: var(--gray-light);
+            padding: 16px;
+            border-radius: var(--radius);
+            margin-bottom: 16px;
+        }
+        .modal-mensagem-content .mensagem-detalhe .label {
+            color: var(--gray-mid);
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+        .modal-mensagem-content .mensagem-detalhe .valor {
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+        .modal-mensagem-content .mensagem-texto {
+            background: var(--gray-light);
+            padding: 16px;
+            border-radius: var(--radius);
+            line-height: 1.8;
+            margin-bottom: 16px;
+        }
+
+        /* ===== MODAL ===== */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.5);
+            backdrop-filter: blur(4px);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            padding: 1rem;
+        }
+        .modal-overlay.active {
+            display: flex;
+        }
+        .modal-box {
+            background: var(--white);
+            max-width: 550px;
+            width: 100%;
+            border-radius: var(--radius-lg);
+            padding: 2rem;
+            box-shadow: 0 40px 80px rgba(0,0,0,0.2);
+            animation: slideUp 0.25s ease;
+            border-top: 4px solid var(--gold);
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+        @keyframes slideUp {
+            0% { opacity: 0; transform: scale(0.96) translateY(16px); }
+            100% { opacity: 1; transform: scale(1) translateY(0); }
+        }
+        .modal-close {
+            float: right;
+            font-size: 1.6rem;
+            background: none;
+            border: none;
+            color: #999;
+            cursor: pointer;
+        }
+        .modal-close:hover {
+            color: var(--black);
+        }
+        .modal-title {
+            font-family: var(--font-display);
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--gold-dark);
+            margin-bottom: 0.2rem;
+        }
+        .form-group {
+            margin-bottom: 1rem;
+        }
+        .form-group label {
+            display: block;
+            font-weight: 700;
+            font-size: 0.85rem;
+            margin-bottom: 0.2rem;
+        }
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 0.7rem 1rem;
+            border: 1.5px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            background: var(--gray-light);
+            transition: all 0.3s ease;
+            font-family: var(--font-body);
+        }
+        .form-group textarea {
+            border-radius: var(--radius);
+            min-height: 80px;
+            resize: vertical;
+        }
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            border-color: var(--gold-dark);
+            background: var(--white);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(212, 168, 0, 0.1);
+        }
+        .form-actions {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+        .form-actions button {
+            flex: 1;
+            padding: 0.8rem;
+            border: none;
+            border-radius: 8px;
+            font-weight: 700;
+            cursor: pointer;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+        }
+        .btn-save {
+            background: var(--gold);
+            color: var(--black);
+        }
+        .btn-save:hover {
+            background: var(--gold-dark);
+        }
+        .btn-cancel {
+            background: #e0e0e0;
+            color: #666;
+        }
+        .btn-cancel:hover {
+            background: #ccc;
+        }
+        .toast-msg {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--black);
+            color: white;
+            padding: 0.7rem 2rem;
+            border-radius: 8px;
+            box-shadow: 0 12px 30px rgba(0,0,0,0.15);
+            font-weight: 500;
+            opacity: 0;
+            transition: opacity 0.25s ease;
+            pointer-events: none;
+            z-index: 1500;
+            border: 1px solid rgba(255,215,0,0.2);
+        }
+        .toast-msg.show {
+            opacity: 1;
+        }
+
+        @media (max-width: 700px) {
+            .admin-container { padding: 1.2rem; }
+            .admin-header { flex-direction: column; align-items: stretch; }
+            .admin-nav { justify-content: center; }
+            .admin-nav button { font-size: 0.8rem; padding: 0.4rem 0.8rem; }
+            .modal-box { padding: 1.5rem; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="admin-container">
+    <header class="admin-header">
+        <div class="logo">Lux<span>Drive</span> <span style="font-size:0.8rem;font-weight:400;color:var(--gray-mid);">· Admin</span></div>
+        <div class="admin-nav" id="adminNav">
+            <button class="active" data-section="dashboard">📊 Dashboard</button>
+            <button data-section="carros">🚗 Carros</button>
+            <button data-section="mensagens">💬 Mensagens</button>
+            <button data-section="usuarios">👥 Usuários</button>
+            <button onclick="window.location.href='index.html'" class="btn-danger">🏠 Loja</button>
+            <button onclick="logout()" class="btn-logout">🚪 Sair</button>
+        </div>
+    </header>
+
+    <div class="admin-content" id="adminContent">
+        <!-- DASHBOARD -->
+        <div id="section-dashboard">
+            <div class="stats-grid" id="statsGrid">
+                <div class="stat-card"><h3 id="totalCarros">0</h3><p>Total de Carros</p></div>
+                <div class="stat-card"><h3 id="totalDisponiveis">0</h3><p>Carros Disponíveis</p></div>
+                <div class="stat-card"><h3 id="totalMensagens">0</h3><p>Mensagens Recebidas</p></div>
+                <div class="stat-card"><h3 id="totalUsuarios">0</h3><p>Usuários Cadastrados</p></div>
+            </div>
+            <div style="text-align:center;padding:2rem;background:white;border-radius:var(--radius);border:1px solid #e0e0e0;">
+                <p style="font-weight:600;">Bem-vindo ao painel administrativo da LuxDrive! 🚗</p>
+                <p style="font-size:0.9rem;color:var(--gray-mid);">Gerencie seus veículos, mensagens e usuários.</p>
+            </div>
+        </div>
+
+        <!-- CARROS -->
+        <div id="section-carros" class="hidden">
+            <button class="btn-add" onclick="openCarroModal()">🚗 Novo Carro</button>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Imagem</th>
+                            <th>Marca</th>
+                            <th>Modelo</th>
+                            <th>Ano</th>
+                            <th>Preço</th>
+                            <th>Status</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody id="carrosTableBody">
+                        <tr><td colspan="8" style="text-align:center;">Carregando carros...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- MENSAGENS -->
+        <div id="section-mensagens" class="hidden">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; flex-wrap: wrap; gap: 12px;">
+                <div>
+                    <span style="font-weight: 700; font-size: 1.1rem;">💬 Mensagens de Contato</span>
+                    <span id="contadorNaoLidas" style="background: var(--danger); color: white; padding: 2px 10px; border-radius: 12px; font-size: 0.8rem; margin-left: 8px;">0 não lidas</span>
+                </div>
+                <button class="btn-add" style="background: var(--gold); color: var(--black); padding: 0.5rem 1.2rem;" onclick="carregarMensagens()">🔄 Atualizar</button>
+            </div>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Nome</th>
+                            <th>Email</th>
+                            <th>Telefone</th>
+                            <th>Assunto</th>
+                            <th>Status</th>
+                            <th>Data</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody id="mensagensTableBody">
+                        <tr><td colspan="8" style="text-align:center;">Carregando mensagens...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- USUÁRIOS -->
+        <div id="section-usuarios" class="hidden">
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Nome</th>
+                            <th>Email</th>
+                            <th>Role</th>
+                            <th>Data</th>
+                        </tr>
+                    </thead>
+                    <tbody id="usersTableBody">
+                        <tr><td colspan="5" style="text-align:center;">Carregando usuários...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ===== MODAL CARRO ===== -->
+<div class="modal-overlay" id="carroModal">
+    <div class="modal-box">
+        <button class="modal-close" onclick="closeCarroModal()">✕</button>
+        <h2 class="modal-title" id="carroModalTitle">🚗 Novo Carro</h2>
+        <form id="carroForm" onsubmit="salvarCarro(event)">
+            <input type="hidden" id="carroId">
+            <div class="form-group">
+                <label>Marca *</label>
+                <input type="text" id="carroMarca" placeholder="Ex: Ferrari" required>
+            </div>
+            <div class="form-group">
+                <label>Modelo *</label>
+                <input type="text" id="carroModelo" placeholder="Ex: SF90 Stradale" required>
+            </div>
+            <div class="form-group">
+                <label>Ano *</label>
+                <input type="number" id="carroAno" placeholder="2024" required>
+            </div>
+            <div class="form-group">
+                <label>Preço (R$) *</label>
+                <input type="number" id="carroPreco" step="0.01" placeholder="4500000" required>
+            </div>
+            <div class="form-group">
+                <label>Cor</label>
+                <input type="text" id="carroCor" placeholder="Ex: Vermelho">
+            </div>
+            <div class="form-group">
+                <label>Motor</label>
+                <input type="text" id="carroMotor" placeholder="Ex: V8 Híbrido">
+            </div>
+            <div class="form-group">
+                <label>Potência</label>
+                <input type="text" id="carroPotencia" placeholder="Ex: 986 cv">
+            </div>
+            <div class="form-group">
+                <label>Transmissão</label>
+                <input type="text" id="carroTransmissao" placeholder="Ex: Automática">
+            </div>
+            <div class="form-group">
+                <label>Quilometragem</label>
+                <input type="number" id="carroKm" placeholder="0" value="0">
+            </div>
+            <div class="form-group">
+                <label>Descrição</label>
+                <textarea id="carroDescricao" rows="3" placeholder="Descrição do veículo..."></textarea>
+            </div>
+            <div class="form-group">
+                <label>URL da Imagem</label>
+                <input type="text" id="carroImagem" placeholder="https://images.unsplash.com/...">
+            </div>
+            <div class="form-group">
+                <label>Destaque</label>
+                <select id="carroDestaque">
+                    <option value="1">Sim</option>
+                    <option value="0">Não</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Disponível</label>
+                <select id="carroDisponivel">
+                    <option value="1">Sim</option>
+                    <option value="0">Não</option>
+                </select>
+            </div>
+            <div class="form-actions">
+                <button type="submit" class="btn-save">💾 Salvar</button>
+                <button type="button" class="btn-cancel" onclick="closeCarroModal()">Cancelar</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- ===== MODAL MENSAGEM ===== -->
+<div class="modal-overlay" id="mensagemModal">
+    <div class="modal-box">
+        <button class="modal-close" onclick="closeMensagemModal()">✕</button>
+        <div id="mensagemModalContent"></div>
+    </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast-msg" id="toast"></div>
+
+<script>
+    // ===== CONFIGURAÇÃO =====
+    const API_CARROS = 'api/api_carros.php';
+    const API_ADMIN = 'api/api_admin.php';
+    const API_USUARIOS = 'api/api_usuarios.php';
+    const API_MENSAGENS = 'api/api_mensagens.php';
+
+    let currentUser = null;
+    let toastTimeout;
+
+    // ===== TOAST =====
+    function showToast(msg) {
+        const t = document.getElementById('toast');
+        t.textContent = msg;
+        t.classList.add('show');
+        clearTimeout(toastTimeout);
+        toastTimeout = setTimeout(() => t.classList.remove('show'), 3000);
+    }
+
+    // ===== VERIFICAÇÃO DE ADMIN =====
+    function checkAdminAccess() {
+        const userData = localStorage.getItem('user');
+        if (!userData) {
+            alert('⚠️ Faça login para acessar o painel administrativo.');
+            window.location.href = 'index.html';
+            return false;
+        }
+        try {
+            const user = JSON.parse(userData);
+            currentUser = user;
+            if (user.role !== 'admin' && user.role !== 'vendedor') {
+                alert('⛔ Acesso negado. Você não tem permissão para acessar o painel administrativo.');
+                window.location.href = 'index.html';
+                return false;
+            }
+            document.querySelector('.admin-header .logo').innerHTML = 
+                `Lux<span>Drive</span> <span style="font-size:0.8rem;font-weight:400;color:var(--gray-mid);">· Admin</span>
+                <span style="font-size:0.8rem;font-weight:400;color:var(--gold);margin-left:1rem;">👤 ${user.name}</span>`;
+            return true;
+        } catch (e) {
+            window.location.href = 'index.html';
+            return false;
+        }
+    }
+
+    function logout() {
+        if (confirm('Deseja sair do painel?')) {
+            localStorage.removeItem('user');
+            window.location.href = 'index.html';
+        }
+    }
+
+    // ===== NAVEGAÇÃO =====
+    document.querySelectorAll('.admin-nav button[data-section]').forEach(btn => {
+        btn.addEventListener('click', function() {
+            const section = this.dataset.section;
+            document.querySelectorAll('.admin-nav button[data-section]').forEach(b => b.classList.remove('active'));
+            this.classList.add('active');
+            document.querySelectorAll('[id^="section-"]').forEach(el => el.classList.add('hidden'));
+            document.getElementById(`section-${section}`).classList.remove('hidden');
+            if (section === 'dashboard') loadDashboard();
+            else if (section === 'carros') loadCarros();
+            else if (section === 'mensagens') carregarMensagens();
+            else if (section === 'usuarios') loadUsuarios();
+        });
+    });
+
+    // ===== DASHBOARD =====
+    async function loadDashboard() {
+        try {
+            const [carrosRes, mensagensRes, usuariosRes] = await Promise.all([
+                fetch(API_CARROS),
+                fetch(API_MENSAGENS),
+                fetch(API_USUARIOS)
+            ]);
+
+            const carros = await carrosRes.json();
+            const mensagens = await mensagensRes.json();
+            const usuarios = await usuariosRes.json();
+
+            document.getElementById('totalCarros').textContent = carros.length || 0;
+            document.getElementById('totalDisponiveis').textContent = carros.filter(c => c.disponivel).length || 0;
+            document.getElementById('totalMensagens').textContent = mensagens.length || 0;
+            document.getElementById('totalUsuarios').textContent = usuarios.length || 0;
+        } catch (e) {
+            console.error('Erro ao carregar dashboard:', e);
+        }
+    }
+
+    // ===== CARROS =====
+    async function loadCarros() {
+        try {
+            const res = await fetch(API_CARROS);
+            if (!res.ok) throw new Error('Erro ao carregar carros');
+            
+            const data = await res.json();
+            const tbody = document.getElementById('carrosTableBody');
+            
+            if (!data || data.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="8" style="text-align:center;">Nenhum carro cadastrado</td></tr>`;
+                return;
+            }
+            
+            tbody.innerHTML = data.map(c => `
+                <tr>
+                    <td>${c.id}</td>
+                    <td><img src="${c.imagem || 'https://images.unsplash.com/photo-1583121274602-3e2820c69888?w=80&h=60&fit=crop'}" class="carro-thumb" onerror="this.src='https://via.placeholder.com/80x60'"></td>
+                    <td><strong>${c.marca}</strong></td>
+                    <td>${c.modelo}</td>
+                    <td>${c.ano}</td>
+                    <td>R$ ${c.preco ? c.preco.toLocaleString('pt-BR') : '—'}</td>
+                    <td><span class="badge-status ${c.disponivel ? 'badge-disponivel' : 'badge-indisponivel'}">${c.disponivel ? '✅ Disponível' : '❌ Vendido'}</span></td>
+                    <td>
+                        <button class="btn-edit" onclick="editarCarro(${c.id})">✏️ Editar</button>
+                        <button class="btn-delete" onclick="excluirCarro(${c.id})">🗑️ Excluir</button>
+                    </td>
+                </tr>
+            `).join('');
+        } catch (e) {
+            console.error('Erro ao carregar carros:', e);
+            document.getElementById('carrosTableBody').innerHTML = 
+                `<tr><td colspan="8" style="text-align:center;color:var(--danger);">❌ Erro ao carregar carros</td></tr>`;
+        }
+    }
+
+    // ===== MODAL CARRO =====
+    function openCarroModal(carro = null) {
+        const modal = document.getElementById('carroModal');
+        const form = document.getElementById('carroForm');
+        
+        // Resetar formulário
+        form.reset();
+        document.getElementById('carroId').value = '';
+        document.getElementById('carroModalTitle').textContent = '🚗 Novo Carro';
+        
+        if (carro) {
+            document.getElementById('carroId').value = carro.id;
+            document.getElementById('carroMarca').value = carro.marca || '';
+            document.getElementById('carroModelo').value = carro.modelo || '';
+            document.getElementById('carroAno').value = carro.ano || '';
+            document.getElementById('carroPreco').value = carro.preco || '';
+            document.getElementById('carroCor').value = carro.cor || '';
+            document.getElementById('carroMotor').value = carro.motor || '';
+            document.getElementById('carroPotencia').value = carro.potencia || '';
+            document.getElementById('carroTransmissao').value = carro.transmissao || '';
+            document.getElementById('carroKm').value = carro.quilometragem || 0;
+            document.getElementById('carroDescricao').value = carro.descricao || '';
+            document.getElementById('carroImagem').value = carro.imagem || '';
+            document.getElementById('carroDestaque').value = carro.destaque ? 1 : 0;
+            document.getElementById('carroDisponivel').value = carro.disponivel ? 1 : 0;
+            document.getElementById('carroModalTitle').textContent = '✏️ Editar Carro';
+        }
+        
+        modal.classList.add('active');
+    }
+
+    function closeCarroModal() {
+        document.getElementById('carroModal').classList.remove('active');
+    }
+
+    // ===== SALVAR CARRO =====
+    async function salvarCarro(e) {
+        e.preventDefault();
+        
+        const id = document.getElementById('carroId').value;
+        const btn = document.querySelector('#carroForm .btn-save');
+        
+        const data = {
+            marca: document.getElementById('carroMarca').value.trim(),
+            modelo: document.getElementById('carroModelo').value.trim(),
+            ano: parseInt(document.getElementById('carroAno').value),
+            preco: parseFloat(document.getElementById('carroPreco').value),
+            cor: document.getElementById('carroCor').value.trim(),
+            motor: document.getElementById('carroMotor').value.trim(),
+            potencia: document.getElementById('carroPotencia').value.trim(),
+            transmissao: document.getElementById('carroTransmissao').value.trim(),
+            quilometragem: parseInt(document.getElementById('carroKm').value) || 0,
+            descricao: document.getElementById('carroDescricao').value.trim(),
+            imagem: document.getElementById('carroImagem').value.trim(),
+            destaque: parseInt(document.getElementById('carroDestaque').value),
+            disponivel: parseInt(document.getElementById('carroDisponivel').value)
+        };
+
+        // Validar campos obrigatórios
+        if (!data.marca || !data.modelo || !data.ano || !data.preco) {
+            showToast('⚠️ Preencha todos os campos obrigatórios!');
+            return;
+        }
+
+        btn.disabled = true;
+        btn.textContent = '⏳ Salvando...';
+
+        try {
+            const action = id ? 'update_carro' : 'create_carro';
+            const payload = { action, ...data };
+            if (id) payload.id = parseInt(id);
+
+            const res = await fetch(API_ADMIN, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
+
+            const result = await res.json();
+            
+            if (result.success) {
+                showToast(result.message || '✅ Carro salvo com sucesso!');
+                closeCarroModal();
+                loadCarros();
+                loadDashboard();
+            } else {
+                showToast('❌ ' + (result.message || 'Erro ao salvar carro'));
+            }
+        } catch (e) {
+            console.error('Erro ao salvar:', e);
+            showToast('❌ Erro ao salvar carro');
+        }
+
+        btn.disabled = false;
+        btn.textContent = '💾 Salvar';
+    }
+
+    // ===== EDITAR CARRO =====
+    async function editarCarro(id) {
+        try {
+            const res = await fetch(API_CARROS);
+            if (!res.ok) throw new Error('Erro ao buscar carros');
+            
+            const carros = await res.json();
+            const carro = carros.find(c => c.id === id);
+            
+            if (carro) {
+                openCarroModal(carro);
+            } else {
+                showToast('❌ Carro não encontrado');
+            }
+        } catch (e) {
+            console.error('Erro ao editar:', e);
+            showToast('❌ Erro ao carregar carro para edição');
+        }
+    }
+
+    // ===== EXCLUIR CARRO =====
+    async function excluirCarro(id) {
+        if (!confirm('⚠️ Tem certeza que deseja excluir este carro permanentemente?')) return;
+        
+        try {
+            const res = await fetch(API_ADMIN, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ action: 'delete_carro', id })
+            });
+            
+            const result = await res.json();
+            
+            if (result.success) {
+                showToast('✅ Carro excluído com sucesso!');
+                loadCarros();
+                loadDashboard();
+            } else {
+                showToast('❌ ' + (result.message || 'Erro ao excluir carro'));
+            }
+        } catch (e) {
+            console.error('Erro ao excluir:', e);
+            showToast('❌ Erro ao excluir carro');
+        }
+    }
+
+    // ===== MENSAGENS =====
+    async function carregarMensagens() {
+        try {
+            const response = await fetch(API_MENSAGENS);
+            if (!response.ok) throw new Error('Erro ao carregar mensagens');
+            
+            const mensagens = await response.json();
+            const tbody = document.getElementById('mensagensTableBody');
+            const contador = document.getElementById('contadorNaoLidas');
+
+            if (!mensagens || mensagens.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="8" style="text-align:center;">Nenhuma mensagem recebida</td></tr>`;
+                contador.textContent = '0 não lidas';
+                return;
+            }
+
+            const naoLidas = mensagens.filter(m => !m.lida).length;
+            contador.textContent = `${naoLidas} não lidas`;
+
+            tbody.innerHTML = mensagens.map(m => {
+                let statusText = '📖 Não lida';
+                let statusClass = 'mensagem-status-nao-lida';
+                if (m.respondida) {
+                    statusText = '✅ Respondida';
+                    statusClass = 'mensagem-status-respondida';
+                } else if (m.lida) {
+                    statusText = '📗 Lida';
+                    statusClass = 'mensagem-status-lida';
+                }
+
+                const data = m.created_at ? new Date(m.created_at).toLocaleString('pt-BR') : '—';
+
+                return `
+                    <tr>
+                        <td>${m.id}</td>
+                        <td><strong>${m.nome}</strong></td>
+                        <td>${m.email}</td>
+                        <td>${m.telefone || '—'}</td>
+                        <td>${m.assunto || 'Contato'}</td>
+                        <td><span class="${statusClass}">${statusText}</span></td>
+                        <td>${data}</td>
+                        <td>
+                            <button class="btn-ver-mensagem" onclick="verMensagem(${m.id})">📋 Ver</button>
+                            ${!m.lida ? `<button class="btn-marcar-lida" onclick="marcarLida(${m.id})">✅ Marcar lida</button>` : ''}
+                            ${!m.respondida ? `<button class="btn-responder" onclick="responderMensagem(${m.id}, '${m.email}')">💬 Responder</button>` : ''}
+                            <button class="btn-delete" onclick="excluirMensagem(${m.id})">🗑️</button>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+
+        } catch (error) {
+            console.error('Erro ao carregar mensagens:', error);
+            document.getElementById('mensagensTableBody').innerHTML =
+                `<tr><td colspan="8" style="text-align:center;color:var(--danger);">❌ Erro ao carregar mensagens</td></tr>`;
+        }
+    }
+
+    // ===== VER MENSAGEM =====
+    async function verMensagem(id) {
+        try {
+            const response = await fetch(API_MENSAGENS);
+            const mensagens = await response.json();
+            const msg = mensagens.find(m => m.id === id);
+            
+            if (!msg) {
+                showToast('❌ Mensagem não encontrada');
+                return;
+            }
+
+            const modal = document.getElementById('mensagemModal');
+            const content = document.getElementById('mensagemModalContent');
+            
+            content.innerHTML = `
+                <div class="modal-mensagem-content">
+                    <div style="display:flex; justify-content:space-between; align-items:start; margin-bottom:16px;">
+                        <div>
+                            <h2 style="font-family:var(--font-display); font-size:24px; font-weight:700; color:var(--black);">💬 Mensagem de ${msg.nome}</h2>
+                            <div style="color:var(--gray-mid); font-size:14px;">${msg.created_at ? new Date(msg.created_at).toLocaleString('pt-BR') : '—'}</div>
+                        </div>
+                        <div>
+                            ${!msg.lida ? '<span class="mensagem-status-nao-lida">Não lida</span>' : ''}
+                            ${msg.respondida ? '<span class="mensagem-status-respondida">Respondida</span>' : ''}
+                        </div>
+                    </div>
+                    <div class="mensagem-detalhe">
+                        <div><span class="label">📧 Email:</span> <span class="valor">${msg.email}</span></div>
+                        <div><span class="label">📞 Telefone:</span> <span class="valor">${msg.telefone || '—'}</span></div>
+                        <div><span class="label">📌 Assunto:</span> <span class="valor">${msg.assunto || 'Contato'}</span></div>
+                    </div>
+                    <div class="mensagem-texto">
+                        <strong>Mensagem:</strong><br>
+                        ${msg.mensagem}
+                    </div>
+                    <div style="display:flex; gap:10px; flex-wrap:wrap;">
+                        ${!msg.lida ? `<button class="btn-marcar-lida" onclick="marcarLida(${msg.id}); closeMensagemModal();">✅ Marcar como lida</button>` : ''}
+                        ${!msg.respondida ? `<button class="btn-responder" onclick="responderMensagem(${msg.id}, '${msg.email}'); closeMensagemModal();">💬 Responder</button>` : ''}
+                        <button class="btn-delete" onclick="excluirMensagem(${msg.id}); closeMensagemModal();">🗑️ Excluir</button>
+                        <button class="btn-cancel" onclick="closeMensagemModal()" style="background:#e0e0e0; color:#666; border:none; padding:0.5rem 1rem; border-radius:6px; cursor:pointer; font-weight:600;">Fechar</button>
+                    </div>
+                </div>
+            `;
+            
+            modal.classList.add('active');
+
+            if (!msg.lida) {
+                marcarLida(id);
+            }
+        } catch (error) {
+            console.error('Erro ao ver mensagem:', error);
+            showToast('❌ Erro ao carregar mensagem');
+        }
+    }
+
+    function closeMensagemModal() {
+        document.getElementById('mensagemModal').classList.remove('active');
+    }
+
+    // ===== MARCAR COMO LIDA =====
+    async function marcarLida(id) {
+        try {
+            await fetch(API_MENSAGENS, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ action: 'marcar_lida', id })
+            });
+            carregarMensagens();
+        } catch (error) {
+            console.error('Erro:', error);
+        }
+    }
+
+    // ===== RESPONDER MENSAGEM =====
+    function responderMensagem(id, email) {
+        window.open(`mailto:${email}?subject=Resposta LuxDrive`, '_blank');
+        fetch(API_MENSAGENS, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ action: 'marcar_respondida', id })
+        }).then(() => carregarMensagens());
+    }
+
+    // ===== EXCLUIR MENSAGEM =====
+    async function excluirMensagem(id) {
+        if (!confirm('Excluir esta mensagem permanentemente?')) return;
+        try {
+            await fetch(API_MENSAGENS, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ action: 'excluir', id })
+            });
+            carregarMensagens();
+            showToast('🗑️ Mensagem excluída');
+        } catch (error) {
+            console.error('Erro:', error);
+            showToast('❌ Erro ao excluir mensagem');
+        }
+    }
+
+    // ===== USUÁRIOS =====
+    async function loadUsuarios() {
+        try {
+            const res = await fetch(API_USUARIOS);
+            if (!res.ok) throw new Error('Erro ao carregar usuários');
+            
+            const users = await res.json();
+            const tbody = document.getElementById('usersTableBody');
+            
+            if (!users || users.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="5" style="text-align:center;">Nenhum usuário cadastrado</td></tr>`;
+                return;
+            }
+            
+            const roles = { admin: '👑 Admin', vendedor: '📋 Vendedor', usuario: '👤 Usuário' };
+            tbody.innerHTML = users.map(u => `
+                <tr>
+                    <td>${u.id}</td>
+                    <td><strong>${u.name}</strong></td>
+                    <td>${u.email}</td>
+                    <td><span class="badge-status badge-${u.role || 'usuario'}">${roles[u.role] || u.role}</span></td>
+                    <td>${u.created_at ? new Date(u.created_at).toLocaleDateString('pt-BR') : '—'}</td>
+                </tr>
+            `).join('');
+        } catch (e) {
+            console.error('Erro ao carregar usuários:', e);
+            document.getElementById('usersTableBody').innerHTML = 
+                `<tr><td colspan="5" style="text-align:center;color:var(--danger);">❌ Erro ao carregar usuários</td></tr>`;
+        }
+    }
+
+    // ===== INIT =====
+    document.addEventListener('DOMContentLoaded', function() {
+        if (!checkAdminAccess()) return;
+        loadDashboard();
+        console.log('✅ Admin carregado!');
+    });
+
+    // Fechar modais ao clicar fora
+    window.addEventListener('click', function(e) {
+        if (e.target.classList.contains('modal-overlay')) {
+            closeCarroModal();
+            closeMensagemModal();
+        }
+    });
+
+    // Fechar modais com ESC
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+            closeCarroModal();
+            closeMensagemModal();
+        }
+    });
+</script>
+
+</body>
+</html>

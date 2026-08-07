@@ -1,0 +1,2033 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LuxDrive · Concessionária de Carros de Luxo</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        /* ===== RESET E VARIÁVEIS ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --gold: #FFD700;
+            --gold-dark: #D4A800;
+            --gold-light: #FFE44D;
+            --black: #1A1A1A;
+            --black-light: #2D2D2D;
+            --white: #FFFFFF;
+            --gray-light: #F5F5F5;
+            --gray-mid: #888888;
+            --shadow: 0 4px 20px rgba(0,0,0,0.08);
+            --shadow-lg: 0 10px 40px rgba(0,0,0,0.15);
+            --radius: 16px;
+            --radius-lg: 24px;
+            --font-display: 'Playfair Display', Georgia, serif;
+            --font-body: 'Inter', system-ui, sans-serif;
+        }
+
+        body {
+            font-family: var(--font-body);
+            background: var(--white);
+            color: var(--black);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* ===== NAVBAR ===== */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            background: rgba(26, 26, 26, 0.95);
+            backdrop-filter: blur(12px);
+            padding: 0 24px;
+            height: 72px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 2px solid var(--gold);
+            transition: all 0.3s ease;
+        }
+
+        .navbar.scrolled {
+            box-shadow: 0 4px 30px rgba(0,0,0,0.3);
+        }
+
+        .nav-logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--gold);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            font-weight: 800;
+            color: var(--black);
+            font-family: var(--font-display);
+        }
+
+        .logo-text {
+            font-family: var(--font-display);
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--gold);
+            letter-spacing: 0.5px;
+        }
+
+        .logo-text span {
+            color: var(--white);
+            font-weight: 400;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            list-style: none;
+        }
+
+        .nav-links a {
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--gray-light);
+            text-decoration: none;
+            padding: 8px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .nav-links a:hover,
+        .nav-links a.active {
+            color: var(--gold);
+            background: rgba(255, 215, 0, 0.1);
+        }
+
+        .nav-cta {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .btn-login {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--gray-light);
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 8px 16px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .btn-login:hover {
+            color: var(--gold);
+            background: rgba(255, 215, 0, 0.1);
+        }
+
+        .btn-primary {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--black);
+            background: var(--gold);
+            border: none;
+            cursor: pointer;
+            padding: 10px 24px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            letter-spacing: 0.3px;
+        }
+
+        .btn-primary:hover {
+            background: var(--gold-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255, 215, 0, 0.3);
+        }
+
+        .btn-secondary {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--gold);
+            background: transparent;
+            border: 2px solid var(--gold);
+            cursor: pointer;
+            padding: 10px 24px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .btn-secondary:hover {
+            background: var(--gold);
+            color: var(--black);
+        }
+
+        .nav-hamburger {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            cursor: pointer;
+            padding: 6px;
+            background: none;
+            border: none;
+        }
+
+        .nav-hamburger span {
+            display: block;
+            width: 26px;
+            height: 2.5px;
+            background: var(--white);
+            border-radius: 2px;
+            transition: all 0.3s ease;
+        }
+
+        .mobile-menu {
+            display: none;
+            position: fixed;
+            top: 72px;
+            left: 0;
+            right: 0;
+            background: var(--black);
+            border-bottom: 2px solid var(--gold);
+            padding: 20px 24px 28px;
+            z-index: 999;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .mobile-menu.open {
+            display: flex;
+        }
+
+        .mobile-menu a {
+            font-size: 15px;
+            font-weight: 500;
+            color: var(--gray-light);
+            text-decoration: none;
+            padding: 12px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .mobile-menu a:hover,
+        .mobile-menu a.active {
+            color: var(--gold);
+            background: rgba(255, 215, 0, 0.1);
+        }
+
+        .mobile-menu-divider {
+            height: 1px;
+            background: rgba(255,255,255,0.1);
+            margin: 8px 0;
+        }
+
+        @media(max-width: 768px) {
+            .nav-links,
+            .nav-cta { display: none; }
+            .nav-hamburger { display: flex; }
+        }
+
+        /* ===== PAGES ===== */
+        .page {
+            display: none;
+            min-height: 100vh;
+            padding-top: 72px;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        /* ===== USER INFO ===== */
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            background: rgba(255,255,255,0.05);
+            padding: 0.3rem 1rem;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: var(--gray-light);
+            border: 1px solid rgba(255,215,0,0.2);
+        }
+
+        .user-info .user-name {
+            font-weight: 600;
+            color: var(--gold);
+        }
+
+        .user-info .admin-badge {
+            background: var(--gold);
+            color: var(--black);
+            padding: 0.15rem 0.6rem;
+            border-radius: 4px;
+            font-size: 0.65rem;
+            font-weight: 700;
+        }
+
+        .user-info .vendedor-badge {
+            background: #FF8C00;
+            color: white;
+            padding: 0.15rem 0.6rem;
+            border-radius: 4px;
+            font-size: 0.65rem;
+            font-weight: 700;
+        }
+
+        .btn-logout {
+            background: rgba(255,0,0,0.15);
+            border: 1px solid rgba(255,0,0,0.3);
+            color: #ff6b6b;
+            padding: 0.25rem 0.8rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.75rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .btn-logout:hover {
+            background: rgba(255,0,0,0.25);
+        }
+
+        /* ===== HERO ===== */
+        .hero {
+            background: linear-gradient(135deg, var(--black) 0%, var(--black-light) 100%);
+            padding: 80px 24px 60px;
+            position: relative;
+            overflow: hidden;
+            min-height: 600px;
+            display: flex;
+            align-items: center;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -100px;
+            right: -100px;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(255,215,0,0.08) 0%, transparent 70%);
+            border-radius: 50%;
+        }
+
+        .hero::after {
+            content: '';
+            position: absolute;
+            bottom: -80px;
+            left: -80px;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(255,215,0,0.05) 0%, transparent 70%);
+            border-radius: 50%;
+        }
+
+        .hero-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: center;
+            position: relative;
+            z-index: 2;
+        }
+
+        @media(max-width: 768px) {
+            .hero-inner { grid-template-columns: 1fr; gap: 40px; }
+        }
+
+        .hero-text h1 {
+            font-family: var(--font-display);
+            font-size: clamp(40px, 6vw, 64px);
+            font-weight: 700;
+            color: var(--white);
+            line-height: 1.1;
+            margin-bottom: 20px;
+        }
+
+        .hero-text h1 .highlight {
+            color: var(--gold);
+            font-style: italic;
+        }
+
+        .hero-text p {
+            font-size: 16px;
+            color: rgba(255,255,255,0.7);
+            margin-bottom: 32px;
+            max-width: 440px;
+            line-height: 1.8;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .hero-image {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .hero-car-placeholder {
+            width: 100%;
+            max-width: 500px;
+            aspect-ratio: 16/9;
+            background: linear-gradient(135deg, var(--gold-dark), var(--gold));
+            border-radius: var(--radius-lg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 80px;
+            color: var(--black);
+            box-shadow: 0 20px 60px rgba(255,215,0,0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-car-placeholder::after {
+            content: 'LUXDRIVE';
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            font-size: 14px;
+            font-weight: 700;
+            letter-spacing: 4px;
+            color: rgba(0,0,0,0.3);
+        }
+
+        /* ===== HIGHLIGHTS ===== */
+        .highlights {
+            background: var(--black);
+            padding: 40px 24px;
+            border-top: 1px solid rgba(255,215,0,0.1);
+            border-bottom: 1px solid rgba(255,215,0,0.1);
+        }
+
+        .highlights-grid {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 24px;
+            text-align: center;
+        }
+
+        .highlight-item {
+            color: var(--gray-light);
+        }
+
+        .highlight-item .icon {
+            font-size: 32px;
+            margin-bottom: 8px;
+        }
+
+        .highlight-item h4 {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--gold);
+            margin-bottom: 4px;
+        }
+
+        .highlight-item p {
+            font-size: 12px;
+            color: rgba(255,255,255,0.5);
+        }
+
+        /* ===== SECTIONS ===== */
+        .section {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 60px 24px;
+        }
+
+        .section-header {
+            display: flex;
+            align-items: baseline;
+            justify-content: space-between;
+            margin-bottom: 32px;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .section-title {
+            font-family: var(--font-display);
+            font-size: clamp(24px, 3vw, 34px);
+            font-weight: 700;
+            color: var(--black);
+        }
+
+        .section-title .accent {
+            color: var(--gold-dark);
+        }
+
+        .see-all {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--gold-dark);
+            cursor: pointer;
+            text-decoration: none;
+            border-bottom: 2px solid transparent;
+            transition: all 0.3s ease;
+        }
+
+        .see-all:hover {
+            border-bottom-color: var(--gold-dark);
+        }
+
+        /* ===== CARROS GRID ===== */
+        .carros-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 24px;
+        }
+
+        .carro-card {
+            background: var(--white);
+            border-radius: var(--radius);
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            border: 1px solid rgba(0,0,0,0.05);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .carro-card:hover {
+            transform: translateY(-6px);
+            box-shadow: var(--shadow-lg);
+            border-color: var(--gold);
+        }
+
+        .carro-imagem {
+            width: 100%;
+            height: 200px;
+            background: var(--gray-light);
+            background-size: cover;
+            background-position: center;
+            position: relative;
+        }
+
+        .carro-imagem .badge {
+            position: absolute;
+            top: 12px;
+            left: 12px;
+            background: var(--gold);
+            color: var(--black);
+            font-size: 11px;
+            font-weight: 700;
+            padding: 4px 14px;
+            border-radius: 4px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .carro-imagem .badge-vendido {
+            background: #ff4444;
+            color: white;
+        }
+
+        .carro-body {
+            padding: 20px;
+        }
+
+        .carro-body .marca {
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--gray-mid);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 4px;
+        }
+
+        .carro-body h3 {
+            font-family: var(--font-display);
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--black);
+            margin-bottom: 4px;
+        }
+
+        .carro-body .ano {
+            font-size: 13px;
+            color: var(--gray-mid);
+            margin-bottom: 8px;
+        }
+
+        .carro-body .preco {
+            font-size: 24px;
+            font-weight: 800;
+            color: var(--gold-dark);
+            margin-bottom: 12px;
+        }
+
+        .carro-body .especs {
+            display: flex;
+            gap: 16px;
+            font-size: 13px;
+            color: var(--gray-mid);
+            margin-bottom: 16px;
+        }
+
+        .carro-body .especs span {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .carro-footer {
+            display: flex;
+            gap: 10px;
+        }
+
+        .carro-footer button {
+            flex: 1;
+            padding: 10px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-detalhes {
+            background: var(--black);
+            color: var(--white);
+        }
+
+        .btn-detalhes:hover {
+            background: var(--gold-dark);
+            color: var(--black);
+        }
+
+        .btn-interessar {
+            background: var(--gold);
+            color: var(--black);
+        }
+
+        .btn-interessar:hover {
+            background: var(--gold-dark);
+        }
+
+        /* ===== FORMULÁRIO DE CONTATO ===== */
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 13px;
+            font-weight: 600;
+            color: rgba(255,255,255,0.6);
+            margin-bottom: 6px;
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 12px 16px;
+            border: 1.5px solid rgba(255,215,0,0.2);
+            border-radius: 8px;
+            font-size: 14px;
+            font-family: var(--font-body);
+            transition: all 0.3s ease;
+            background: rgba(255,255,255,0.05);
+            color: white;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: var(--gold);
+            box-shadow: 0 0 0 3px rgba(255,215,0,0.1);
+            background: rgba(255,255,255,0.08);
+        }
+
+        .form-group input::placeholder,
+        .form-group textarea::placeholder {
+            color: rgba(255,255,255,0.3);
+        }
+
+        .form-group select option {
+            background: var(--black);
+            color: white;
+        }
+
+        .form-group .required {
+            color: #ff6b6b;
+            margin-left: 4px;
+        }
+
+        /* ===== RESPOSTA DO FORMULÁRIO ===== */
+        .contato-resposta {
+            margin-top: 12px;
+            padding: 12px 16px;
+            border-radius: 8px;
+            display: none;
+        }
+
+        .contato-resposta.success {
+            display: block;
+            color: #22c55e;
+            background: rgba(34,197,94,0.1);
+            border: 1px solid #22c55e;
+        }
+
+        .contato-resposta.error {
+            display: block;
+            color: #ef4444;
+            background: rgba(239,68,68,0.1);
+            border: 1px solid #ef4444;
+        }
+
+        .contato-resposta.loading {
+            display: block;
+            color: var(--gold);
+            background: rgba(255,215,0,0.1);
+            border: 1px solid var(--gold);
+        }
+
+        /* ===== FOOTER ===== */
+        .footer {
+            background: var(--black);
+            color: var(--gray-light);
+            padding: 48px 24px 24px;
+            border-top: 2px solid var(--gold);
+        }
+
+        .footer-grid {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 32px;
+            margin-bottom: 32px;
+        }
+
+        .footer-grid h4 {
+            color: var(--gold);
+            font-size: 14px;
+            font-weight: 700;
+            margin-bottom: 12px;
+            letter-spacing: 0.5px;
+        }
+
+        .footer-grid p,
+        .footer-grid a {
+            font-size: 14px;
+            color: rgba(255,255,255,0.6);
+            text-decoration: none;
+            line-height: 2;
+            display: block;
+            transition: all 0.3s ease;
+        }
+
+        .footer-grid a:hover {
+            color: var(--gold);
+        }
+
+        .footer-bottom {
+            border-top: 1px solid rgba(255,255,255,0.05);
+            padding-top: 20px;
+            text-align: center;
+            font-size: 13px;
+            color: rgba(255,255,255,0.4);
+        }
+
+        /* ===== TOAST ===== */
+        .toast {
+            position: fixed;
+            bottom: 24px;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background: var(--black);
+            color: var(--white);
+            font-size: 14px;
+            font-weight: 500;
+            padding: 14px 28px;
+            border-radius: 12px;
+            z-index: 9999;
+            transition: transform 0.4s cubic-bezier(.4,0,.2,1);
+            box-shadow: var(--shadow-lg);
+            border: 1px solid rgba(255,215,0,0.2);
+        }
+
+        .toast.show {
+            transform: translateX(-50%) translateY(0);
+        }
+
+        /* ===== AUTH PAGES ===== */
+        .auth-page {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+            background: linear-gradient(135deg, var(--black) 0%, var(--black-light) 100%);
+        }
+
+        .auth-card {
+            background: var(--white);
+            border-radius: var(--radius-lg);
+            padding: 40px;
+            max-width: 420px;
+            width: 100%;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            border-top: 4px solid var(--gold);
+        }
+
+        .auth-card .logo {
+            text-align: center;
+            margin-bottom: 32px;
+        }
+
+        .auth-card .logo .logo-icon {
+            margin: 0 auto 12px;
+        }
+
+        .auth-card .logo h2 {
+            font-family: var(--font-display);
+            font-size: 28px;
+            color: var(--black);
+        }
+
+        .auth-card .logo h2 span {
+            color: var(--gold-dark);
+        }
+
+        .auth-card .logo p {
+            color: var(--gray-mid);
+            font-size: 14px;
+        }
+
+        .auth-card .form-group label {
+            color: var(--black);
+        }
+
+        .auth-card .form-group input {
+            background: var(--gray-light);
+            color: var(--black);
+            border-color: #e0e0e0;
+        }
+
+        .auth-card .form-group input:focus {
+            border-color: var(--gold-dark);
+            background: var(--white);
+        }
+
+        .auth-submit {
+            width: 100%;
+            padding: 14px;
+            background: var(--gold);
+            color: var(--black);
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 8px;
+        }
+
+        .auth-submit:hover {
+            background: var(--gold-dark);
+        }
+
+        .auth-switch {
+            text-align: center;
+            margin-top: 16px;
+            font-size: 14px;
+            color: var(--gray-mid);
+        }
+
+        .auth-switch a {
+            color: var(--gold-dark);
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .auth-switch a:hover {
+            text-decoration: underline;
+        }
+
+        /* ===== MODAL ===== */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.6);
+            backdrop-filter: blur(8px);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+            padding: 24px;
+        }
+
+        .modal-overlay.open {
+            display: flex;
+        }
+
+        .modal-box {
+            background: var(--white);
+            border-radius: var(--radius-lg);
+            max-width: 560px;
+            width: 100%;
+            padding: 32px;
+            max-height: 90vh;
+            overflow-y: auto;
+            animation: slideUp 0.3s ease;
+            border-top: 4px solid var(--gold);
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .modal-close {
+            float: right;
+            font-size: 24px;
+            background: none;
+            border: none;
+            color: var(--gray-mid);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .modal-close:hover {
+            color: var(--black);
+        }
+
+        .modal-box h2 {
+            font-family: var(--font-display);
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--black);
+            margin-bottom: 4px;
+        }
+
+        .modal-box .sub {
+            color: var(--gray-mid);
+            font-size: 14px;
+            margin-bottom: 20px;
+        }
+
+        .modal-box .info-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .modal-box .info-row .label {
+            color: var(--gray-mid);
+            font-size: 13px;
+        }
+
+        .modal-box .info-row .value {
+            font-weight: 600;
+            color: var(--black);
+        }
+
+        .modal-box .preco-grande {
+            font-size: 32px;
+            font-weight: 800;
+            color: var(--gold-dark);
+            margin: 16px 0;
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 12px;
+            margin-top: 20px;
+        }
+
+        .modal-actions button {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-whatsapp {
+            background: #25D366;
+            color: white;
+        }
+
+        .btn-whatsapp:hover {
+            background: #1da851;
+        }
+
+        .btn-interesse {
+            background: var(--gold);
+            color: var(--black);
+        }
+
+        .btn-interesse:hover {
+            background: var(--gold-dark);
+        }
+
+        /* Responsive */
+        @media(max-width: 480px) {
+            .hero { padding: 60px 16px 40px; }
+            .section { padding: 40px 16px; }
+            .carros-grid { grid-template-columns: 1fr; }
+            .auth-card { padding: 24px; }
+            .modal-box { padding: 20px; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- ===== NAVBAR ===== -->
+<nav class="navbar" id="navbar">
+    <a class="nav-logo" onclick="showPage('home')">
+        <div class="logo-icon">LD</div>
+        <div class="logo-text">Lux<span>Drive</span></div>
+    </a>
+    <ul class="nav-links">
+        <li><a onclick="showPage('home')" class="active" id="nav-home">Início</a></li>
+        <li><a onclick="showPage('catalogo')" id="nav-catalogo">Catálogo</a></li>
+        <li><a onclick="showPage('sobre')" id="nav-sobre">Sobre</a></li>
+        <li><a onclick="showPage('contato')" id="nav-contato">Contato</a></li>
+    </ul>
+    <div class="nav-cta" id="navCta"></div>
+    <button class="nav-hamburger" onclick="toggleMobileMenu()">
+        <span></span><span></span><span></span>
+    </button>
+</nav>
+
+<!-- ===== MOBILE MENU ===== -->
+<div class="mobile-menu" id="mobileMenu">
+    <a onclick="showPage('home'); closeMobileMenu()" id="mob-home" class="active">🏠 Início</a>
+    <a onclick="showPage('catalogo'); closeMobileMenu()" id="mob-catalogo">🚗 Catálogo</a>
+    <a onclick="showPage('sobre'); closeMobileMenu()" id="mob-sobre">📖 Sobre</a>
+    <a onclick="showPage('contato'); closeMobileMenu()" id="mob-contato">📞 Contato</a>
+    <div class="mobile-menu-divider"></div>
+    <div id="mobileMenuAuth"></div>
+</div>
+
+<!-- ============================================================ -->
+<!-- ===== HOME PAGE ===== -->
+<div class="page active" id="page-home">
+    <!-- HERO -->
+    <section class="hero">
+        <div class="hero-inner">
+            <div class="hero-text">
+                <h1>O luxo que você<br><span class="highlight">merece</span></h1>
+                <p>Descubra a coleção exclusiva de carros de luxo da LuxDrive. Performance, elegância e sofisticação em cada detalhe.</p>
+                <div class="hero-buttons">
+                    <button class="btn-primary" onclick="showPage('catalogo')">Ver Catálogo →</button>
+                    <button class="btn-secondary" onclick="showPage('contato')">Fale Conosco</button>
+                </div>
+            </div>
+            <div class="hero-image">
+                <div class="hero-car-placeholder">🚗</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- HIGHLIGHTS -->
+    <section class="highlights">
+        <div class="highlights-grid">
+            <div class="highlight-item">
+                <div class="icon">🏆</div>
+                <h4>Carros Exclusivos</h4>
+                <p>Modelos selecionados das melhores marcas</p>
+            </div>
+            <div class="highlight-item">
+                <div class="icon">🔧</div>
+                <h4>Garantia Premium</h4>
+                <p>Proteção completa para seu investimento</p>
+            </div>
+            <div class="highlight-item">
+                <div class="icon">🤝</div>
+                <h4>Atendimento Personalizado</h4>
+                <p>Consultores especializados em carros de luxo</p>
+            </div>
+            <div class="highlight-item">
+                <div class="icon">🚀</div>
+                <h4>Performance</h4>
+                <p>Potência e tecnologia de ponta</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- DESTAQUES -->
+    <section class="section">
+        <div class="section-header">
+            <h2 class="section-title">Veículos em <span class="accent">Destaque</span></h2>
+            <a class="see-all" onclick="showPage('catalogo')">Ver todos →</a>
+        </div>
+        <div class="carros-grid" id="homeCarros"></div>
+    </section>
+
+    <!-- SOBRE -->
+    <section class="section" id="sobre-section" style="background: var(--gray-light); border-radius: var(--radius-lg);">
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: center;">
+            <div>
+                <h2 style="font-family: var(--font-display); font-size: 32px; font-weight: 700; color: var(--black); margin-bottom: 16px;">
+                    Mais que uma<br><span style="color: var(--gold-dark);">concessionária</span>
+                </h2>
+                <p style="color: var(--gray-mid); line-height: 1.8; margin-bottom: 16px;">
+                    A LuxDrive nasceu da paixão por carros de luxo e da vontade de oferecer uma experiência única aos nossos clientes. Cada veículo em nosso catálogo é cuidadosamente selecionado para garantir o máximo em qualidade, desempenho e sofisticação.
+                </p>
+                <p style="color: var(--gray-mid); line-height: 1.8;">
+                    Nossa equipe de especialistas está pronta para ajudá-lo a encontrar o carro dos seus sonhos. Da primeira visita à entrega, oferecemos um atendimento personalizado que faz toda a diferença.
+                </p>
+            </div>
+            <div style="background: var(--black); border-radius: var(--radius-lg); padding: 40px; color: white; text-align: center;">
+                <div style="font-size: 64px; margin-bottom: 16px;">🌟</div>
+                <h3 style="font-family: var(--font-display); font-size: 28px; color: var(--gold);">10+ anos</h3>
+                <p style="color: rgba(255,255,255,0.6);">de excelência no mercado de carros de luxo</p>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 24px;">
+                    <div>
+                        <div style="font-size: 32px; font-weight: 800; color: var(--gold);">500+</div>
+                        <div style="font-size: 12px; color: rgba(255,255,255,0.5);">Clientes satisfeitos</div>
+                    </div>
+                    <div>
+                        <div style="font-size: 32px; font-weight: 800; color: var(--gold);">120+</div>
+                        <div style="font-size: 12px; color: rgba(255,255,255,0.5);">Veículos vendidos</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CONTATO -->
+    <section class="section" id="contato-section">
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: start;">
+            <div>
+                <h2 style="font-family: var(--font-display); font-size: 32px; font-weight: 700; color: var(--black); margin-bottom: 16px;">
+                    Fale com <span style="color: var(--gold-dark);">nossa equipe</span>
+                </h2>
+                <p style="color: var(--gray-mid); line-height: 1.8; margin-bottom: 24px;">
+                    Estamos prontos para atender você. Tire dúvidas, agende uma visita ou solicite uma proposta personalizada.
+                </p>
+                <div style="display: flex; flex-direction: column; gap: 12px;">
+                    <div style="display: flex; align-items: center; gap: 12px;">
+                        <span style="font-size: 20px;">📍</span>
+                        <span style="color: var(--gray-mid);">Av. Paulista, 1000 - São Paulo, SP</span>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 12px;">
+                        <span style="font-size: 20px;">📞</span>
+                        <span style="color: var(--gray-mid);">(11) 99999-9999</span>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 12px;">
+                        <span style="font-size: 20px;">✉️</span>
+                        <span style="color: var(--gray-mid);">contato@luxdrive.com</span>
+                    </div>
+                </div>
+            </div>
+            <div style="background: var(--black); border-radius: var(--radius-lg); padding: 32px;">
+                <h3 style="color: var(--gold); font-size: 18px; margin-bottom: 16px;">Envie uma mensagem</h3>
+                <form id="contatoForm" onsubmit="enviarContato(event)" novalidate>
+                    <div class="form-group">
+                        <label for="contatoNome">Nome completo <span class="required">*</span></label>
+                        <input type="text" id="contatoNome" name="nome" placeholder="Digite seu nome completo" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="contatoEmail">E-mail <span class="required">*</span></label>
+                        <input type="email" id="contatoEmail" name="email" placeholder="seu@email.com" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="contatoTelefone">Telefone</label>
+                        <input type="tel" id="contatoTelefone" name="telefone" placeholder="(11) 99999-9999">
+                    </div>
+                    <div class="form-group">
+                        <label for="contatoAssunto">Assunto</label>
+                        <select id="contatoAssunto" name="assunto">
+                            <option value="Contato via Site">Contato via Site</option>
+                            <option value="Interesse em Veículo">Interesse em Veículo</option>
+                            <option value="Agendar Test Drive">Agendar Test Drive</option>
+                            <option value="Proposta Personalizada">Proposta Personalizada</option>
+                            <option value="Dúvidas">Dúvidas</option>
+                            <option value="Outros">Outros</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="contatoMensagem">Mensagem <span class="required">*</span></label>
+                        <textarea id="contatoMensagem" name="mensagem" rows="5" placeholder="Descreva sua mensagem ou dúvida..." required></textarea>
+                    </div>
+                    <button type="submit" class="btn-primary" style="width:100%;" id="btnEnviarContato">
+                        📨 Enviar mensagem
+                    </button>
+                </form>
+                <div id="contatoResposta" class="contato-resposta"></div>
+            </div>
+        </div>
+        <!-- Botão de diagnóstico -->
+        <div style="margin-top: 20px; text-align: center;">
+            <button onclick="testarAPI()" style="background: #666; color: white; border: none; padding: 8px 20px; border-radius: 8px; cursor: pointer; font-size: 12px;">
+                🔍 Testar API de Contato
+            </button>
+            <span id="testeResultado" style="margin-left: 12px; font-size: 13px;"></span>
+        </div>
+    </section>
+</div>
+
+<!-- ============================================================ -->
+<!-- ===== CATÁLOGO PAGE ===== -->
+<div class="page" id="page-catalogo">
+    <section style="background: var(--black); padding: 40px 24px; border-bottom: 2px solid var(--gold);">
+        <div style="max-width: 1200px; margin: 0 auto;">
+            <h1 style="font-family: var(--font-display); font-size: clamp(28px, 4vw, 42px); font-weight: 700; color: var(--white);">
+                Nosso <span style="color: var(--gold);">Catálogo</span>
+            </h1>
+            <p style="color: rgba(255,255,255,0.6); margin-top: 8px;">Encontre o carro dos seus sonhos</p>
+        </div>
+    </section>
+
+    <section class="section">
+        <div style="display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 24px;">
+            <button class="btn-primary" style="padding: 8px 20px; font-size: 13px;" onclick="filterCarros('todos', this)">Todos</button>
+            <button class="btn-secondary" style="padding: 8px 20px; font-size: 13px;" onclick="filterCarros('Ferrari', this)">Ferrari</button>
+            <button class="btn-secondary" style="padding: 8px 20px; font-size: 13px;" onclick="filterCarros('Lamborghini', this)">Lamborghini</button>
+            <button class="btn-secondary" style="padding: 8px 20px; font-size: 13px;" onclick="filterCarros('Porsche', this)">Porsche</button>
+            <button class="btn-secondary" style="padding: 8px 20px; font-size: 13px;" onclick="filterCarros('Mercedes-Benz', this)">Mercedes</button>
+            <button class="btn-secondary" style="padding: 8px 20px; font-size: 13px;" onclick="filterCarros('BMW', this)">BMW</button>
+            <button class="btn-secondary" style="padding: 8px 20px; font-size: 13px;" onclick="filterCarros('Aston Martin', this)">Aston Martin</button>
+        </div>
+        <div class="carros-grid" id="catalogoCarros"></div>
+    </section>
+</div>
+
+<!-- ============================================================ -->
+<!-- ===== SOBRE PAGE ===== -->
+<div class="page" id="page-sobre">
+    <section style="background: var(--black); padding: 40px 24px; border-bottom: 2px solid var(--gold);">
+        <div style="max-width: 1200px; margin: 0 auto;">
+            <h1 style="font-family: var(--font-display); font-size: clamp(28px, 4vw, 42px); font-weight: 700; color: var(--white);">
+                Sobre a <span style="color: var(--gold);">LuxDrive</span>
+            </h1>
+            <p style="color: rgba(255,255,255,0.6); margin-top: 8px;">Conheça nossa história e valores</p>
+        </div>
+    </section>
+
+    <section class="section">
+        <div style="max-width: 900px; margin: 0 auto;">
+            <div style="text-align: center; margin-bottom: 40px;">
+                <div style="font-size: 80px; margin-bottom: 16px;">🚗</div>
+                <h2 style="font-family: var(--font-display); font-size: 36px; font-weight: 700; color: var(--black);">Nossa História</h2>
+                <p style="color: var(--gray-mid); max-width: 600px; margin: 12px auto 0; line-height: 1.8;">
+                    A LuxDrive nasceu em 2014 com um propósito claro: revolucionar a experiência de compra de carros de luxo no Brasil.
+                </p>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px;">
+                <div style="background: var(--gray-light); padding: 24px; border-radius: var(--radius); border-left: 4px solid var(--gold);">
+                    <h3 style="font-size: 18px; font-weight: 700; color: var(--black);">🎯 Missão</h3>
+                    <p style="color: var(--gray-mid); font-size: 14px; line-height: 1.7; margin-top: 8px;">
+                        Oferecer uma experiência única na compra de carros de luxo, combinando excelência no atendimento com os melhores veículos do mercado.
+                    </p>
+                </div>
+                <div style="background: var(--gray-light); padding: 24px; border-radius: var(--radius); border-left: 4px solid var(--gold);">
+                    <h3 style="font-size: 18px; font-weight: 700; color: var(--black);">👁️ Visão</h3>
+                    <p style="color: var(--gray-mid); font-size: 14px; line-height: 1.7; margin-top: 8px;">
+                        Ser a concessionária de carros de luxo mais admirada do Brasil, reconhecida pela qualidade dos veículos e pela satisfação dos clientes.
+                    </p>
+                </div>
+                <div style="background: var(--gray-light); padding: 24px; border-radius: var(--radius); border-left: 4px solid var(--gold);">
+                    <h3 style="font-size: 18px; font-weight: 700; color: var(--black);">💎 Valores</h3>
+                    <p style="color: var(--gray-mid); font-size: 14px; line-height: 1.7; margin-top: 8px;">
+                        Transparência, excelência, paixão pelo que fazemos e compromisso com a satisfação dos nossos clientes.
+                    </p>
+                </div>
+                <div style="background: var(--gray-light); padding: 24px; border-radius: var(--radius); border-left: 4px solid var(--gold);">
+                    <h3 style="font-size: 18px; font-weight: 700; color: var(--black);">🏆 Conquistas</h3>
+                    <p style="color: var(--gray-mid); font-size: 14px; line-height: 1.7; margin-top: 8px;">
+                        Mais de 500 clientes atendidos, 120 veículos vendidos e uma reputação de excelência no mercado de carros de luxo.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+<!-- ============================================================ -->
+<!-- ===== CONTATO PAGE ===== -->
+<div class="page" id="page-contato">
+    <section style="background: var(--black); padding: 40px 24px; border-bottom: 2px solid var(--gold);">
+        <div style="max-width: 1200px; margin: 0 auto;">
+            <h1 style="font-family: var(--font-display); font-size: clamp(28px, 4vw, 42px); font-weight: 700; color: var(--white);">
+                Fale com a <span style="color: var(--gold);">LuxDrive</span>
+            </h1>
+            <p style="color: rgba(255,255,255,0.6); margin-top: 8px;">Estamos aqui para ajudar você a encontrar o carro dos seus sonhos</p>
+        </div>
+    </section>
+
+    <section class="section">
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 48px; max-width: 1000px; margin: 0 auto;">
+            <div>
+                <h2 style="font-family: var(--font-display); font-size: 28px; font-weight: 700; color: var(--black); margin-bottom: 16px;">
+                    Informações de <span style="color: var(--gold-dark);">Contato</span>
+                </h2>
+                <div style="display: flex; flex-direction: column; gap: 16px;">
+                    <div style="display: flex; align-items: center; gap: 16px; padding: 16px; background: var(--gray-light); border-radius: var(--radius);">
+                        <span style="font-size: 28px;">📍</span>
+                        <div>
+                            <div style="font-weight: 700;">Endereço</div>
+                            <div style="color: var(--gray-mid);">Av. Paulista, 1000 - São Paulo, SP</div>
+                        </div>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 16px; padding: 16px; background: var(--gray-light); border-radius: var(--radius);">
+                        <span style="font-size: 28px;">📞</span>
+                        <div>
+                            <div style="font-weight: 700;">Telefone</div>
+                            <div style="color: var(--gray-mid);">(11) 99999-9999</div>
+                        </div>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 16px; padding: 16px; background: var(--gray-light); border-radius: var(--radius);">
+                        <span style="font-size: 28px;">✉️</span>
+                        <div>
+                            <div style="font-weight: 700;">Email</div>
+                            <div style="color: var(--gray-mid);">contato@luxdrive.com</div>
+                        </div>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 16px; padding: 16px; background: var(--gray-light); border-radius: var(--radius);">
+                        <span style="font-size: 28px;">🕐</span>
+                        <div>
+                            <div style="font-weight: 700;">Horário de Funcionamento</div>
+                            <div style="color: var(--gray-mid);">Seg a Sex: 9h às 19h | Sáb: 9h às 14h</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div style="background: var(--black); border-radius: var(--radius-lg); padding: 32px;">
+                <h3 style="color: var(--gold); font-size: 18px; margin-bottom: 16px;">Envie uma mensagem</h3>
+                <!-- Formulário da página de contato (igual ao da home) -->
+                <form id="contatoForm2" onsubmit="enviarContato2(event)" novalidate>
+                    <div class="form-group">
+                        <label for="contatoNome2" style="color: rgba(255,255,255,0.6);">Nome completo <span class="required">*</span></label>
+                        <input type="text" id="contatoNome2" name="nome" placeholder="Digite seu nome completo" style="background: rgba(255,255,255,0.05); color: white; border-color: rgba(255,215,0,0.2);" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="contatoEmail2" style="color: rgba(255,255,255,0.6);">E-mail <span class="required">*</span></label>
+                        <input type="email" id="contatoEmail2" name="email" placeholder="seu@email.com" style="background: rgba(255,255,255,0.05); color: white; border-color: rgba(255,215,0,0.2);" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="contatoTelefone2" style="color: rgba(255,255,255,0.6);">Telefone</label>
+                        <input type="tel" id="contatoTelefone2" name="telefone" placeholder="(11) 99999-9999" style="background: rgba(255,255,255,0.05); color: white; border-color: rgba(255,215,0,0.2);">
+                    </div>
+                    <div class="form-group">
+                        <label for="contatoAssunto2" style="color: rgba(255,255,255,0.6);">Assunto</label>
+                        <select id="contatoAssunto2" name="assunto" style="background: rgba(255,255,255,0.05); color: white; border-color: rgba(255,215,0,0.2);">
+                            <option value="Contato via Site">Contato via Site</option>
+                            <option value="Interesse em Veículo">Interesse em Veículo</option>
+                            <option value="Agendar Test Drive">Agendar Test Drive</option>
+                            <option value="Proposta Personalizada">Proposta Personalizada</option>
+                            <option value="Dúvidas">Dúvidas</option>
+                            <option value="Outros">Outros</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="contatoMensagem2" style="color: rgba(255,255,255,0.6);">Mensagem <span class="required">*</span></label>
+                        <textarea id="contatoMensagem2" name="mensagem" rows="5" placeholder="Descreva sua mensagem ou dúvida..." style="width:100%; padding:12px 16px; border:1.5px solid rgba(255,215,0,0.2); border-radius:8px; background:rgba(255,255,255,0.05); color:white; font-family:var(--font-body); resize:vertical;" required></textarea>
+                    </div>
+                    <button type="submit" class="btn-primary" style="width:100%;" id="btnEnviarContato2">
+                        📨 Enviar mensagem
+                    </button>
+                </form>
+                <div id="contatoResposta2" class="contato-resposta"></div>
+            </div>
+        </div>
+    </section>
+</div>
+
+<!-- ============================================================ -->
+<!-- ===== LOGIN PAGE ===== -->
+<div class="page" id="page-login" style="padding-top:0;">
+    <div class="auth-page">
+        <div class="auth-card">
+            <div class="logo">
+                <div class="logo-icon" style="margin: 0 auto 12px;">LD</div>
+                <h2>Lux<span>Drive</span></h2>
+                <p>Acesse sua conta</p>
+            </div>
+            <form onsubmit="doLogin(event)">
+                <div class="form-group">
+                    <label>E-mail</label>
+                    <input type="email" id="loginEmail" placeholder="seu@email.com" required>
+                </div>
+                <div class="form-group">
+                    <label>Senha</label>
+                    <input type="password" id="loginPass" placeholder="••••••••" required>
+                </div>
+                <button type="submit" class="auth-submit">Entrar</button>
+            </form>
+            <div class="auth-switch">
+                Não tem conta? <a onclick="showPage('register')">Cadastre-se</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- ===== REGISTER PAGE ===== -->
+<div class="page" id="page-register" style="padding-top:0;">
+    <div class="auth-page">
+        <div class="auth-card">
+            <div class="logo">
+                <div class="logo-icon" style="margin: 0 auto 12px;">LD</div>
+                <h2>Lux<span>Drive</span></h2>
+                <p>Crie sua conta</p>
+            </div>
+            <form onsubmit="doRegister(event)">
+                <div class="form-group">
+                    <label>Nome</label>
+                    <input type="text" id="regName" placeholder="Seu nome" required>
+                </div>
+                <div class="form-group">
+                    <label>E-mail</label>
+                    <input type="email" id="regEmail" placeholder="seu@email.com" required>
+                </div>
+                <div class="form-group">
+                    <label>Telefone</label>
+                    <input type="tel" id="regPhone" placeholder="(11) 99999-9999">
+                </div>
+                <div class="form-group">
+                    <label>Senha</label>
+                    <input type="password" id="regPass" placeholder="Mínimo 6 caracteres" required>
+                </div>
+                <button type="submit" class="auth-submit">Cadastrar</button>
+            </form>
+            <div class="auth-switch">
+                Já tem conta? <a onclick="showPage('login')">Faça login</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ===== TOAST ===== -->
+<div class="toast" id="toast"></div>
+
+<!-- ===== MODAL ===== -->
+<div class="modal-overlay" id="carroModal">
+    <div class="modal-box">
+        <button class="modal-close" onclick="closeCarroModal()">✕</button>
+        <div id="modalContent"></div>
+    </div>
+</div>
+
+<!-- ===== FOOTER ===== -->
+<footer class="footer">
+    <div class="footer-grid">
+        <div>
+            <h4>LuxDrive</h4>
+            <p style="font-size: 13px; color: rgba(255,255,255,0.5);">
+                Concessionária de carros de luxo. Performance, elegância e sofisticação em cada veículo.
+            </p>
+        </div>
+        <div>
+            <h4>Navegação</h4>
+            <a onclick="showPage('home')">Início</a>
+            <a onclick="showPage('catalogo')">Catálogo</a>
+            <a onclick="showPage('sobre')">Sobre</a>
+            <a onclick="showPage('contato')">Contato</a>
+        </div>
+        <div>
+            <h4>Contato</h4>
+            <p>📞 (11) 99999-9999</p>
+            <p>✉️ contato@luxdrive.com</p>
+            <p>📍 Av. Paulista, 1000 - SP</p>
+        </div>
+        <div>
+            <h4>Horário</h4>
+            <p>Seg–Sex: 9h–19h</p>
+            <p>Sáb: 9h–14h</p>
+            <p>Dom: Fechado</p>
+        </div>
+    </div>
+    <div class="footer-bottom">
+        <p>© 2024 LuxDrive. Todos os direitos reservados.</p>
+    </div>
+</footer>
+
+<script>
+    // ===== CONFIGURAÇÃO =====
+    const API_CARROS = 'api/api_carros.php';
+    const API_CONTATO = 'api/api_contato.php';
+    const API_AUTH = 'api/api_auth.php';
+
+    let currentUser = null;
+    let carros = [];
+    let filteredCarros = [];
+    let toastTimeout;
+
+    // ===== TOAST =====
+    function showToast(msg) {
+        const t = document.getElementById('toast');
+        if (!t) return;
+        t.textContent = msg;
+        t.classList.add('show');
+        clearTimeout(toastTimeout);
+        toastTimeout = setTimeout(() => t.classList.remove('show'), 3000);
+    }
+
+    // ===== NAVEGAÇÃO =====
+    function showPage(page) {
+        document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+        document.querySelectorAll('.nav-links a, .mobile-menu a').forEach(a => a.classList.remove('active'));
+        const target = document.getElementById('page-' + page);
+        if (target) target.classList.add('active');
+        const navEl = document.getElementById('nav-' + page);
+        if (navEl) navEl.classList.add('active');
+        const mobEl = document.getElementById('mob-' + page);
+        if (mobEl) mobEl.classList.add('active');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+        if (page === 'home') renderHomeCarros();
+        if (page === 'catalogo') renderCatalogoCarros();
+    }
+
+    function toggleMobileMenu() {
+        const menu = document.getElementById('mobileMenu');
+        if (menu) menu.classList.toggle('open');
+    }
+
+    function closeMobileMenu() {
+        const menu = document.getElementById('mobileMenu');
+        if (menu) menu.classList.remove('open');
+    }
+
+    // ===== NAVBAR SCROLL =====
+    window.addEventListener('scroll', () => {
+        const navbar = document.getElementById('navbar');
+        if (navbar) navbar.classList.toggle('scrolled', window.scrollY > 10);
+    });
+
+    // ===== CARREGAR CARROS =====
+    async function carregarCarros() {
+        try {
+            const response = await fetch(API_CARROS);
+            if (response.ok) {
+                carros = await response.json();
+                filteredCarros = carros;
+            } else {
+                carros = getFallbackCarros();
+                filteredCarros = carros;
+            }
+        } catch (e) {
+            carros = getFallbackCarros();
+            filteredCarros = carros;
+        }
+        renderHomeCarros();
+        renderCatalogoCarros();
+    }
+
+    function getFallbackCarros() {
+        return [
+            { id: 1, marca: 'Ferrari', modelo: 'SF90 Stradale', ano: 2024, preco: 4500000, cor: 'Vermelho', motor: 'V8 Híbrido', potencia: '986 cv', transmissao: 'Automática', quilometragem: 0, descricao: 'O Ferrari SF90 Stradale é o primeiro modelo de produção da marca a ser equipado com um motor híbrido plug-in.', imagem: 'https://images.unsplash.com/photo-1583121274602-3e2820c69888?w=600&h=400&fit=crop', destaque: 1, disponivel: 1 },
+            { id: 2, marca: 'Lamborghini', modelo: 'Revuelto', ano: 2024, preco: 5200000, cor: 'Amarelo', motor: 'V12 Híbrido', potencia: '1015 cv', transmissao: 'Automática', quilometragem: 0, descricao: 'O Lamborghini Revuelto é o primeiro superesportivo híbrido V12 da marca.', imagem: 'https://images.unsplash.com/photo-1544636331-e26879cd4d9b?w=600&h=400&fit=crop', destaque: 1, disponivel: 1 },
+            { id: 3, marca: 'Porsche', modelo: '911 Turbo S', ano: 2024, preco: 1800000, cor: 'Preto', motor: 'Boxer 6', potencia: '650 cv', transmissao: 'Automática', quilometragem: 0, descricao: 'O Porsche 911 Turbo S é o modelo mais potente da linha 911.', imagem: 'https://images.unsplash.com/photo-1614162692292-7ac56d7f7f1e?w=600&h=400&fit=crop', destaque: 1, disponivel: 1 }
+        ];
+    }
+
+    // ===== RENDER CARROS =====
+    function renderCarros(container, carrosList) {
+        if (!container) return;
+        if (!carrosList || carrosList.length === 0) {
+            container.innerHTML = `
+                <div style="grid-column:1/-1; text-align:center; padding:40px; color:var(--gray-mid);">
+                    <div style="font-size:48px; margin-bottom:16px;">🚗</div>
+                    <p>Nenhum carro disponível no momento.</p>
+                </div>
+            `;
+            return;
+        }
+
+        container.innerHTML = carrosList.map(c => `
+            <div class="carro-card">
+                <div class="carro-imagem" style="background-image: url('${c.imagem || 'https://images.unsplash.com/photo-1583121274602-3e2820c69888?w=600&h=400&fit=crop'}');">
+                    ${c.destaque ? '<span class="badge">⭐ Destaque</span>' : ''}
+                    ${!c.disponivel ? '<span class="badge badge-vendido">Vendido</span>' : ''}
+                </div>
+                <div class="carro-body">
+                    <div class="marca">${c.marca}</div>
+                    <h3>${c.modelo}</h3>
+                    <div class="ano">${c.ano}</div>
+                    <div class="preco">R$ ${c.preco.toLocaleString('pt-BR')}</div>
+                    <div class="especs">
+                        <span>⚡ ${c.potencia || '—'}</span>
+                        <span>⛽ ${c.motor || '—'}</span>
+                        <span>📐 ${c.quilometragem || 0} km</span>
+                    </div>
+                    <div class="carro-footer">
+                        <button class="btn-detalhes" onclick="abrirDetalhes(${c.id})">📋 Detalhes</button>
+                        <button class="btn-interessar" onclick="interessar(${c.id})">💛 Tenho Interesse</button>
+                    </div>
+                </div>
+            </div>
+        `).join('');
+    }
+
+    function renderHomeCarros() {
+        const container = document.getElementById('homeCarros');
+        if (!container) return;
+        const destaques = carros.filter(c => c.destaque && c.disponivel).slice(0, 4);
+        renderCarros(container, destaques.length ? destaques : carros.slice(0, 4));
+    }
+
+    function renderCatalogoCarros() {
+        const container = document.getElementById('catalogoCarros');
+        if (!container) return;
+        renderCarros(container, filteredCarros);
+    }
+
+    // ===== FILTROS =====
+    function filterCarros(marca, btn) {
+        document.querySelectorAll('#page-catalogo .btn-primary, #page-catalogo .btn-secondary').forEach(b => {
+            b.style.background = b.classList.contains('btn-primary') ? 'var(--gold)' : 'transparent';
+            b.style.color = b.classList.contains('btn-primary') ? 'var(--black)' : 'var(--gold)';
+        });
+        if (btn) {
+            btn.style.background = 'var(--gold)';
+            btn.style.color = 'var(--black)';
+        }
+        if (marca === 'todos') {
+            filteredCarros = carros;
+        } else {
+            filteredCarros = carros.filter(c => c.marca === marca);
+        }
+        renderCatalogoCarros();
+    }
+
+    // ===== DETALHES =====
+    function abrirDetalhes(id) {
+        const carro = carros.find(c => c.id === id);
+        if (!carro) return;
+        const modalContent = document.getElementById('modalContent');
+        if (!modalContent) return;
+        
+        modalContent.innerHTML = `
+            <div style="margin-bottom:16px;">
+                <div style="width:100%; height:200px; border-radius:var(--radius); background:url('${carro.imagem || 'https://images.unsplash.com/photo-1583121274602-3e2820c69888?w=600&h=400&fit=crop'}') center/cover; margin-bottom:16px;"></div>
+                <div style="display:flex; justify-content:space-between; align-items:start;">
+                    <div>
+                        <div style="font-size:13px; font-weight:700; color:var(--gray-mid); text-transform:uppercase; letter-spacing:1px;">${carro.marca}</div>
+                        <h2 style="font-family:var(--font-display); font-size:24px; font-weight:700; color:var(--black);">${carro.modelo}</h2>
+                        <div style="color:var(--gray-mid); font-size:14px;">${carro.ano}</div>
+                    </div>
+                    <div class="preco-grande" style="font-size:28px; margin:0;">R$ ${carro.preco.toLocaleString('pt-BR')}</div>
+                </div>
+            </div>
+            <p style="color:var(--gray-mid); line-height:1.8; margin-bottom:16px;">${carro.descricao || 'Veículo de luxo com performance e sofisticação.'}</p>
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px; background:var(--gray-light); padding:16px; border-radius:var(--radius); margin-bottom:16px;">
+                <div><span style="color:var(--gray-mid);">Motor</span><br><strong>${carro.motor || '—'}</strong></div>
+                <div><span style="color:var(--gray-mid);">Potência</span><br><strong>${carro.potencia || '—'}</strong></div>
+                <div><span style="color:var(--gray-mid);">Transmissão</span><br><strong>${carro.transmissao || 'Automática'}</strong></div>
+                <div><span style="color:var(--gray-mid);">Quilometragem</span><br><strong>${carro.quilometragem || 0} km</strong></div>
+                <div><span style="color:var(--gray-mid);">Cor</span><br><strong>${carro.cor || '—'}</strong></div>
+                <div><span style="color:var(--gray-mid);">Status</span><br><strong>${carro.disponivel ? '✅ Disponível' : '❌ Vendido'}</strong></div>
+            </div>
+            <div class="modal-actions">
+                <button class="btn-whatsapp" onclick="window.open('https://wa.me/5511999999999?text=Olá! Tenho interesse no ${carro.marca} ${carro.modelo}','_blank')">💬 WhatsApp</button>
+                <button class="btn-interesse" onclick="interessar(${carro.id})">💛 Tenho Interesse</button>
+            </div>
+        `;
+        const modal = document.getElementById('carroModal');
+        if (modal) modal.classList.add('open');
+    }
+
+    function closeCarroModal() {
+        const modal = document.getElementById('carroModal');
+        if (modal) modal.classList.remove('open');
+    }
+
+    function interessar(id) {
+        if (!currentUser) {
+            showToast('⚠️ Faça login para registrar seu interesse!');
+            setTimeout(() => showPage('login'), 800);
+            return;
+        }
+        const carro = carros.find(c => c.id === id);
+        if (carro) {
+            showToast(`💛 Interesse registrado no ${carro.marca} ${carro.modelo}! Entraremos em contato.`);
+        }
+        closeCarroModal();
+    }
+
+    // ===== AUTH =====
+    function checkUserSession() {
+        const userData = localStorage.getItem('user');
+        const navCta = document.getElementById('navCta');
+        const mobileAuth = document.getElementById('mobileMenuAuth');
+
+        if (userData) {
+            try {
+                const user = JSON.parse(userData);
+                currentUser = user;
+
+                let badge = '';
+                if (user.role === 'admin') badge = '<span class="admin-badge">👑 Admin</span>';
+                else if (user.role === 'vendedor') badge = '<span class="vendedor-badge">📋 Vendedor</span>';
+
+                let adminBtn = '';
+                if (user.role === 'admin' || user.role === 'vendedor') {
+                    adminBtn = `<button class="btn-secondary" onclick="window.location.href='admin.html'" style="font-size:12px;padding:6px 14px;">📊 Painel</button>`;
+                }
+
+                if (navCta) {
+                    navCta.innerHTML = `
+                        <div class="user-info">
+                            <span>👤 <span class="user-name">${user.name || user.email}</span></span>
+                            ${badge}
+                            <button class="btn-logout" onclick="logout()">🚪 Sair</button>
+                        </div>
+                        ${adminBtn}
+                    `;
+                }
+
+                if (mobileAuth) {
+                    mobileAuth.innerHTML = `
+                        <div style="padding:8px 16px;font-weight:600;color:var(--gold);">👤 ${user.name || user.email}</div>
+                        ${user.role === 'admin' || user.role === 'vendedor' ? `<a onclick="window.location.href='admin.html';closeMobileMenu()">📊 Painel</a>` : ''}
+                        <a onclick="logout();closeMobileMenu()">🚪 Sair</a>
+                    `;
+                }
+
+                return user;
+            } catch (e) {
+                localStorage.removeItem('user');
+                currentUser = null;
+            }
+        }
+
+        if (navCta) {
+            navCta.innerHTML = `
+                <button class="btn-login" onclick="showPage('login')">Login</button>
+                <button class="btn-primary" onclick="showPage('register')">Cadastrar</button>
+            `;
+        }
+        if (mobileAuth) {
+            mobileAuth.innerHTML = `
+                <a onclick="showPage('login');closeMobileMenu()">🔑 Login</a>
+                <a onclick="showPage('register');closeMobileMenu()">📝 Cadastrar</a>
+            `;
+        }
+        return null;
+    }
+
+    function logout() {
+        if (confirm('Deseja sair da sua conta?')) {
+            localStorage.removeItem('user');
+            currentUser = null;
+            window.location.reload();
+        }
+    }
+
+    // ===== AUTH COM REDIRECIONAMENTO =====
+    async function doLogin(e) {
+        e.preventDefault();
+        const email = document.getElementById('loginEmail').value;
+        const password = document.getElementById('loginPass').value;
+        const btn = e.target.querySelector('button[type="submit"]');
+        
+        if (!email || !password) {
+            showToast('⚠️ Preencha todos os campos!');
+            return;
+        }
+
+        btn.disabled = true;
+        btn.textContent = '⏳ Entrando...';
+
+        try {
+            const response = await fetch(API_AUTH, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    action: 'login',
+                    email: email,
+                    password: password
+                })
+            });
+
+            const result = await response.json();
+
+            if (result.success && result.user) {
+                localStorage.setItem('user', JSON.stringify(result.user));
+                showToast('✅ Bem-vindo(a), ' + result.user.name + '!');
+                checkUserSession();
+                
+                setTimeout(() => {
+                    const user = JSON.parse(localStorage.getItem('user'));
+                    if (user.role === 'admin' || user.role === 'vendedor') {
+                        window.location.href = 'admin.html';
+                    } else {
+                        showPage('home');
+                        closeMobileMenu();
+                    }
+                }, 800);
+            } else {
+                showToast('❌ ' + (result.error || 'Erro ao fazer login'));
+                btn.disabled = false;
+                btn.textContent = 'Entrar';
+            }
+        } catch (error) {
+            showToast('❌ Erro ao conectar ao servidor');
+            console.error(error);
+            btn.disabled = false;
+            btn.textContent = 'Entrar';
+        }
+    }
+
+    async function doRegister(e) {
+        e.preventDefault();
+        const name = document.getElementById('regName').value;
+        const email = document.getElementById('regEmail').value;
+        const telefone = document.getElementById('regPhone').value;
+        const password = document.getElementById('regPass').value;
+        const btn = e.target.querySelector('button[type="submit"]');
+
+        if (!name || !email || !password) {
+            showToast('⚠️ Preencha todos os campos!');
+            return;
+        }
+
+        if (password.length < 6) {
+            showToast('⚠️ A senha deve ter pelo menos 6 caracteres!');
+            return;
+        }
+
+        btn.disabled = true;
+        btn.textContent = '⏳ Cadastrando...';
+
+        try {
+            const response = await fetch(API_AUTH, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    action: 'register',
+                    name: name,
+                    email: email,
+                    telefone: telefone,
+                    password: password
+                })
+            });
+
+            const result = await response.json();
+
+            if (result.success && result.user) {
+                localStorage.setItem('user', JSON.stringify(result.user));
+                showToast('✅ Cadastro realizado com sucesso!');
+                checkUserSession();
+                
+                setTimeout(() => {
+                    showPage('home');
+                    closeMobileMenu();
+                    document.getElementById('regName').value = '';
+                    document.getElementById('regEmail').value = '';
+                    document.getElementById('regPhone').value = '';
+                    document.getElementById('regPass').value = '';
+                }, 800);
+            } else {
+                showToast('❌ ' + (result.error || 'Erro ao cadastrar'));
+                btn.disabled = false;
+                btn.textContent = 'Cadastrar';
+            }
+        } catch (error) {
+            showToast('❌ Erro ao conectar ao servidor');
+            console.error(error);
+            btn.disabled = false;
+            btn.textContent = 'Cadastrar';
+        }
+    }
+
+    // ===== ENVIAR CONTATO (HOME) =====
+    async function enviarContato(e) {
+        e.preventDefault();
+        await enviarMensagem(
+            document.getElementById('contatoForm'),
+            document.getElementById('btnEnviarContato'),
+            document.getElementById('contatoResposta'),
+            {
+                nome: document.getElementById('contatoNome').value.trim(),
+                email: document.getElementById('contatoEmail').value.trim(),
+                telefone: document.getElementById('contatoTelefone').value.trim(),
+                assunto: document.getElementById('contatoAssunto').value,
+                mensagem: document.getElementById('contatoMensagem').value.trim()
+            }
+        );
+    }
+
+  // ===== ENVIAR CONTATO CORRIGIDO =====
+async function enviarContato(e) {
+    e.preventDefault();
+
+    const btn = document.getElementById('btnEnviarContato');
+    const resposta = document.getElementById('contatoResposta');
+
+    // Pegar dados do formulário
+    const dados = {
+        nome: document.getElementById('contatoNome').value.trim(),
+        email: document.getElementById('contatoEmail').value.trim(),
+        telefone: document.getElementById('contatoTelefone').value.trim(),
+        assunto: document.getElementById('contatoAssunto').value || 'Contato via Site',
+        mensagem: document.getElementById('contatoMensagem').value.trim()
+    };
+
+    // Validar
+    if (!dados.nome || !dados.email || !dados.mensagem) {
+        showToast('⚠️ Preencha todos os campos obrigatórios!');
+        return;
+    }
+
+    // Validar email
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(dados.email)) {
+        showToast('⚠️ Digite um email válido!');
+        return;
+    }
+
+    // Desabilitar botão
+    btn.disabled = true;
+    btn.textContent = '⏳ Enviando...';
+    resposta.style.display = 'block';
+    resposta.className = 'contato-resposta loading';
+    resposta.innerHTML = '⏳ Enviando mensagem...';
+
+    try {
+        console.log('📤 Enviando dados:', dados);
+
+        const response = await fetch('api/api_contato.php', {
+            method: 'POST',
+            headers: { 
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            },
+            body: JSON.stringify(dados)
+        });
+
+        console.log('📥 Status HTTP:', response.status);
+
+        // Tentar ler a resposta
+        let result;
+        const textResponse = await response.text();
+        console.log('📥 Resposta bruta:', textResponse);
+
+        try {
+            result = JSON.parse(textResponse);
+        } catch (e) {
+            console.error('❌ Erro ao parsear JSON:', textResponse);
+            throw new Error('Resposta inválida do servidor: ' + textResponse.substring(0, 100));
+        }
+
+        console.log('📨 Resposta parseada:', result);
+
+        if (response.ok && result.success) {
+            resposta.className = 'contato-resposta success';
+            resposta.innerHTML = `
+                ✅ ${result.message || 'Mensagem enviada com sucesso!'}
+                ${result.id ? ` <span style="font-size:0.8rem;color:#22c55e;">(ID: ${result.id})</span>` : ''}
+            `;
+            // Limpar formulário
+            document.getElementById('contatoForm').reset();
+            showToast('✅ Mensagem enviada com sucesso!');
+        } else {
+            const errorMsg = result.error || result.message || 'Erro desconhecido';
+            resposta.className = 'contato-resposta error';
+            resposta.innerHTML = `❌ ${errorMsg}`;
+            showToast('❌ Erro ao enviar mensagem');
+        }
+
+    } catch (error) {
+        console.error('❌ Erro completo:', error);
+        resposta.className = 'contato-resposta error';
+        resposta.innerHTML = `❌ Erro: ${error.message}`;
+        showToast('❌ Erro ao conectar com o servidor');
+    }
+
+    // Reabilitar botão
+    btn.disabled = false;
+    btn.textContent = '📨 Enviar mensagem';
+}
+    // ===== TESTAR API =====
+    async function testarAPI() {
+        const resultado = document.getElementById('testeResultado');
+        if (!resultado) return;
+        
+        resultado.textContent = '⏳ Testando...';
+        resultado.style.color = '#888';
+        
+        try {
+            const response = await fetch(API_CONTATO, {
+                method: 'GET'
+            });
+            
+            if (response.ok) {
+                const data = await response.json();
+                resultado.textContent = '✅ API respondendo! ' + (data.message || '');
+                resultado.style.color = '#22c55e';
+            } else {
+                resultado.textContent = '❌ API não respondeu - Status: ' + response.status;
+                resultado.style.color = '#ef4444';
+            }
+        } catch (error) {
+            console.error('Erro no teste:', error);
+            resultado.textContent = '❌ Erro no teste: ' + error.message;
+            resultado.style.color = '#ef4444';
+        }
+    }
+
+    // ===== VERIFICAR SE USUÁRIO JÁ ESTÁ LOGADO =====
+    function checkAndRedirect() {
+        const userData = localStorage.getItem('user');
+        if (userData) {
+            try {
+                const user = JSON.parse(userData);
+                const activePage = document.querySelector('.page.active');
+                if (activePage && (activePage.id === 'page-login' || activePage.id === 'page-register')) {
+                    if (user.role === 'admin' || user.role === 'vendedor') {
+                        window.location.href = 'admin.html';
+                    } else {
+                        showPage('home');
+                    }
+                }
+            } catch (e) {
+                // Ignorar erro
+            }
+        }
+    }
+
+    // ===== INIT =====
+    document.addEventListener('DOMContentLoaded', function() {
+        checkUserSession();
+        carregarCarros();
+        checkAndRedirect();
+    });
+
+    // Close modal on Escape
+    document.addEventListener('keydown', e => {
+        if (e.key === 'Escape') closeCarroModal();
+    });
+</script>
+
+</body>
+</html>
