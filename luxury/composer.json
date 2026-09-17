@@ -1,0 +1,13 @@
+{
+    "name": "luxury-cars/api",
+    "description": "API para Luxury Cars Concessionária",
+    "type": "project",
+    "autoload": {
+        "psr-4": {
+            "LuxuryCars\\": "src/"
+        }
+    },
+    "require": {
+        "php": ">=7.4"
+    }
+}

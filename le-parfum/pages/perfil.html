@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Meu Perfil - Le Parfum</title>
+  <link rel="stylesheet" href="../css/style.css" />
+</head>
+
+<body>
+  <!-- Navbar -->
+  
+  <section class="profile-section">
+    <div class="container">
+      <div class="profile-layout">
+        <aside class="profile-sidebar">
+          <div class="profile-avatar">👤</div>
+          <div class="profile-name" id="profile-name">Usuário</div>
+          <div class="profile-email" id="profile-email">email@exemplo.com</div>
+          
+          <nav class="profile-nav">
+            <div class="profile-nav-item active" data-tab="perfil">📋 Meus Dados</div>
+            <div class="profile-nav-item" data-tab="pedidos">📦 Meus Pedidos</div>
+            <div class="profile-nav-item" data-tab="favoritos">❤️ Favoritos</div>
+            <div class="profile-nav-item" onclick="Auth.logout()" style="color:var(--danger);">🚪 Sair</div>
+          </nav>
+        </aside>
+        
+        <div class="profile-content">
+          <div id="profile-info" class="profile-card">
+            <h3>Meus Dados</h3>
+            <div id="user-info">
+              <p><strong>Nome:</strong> <span id="user-nome">-</span></p>
+              <p><strong>E-mail:</strong> <span id="user-email">-</span></p>
+              <p><strong>Telefone:</strong> <span id="user-telefone">-</span></p>
+              <p><strong>Cidade:</strong> <span id="user-cidade">-</span></p>
+            </div>
+          </div>
+          
+          <div id="profile-orders" class="profile-card" style="display:none;">
+            <h3>Meus Pedidos</h3>
+            <div id="profile-orders-list">Carregando...</div>
+          </div>
+          
+          <div id="profile-favorites" class="profile-card" style="display:none;">
+            <h3>Favoritos</h3>
+            <div class="products-grid" id="profile-favorites-grid"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <!-- Footer -->
+  <script src="../js/app.js"></script>
+</body>
+</html>
