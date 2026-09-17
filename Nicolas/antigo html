@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nicolas Esportes · Loja</title>
+  <!-- Font Awesome para ícones -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Roboto, system-ui, sans-serif;
+    }
+
+    body {
+      background-color: #f5f7fc;
+      color: #1e293b;
+      line-height: 1.5;
+    }
+
+    /* container principal */
+    .container {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    /* cabeçalho */
+    .header {
+      background: linear-gradient(145deg, #0b1a2e, #162b44);
+      color: white;
+      padding: 20px 0;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .header-content {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .logo i {
+      font-size: 2.4rem;
+      color: #facc15;
+      filter: drop-shadow(0 0 6px #facc1570);
+    }
+
+    .logo h1 {
+      font-size: 2.0rem;
+      font-weight: 700;
+      letter-spacing: -0.5px;
+    }
+
+    .logo span {
+      color: #facc15;
+      font-weight: 300;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 28px;
+      font-weight: 500;
+    }
+
+    .nav-links a {
+      color: #e2e8f0;
+      text-decoration: none;
+      transition: 0.2s;
+      font-size: 1.05rem;
+      padding: 6px 0;
+      border-bottom: 2px solid transparent;
+    }
+
+    .nav-links a:hover {
+      color: #facc15;
+      border-bottom-color: #facc15;
+    }
+
+    .nav-links .btn-cart {
+      background: #facc15;
+      color: #0b1a2e;
+      padding: 8px 18px;
+      border-radius: 40px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      border: none;
+      transition: 0.2s;
+    }
+
+    .nav-links .btn-cart:hover {
+      background: #fde047;
+      transform: scale(1.02);
+      border-bottom: none;
+    }
+
+    /* hero */
+    .hero {
+      background: linear-gradient(135deg, #d9e2f0 0%, #eef2f9 100%);
+      padding: 48px 0 40px;
+      border-radius: 32px;
+      margin: 32px 0 48px;
+      box-shadow: inset 0 -4px 12px rgba(0,0,0,0.02);
+    }
+
+    .hero-grid {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 30px;
+    }
+
+    .hero-text {
+      flex: 1 1 300px;
+    }
+
+    .hero-text h2 {
+      font-size: 2.8rem;
+      font-weight: 800;
+      line-height: 1.2;
+      color: #0b1a2e;
+    }
+
+    .hero-text h2 i {
+      color: #facc15;
+      margin-right: 8px;
+    }
+
+    .hero-text p {
+      font-size: 1.2rem;
+      color: #2d3a4f;
+      margin: 16px 0 24px;
+      max-width: 500px;
+    }
+
+    .btn-primary {
+      background: #0b1a2e;
+      color: white;
+      border: none;
+      padding: 14px 36px;
+      border-radius: 60px;
+      font-weight: 600;
+      font-size: 1.1rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      cursor: pointer;
+      transition: 0.25s;
+      box-shadow: 0 8px 18px rgba(11, 26, 46, 0.2);
+    }
+
+    .btn-primary:hover {
+      background: #1e3a5f;
+      transform: translateY(-3px);
+      box-shadow: 0 14px 24px rgba(11, 26, 46, 0.3);
+    }
+
+    .hero-image {
+      flex: 0 0 240px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 8rem;
+      color: #1e3a5f;
+      background: rgba(255,255,255,0.3);
+      padding: 20px 10px;
+      border-radius: 60px;
+      backdrop-filter: blur(4px);
+    }
+
+    .hero-image i {
+      filter: drop-shadow(0 10px 14px rgba(0,0,0,0.1));
+    }
+
+    /* seção produtos */
+    .section-title {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      margin: 56px 0 24px;
+    }
+
+    .section-title h3 {
+      font-size: 2rem;
+      font-weight: 700;
+      color: #0b1a2e;
+    }
+
+    .section-title h3 i {
+      color: #facc15;
+      margin-right: 10px;
+    }
+
+    .section-title a {
+      color: #1e3a5f;
+      font-weight: 500;
+      text-decoration: none;
+      border-bottom: 2px solid transparent;
+    }
+
+    .section-title a:hover {
+      border-bottom-color: #facc15;
+    }
+
+    .product-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 32px 20px;
+    }
+
+    .product-card {
+      background: white;
+      border-radius: 28px;
+      padding: 20px 16px 24px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.04);
+      transition: all 0.25s;
+      display: flex;
+      flex-direction: column;
+      border: 1px solid #e9edf4;
+      text-align: center;
+    }
+
+    .product-card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 20px 36px rgba(0, 0, 0, 0.08);
+      border-color: #facc15;
+    }
+
+    .product-icon {
+      font-size: 4.2rem;
+      color: #0b1a2e;
+      background: #f0f4fe;
+      width: 100px;
+      height: 100px;
+      margin: 0 auto 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 60px;
+      transition: 0.2s;
+    }
+
+    .product-card:hover .product-icon {
+      background: #facc1520;
+      color: #facc15;
+    }
+
+    .product-card h4 {
+      font-size: 1.3rem;
+      font-weight: 600;
+      margin-bottom: 6px;
+    }
+
+    .product-card .price {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #0b1a2e;
+      margin: 8px 0 16px;
+    }
+
+    .product-card .price small {
+      font-weight: 400;
+      font-size: 0.9rem;
+      color: #64748b;
+      margin-left: 6px;
+      text-decoration: line-through;
+    }
+
+    .btn-buy {
+      background: #0b1a2e;
+      border: none;
+      color: white;
+      padding: 12px 10px;
+      border-radius: 60px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      transition: 0.2s;
+      cursor: pointer;
+      width: 100%;
+      margin-top: 4px;
+    }
+
+    .btn-buy:hover {
+      background: #facc15;
+      color: #0b1a2e;
+    }
+
+    .badge {
+      background: #facc15;
+      color: #0b1a2e;
+      padding: 4px 12px;
+      border-radius: 40px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      display: inline-block;
+      margin-bottom: 8px;
+      align-self: center;
+    }
+
+    /* sobre e contato */
+    .info-section {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 40px;
+      background: white;
+      border-radius: 40px;
+      padding: 44px 36px;
+      margin: 60px 0 40px;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.02);
+      border: 1px solid #eef2f6;
+    }
+
+    .info-box {
+      flex: 1 1 200px;
+    }
+
+    .info-box h4 {
+      font-size: 1.5rem;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .info-box h4 i {
+      color: #facc15;
+    }
+
+    .info-box p {
+      color: #334155;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .info-box i.fa-solid, .info-box i.fa-brands {
+      width: 24px;
+      color: #0b1a2e;
+    }
+
+    .social-links {
+      display: flex;
+      gap: 18px;
+      margin-top: 12px;
+    }
+
+    .social-links a {
+      background: #eef2f6;
+      color: #0b1a2e;
+      width: 44px;
+      height: 44px;
+      border-radius: 30px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.3rem;
+      transition: 0.2s;
+      text-decoration: none;
+    }
+
+    .social-links a:hover {
+      background: #facc15;
+      color: #0b1a2e;
+      transform: scale(1.05);
+    }
+
+    footer {
+      background: #0b1a2e;
+      color: #b9c8dd;
+      padding: 24px 0;
+      border-radius: 40px 40px 0 0;
+      margin-top: 20px;
+      text-align: center;
+    }
+
+    footer span {
+      color: #facc15;
+    }
+
+    @media (max-width: 700px) {
+      .header-content {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 12px;
+      }
+      .nav-links {
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+      .hero-text h2 {
+        font-size: 2.2rem;
+      }
+      .hero-image {
+        flex: 1 1 100%;
+        font-size: 5rem;
+      }
+      .info-section {
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- cabeçalho -->
+  <header class="header">
+    <div class="container header-content">
+      <div class="logo">
+        <i class="fas fa-football"></i>
+        <h1>Nicolas <span>Esportes</span></h1>
+      </div>
+      <div class="nav-links">
+        <a href="#">Início</a>
+        <a href="#produtos">Produtos</a>
+        <a href="#sobre">Sobre</a>
+        <a href="#contato">Contato</a>
+        <a href="#" class="btn-cart"><i class="fas fa-shopping-cart"></i> Carrinho</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <!-- hero / destaque -->
+    <section class="hero">
+      <div class="hero-grid">
+        <div class="hero-text">
+          <h2><i class="fas fa-bolt"></i> Nicolas Esportes</h2>
+          <p>Equipamentos de alta performance para todas as modalidades. Qualidade e estilo que fazem a diferença.</p>
+          <button class="btn-primary" onclick="alert('Bem-vindo à Nicolas Esportes! 🏆')">
+            <i class="fas fa-store"></i> Explorar loja
+          </button>
+        </div>
+        <div class="hero-image">
+          <i class="fas fa-medal"></i>
+        </div>
+      </div>
+    </section>
+
+    <!-- produtos -->
+    <div id="produtos" class="section-title">
+      <h3><i class="fas fa-shoe-prints"></i> Produtos em destaque</h3>
+      <a href="#">Ver todos <i class="fas fa-arrow-right"></i></a>
+    </div>
+
+    <div class="product-grid">
+      <!-- card 1 -->
+      <div class="product-card">
+        <div class="product-icon"><i class="fas fa-running"></i></div>
+        <span class="badge">novo</span>
+        <h4>Tênis Speed Pro</h4>
+        <div class="price">R$ 279,90 <small>R$ 349,90</small></div>
+        <button class="btn-buy"><i class="fas fa-cart-plus"></i> Comprar</button>
+      </div>
+      <!-- card 2 -->
+      <div class="product-card">
+        <div class="product-icon"><i class="fas fa-basketball-ball"></i></div>
+        <span class="badge">+ vendidos</span>
+        <h4>Bola Elite 7</h4>
+        <div class="price">R$ 189,90</div>
+        <button class="btn-buy"><i class="fas fa-cart-plus"></i> Comprar</button>
+      </div>
+      <!-- card 3 -->
+      <div class="product-card">
+        <div class="product-icon"><i class="fas fa-dumbbell"></i></div>
+        <span class="badge">oferta</span>
+        <h4>Kit Halteres 2x10kg</h4>
+        <div class="price">R$ 349,00 <small>R$ 420,00</small></div>
+        <button class="btn-buy"><i class="fas fa-cart-plus"></i> Comprar</button>
+      </div>
+      <!-- card 4 -->
+      <div class="product-card">
+        <div class="product-icon"><i class="fas fa-swimmer"></i></div>
+        <span class="badge">importado</span>
+        <h4>Óculos de Natação</h4>
+        <div class="price">R$ 99,90</div>
+        <button class="btn-buy"><i class="fas fa-cart-plus"></i> Comprar</button>
+      </div>
+    </div>
+
+    <!-- segunda linha de produtos (para demonstrar variedade) -->
+    <div class="product-grid" style="margin-top: 16px;">
+      <div class="product-card">
+        <div class="product-icon"><i class="fas fa-futbol"></i></div>
+        <span class="badge">lançamento</span>
+        <h4>Bola de Futebol Pro</h4>
+        <div class="price">R$ 159,90</div>
+        <button class="btn-buy"><i class="fas fa-cart-plus"></i> Comprar</button>
+      </div>
+      <div class="product-card">
+        <div class="product-icon"><i class="fas fa-bicycle"></i></div>
+        <span class="badge">ultra leve</span>
+        <h4>Capacito Ciclismo</h4>
+        <div class="price">R$ 219,90</div>
+        <button class="btn-buy"><i class="fas fa-cart-plus"></i> Comprar</button>
+      </div>
+      <div class="product-card">
+        <div class="product-icon"><i class="fas fa-baseball-ball"></i></div>
+        <span class="badge">kit</span>
+        <h4>Luva + Bola Beisebol</h4>
+        <div class="price">R$ 289,90</div>
+        <button class="btn-buy"><i class="fas fa-cart-plus"></i> Comprar</button>
+      </div>
+      <div class="product-card">
+        <div class="product-icon"><i class="fas fa-stopwatch"></i></div>
+        <span class="badge">digital</span>
+        <h4>Cronômetro Esportivo</h4>
+        <div class="price">R$ 69,90</div>
+        <button class="btn-buy"><i class="fas fa-cart-plus"></i> Comprar</button>
+      </div>
+    </div>
+
+    <!-- Sobre + Contato (info-section) -->
+    <div id="sobre" class="info-section">
+      <div class="info-box">
+        <h4><i class="fas fa-store-alt"></i> Nicolas Esportes</h4>
+        <p><i class="fas fa-quote-left"></i> Paixão por esporte desde 2010. Atendemos atletas de todas as idades com produtos de qualidade e preços justos.</p>
+        <p><i class="fas fa-trophy"></i> +5.000 clientes satisfeitos</p>
+        <p><i class="fas fa-tag"></i> Envio para todo o Brasil</p>
+      </div>
+      <div class="info-box" id="contato">
+        <h4><i class="fas fa-address-card"></i> Contato</h4>
+        <p><i class="fas fa-map-pin"></i> Av. Esportiva, 1000 – São Paulo/SP</p>
+        <p><i class="fas fa-phone-alt"></i> (11) 99999-8888</p>
+        <p><i class="fas fa-envelope"></i> contato@nicolasesportes.com</p>
+        <div class="social-links">
+          <a href="#"><i class="fab fa-instagram"></i></a>
+          <a href="#"><i class="fab fa-facebook-f"></i></a>
+          <a href="#"><i class="fab fa-whatsapp"></i></a>
+          <a href="#"><i class="fab fa-youtube"></i></a>
+        </div>
+      </div>
+      <div class="info-box">
+        <h4><i class="fas fa-clock"></i> Horário</h4>
+        <p><i class="fas fa-calendar-day"></i> Seg–Sex: 09h–20h</p>
+        <p><i class="fas fa-calendar-weekend"></i> Sáb: 09h–18h</p>
+        <p><i class="fas fa-calendar-times"></i> Dom: fechado</p>
+        <p style="margin-top:12px; background:#f0f4fe; padding: 12px; border-radius: 40px; font-weight:500;">
+          <i class="fas fa-headset" style="color:#facc15;"></i> Atendimento online 24h
+        </p>
+      </div>
+    </div>
+
+  </main>
+
+  <footer>
+    <div class="container">
+      <p><i class="fas fa-copyright"></i> 2026 <span>Nicolas Esportes</span> · Todos os direitos reservados.</p>
+      <p style="font-size: 0.9rem; opacity: 0.7; margin-top: 6px;">Feito com <i class="fas fa-heart" style="color: #facc15;"></i> para atletas de verdade.</p>
+    </div>
+  </footer>
+
+  <!-- pequeno script para interação nos botões -->
+  <script>
+    (function() {
+      // Adiciona evento em todos os botões "Comprar"
+      const buyButtons = document.querySelectorAll('.btn-buy');
+      buyButtons.forEach(btn => {
+        btn.addEventListener('click', function(e) {
+          e.stopPropagation();
+          const productName = this.closest('.product-card')?.querySelector('h4')?.innerText || 'produto';
+          alert(`🛒 "${productName}" adicionado ao carrinho!`);
+        });
+      });
+
+      // botão hero
+      const heroBtn = document.querySelector('.btn-primary');
+      if (heroBtn) {
+        heroBtn.addEventListener('click', function(e) {
+          e.preventDefault();
+          document.getElementById('produtos')?.scrollIntoView({ behavior: 'smooth' });
+        });
+      }
+
+      // links do nav (simulação de rolagem suave)
+      document.querySelectorAll('.nav-links a').forEach(link => {
+        link.addEventListener('click', function(e) {
+          const href = this.getAttribute('href');
+          if (href && href.startsWith('#')) {
+            e.preventDefault();
+            const target = document.querySelector(href);
+            if (target) target.scrollIntoView({ behavior: 'smooth' });
+          }
+        });
+      });
+    })();
+  </script>
+</body>
+</html>
